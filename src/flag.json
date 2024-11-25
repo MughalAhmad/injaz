@@ -1,0 +1,27 @@
+[
+    {
+        "country": "United States",
+        "code": "US",
+        "flag": "https://countryflagsapi.com/png/us"
+    },
+    {
+        "country": "Canada",
+        "code": "CA",
+        "flag": "https://countryflagsapi.com/png/ca"
+    },
+    {
+        "country": "India",
+        "code": "IN",
+        "flag": "https://countryflagsapi.com/png/in"
+    },
+    {
+        "country": "United Kingdom",
+        "code": "GB",
+        "flag": "https://countryflagsapi.com/png/gb"
+    },
+    {
+        "country": "Australia",
+        "code": "AU",
+        "flag": "https://countryflagsapi.com/png/au"
+    }
+]
