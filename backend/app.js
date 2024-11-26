@@ -40,7 +40,7 @@ app.get("*",(req,res)=>{
     res.sendFile(path.resolve(__dirname,"../frontend/dist/index.html"))
 })
 
-const port = 3000;
+const port = 4000;
 app.listen(port, async () => {
     console.log(`Server running on port: ${port}`);
 });
