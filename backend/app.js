@@ -1,6 +1,7 @@
 const dotenv = require ("dotenv");
 dotenv.config({path:".env"});
 const express = require ("express");
+const path = require("path");
 const app = express();
 
 
@@ -33,7 +34,11 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
 
+app.use(express.static(path.join(__dirname,"../frontend/dist")));
 
+app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,"../frontend/dist/index.html"))
+})
 
 const port = 3000;
 app.listen(port, async () => {
