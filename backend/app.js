@@ -34,11 +34,11 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
 
-app.use(express.static(path.join(__dirname,"../frontend/dist")));
+// app.use(express.static(path.join(__dirname,"../frontend/dist")));
 
-app.get("*",(req,res)=>{
-    res.sendFile(path.resolve(__dirname,"../frontend/dist/index.html"))
-})
+// app.get("*",(req,res)=>{
+//     res.sendFile(path.resolve(__dirname,"../frontend/dist/index.html"))
+// })
 
 const port = 4000;
 app.listen(port, async () => {
