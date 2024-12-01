@@ -1,10 +1,55 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Facebook from "/svgs/fb.svg";
 import Google from "/svgs/google.svg";
 import Linkedin from "/svgs/in.svg";
 import Message from "/svgs/message.svg";
 import Lock from "/svgs/lock.svg";
+import Cookies from 'js-cookie';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { userLogin, updateAuthStatus, updateUser, updateToken, updateAuthSliceErrorStatus } from '../../redux/features/adminSlice';
+
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email:"",
+    password:""
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuthenticated } = useSelector(state => state.adminStore);
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const onSubmit = (e) =>{
+    e.preventDefault();
+    console.log(formData)
+    dispatch(userLogin(formData))
+    .then(response => {
+      if (response && !response.payload.hasError) {
+        Cookies.set('auth-token', response.payload.data.token, { path: '/', expires: 1, sameSite: 'Lax' });
+        dispatch(updateAuthStatus(response.payload.data.isAuthenticated));
+        dispatch(updateUser(response.payload.data.user));
+        dispatch(updateToken(response.payload.data.token));
+        dispatch(updateAuthSliceErrorStatus(response.payload.hasError));
+        navigate('/');
+      } 
+    })
+    .catch(error => {
+      console.error('Dispatch failed:', error);
+    });
+  }
+  if(isAuthenticated) return
+
   return (
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
@@ -40,6 +85,8 @@ const Login = () => {
         type="email"
         id="email"
         name="email"
+        value={formData.email}
+        onChange={handleChange}
         className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
         placeholder="Enter your email"
         required
@@ -63,6 +110,8 @@ const Login = () => {
         type="password"
         id="password"
         name="password"
+        value={formData.password}
+        onChange={handleChange}
         className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
         placeholder="Enter your password"
         required
@@ -84,6 +133,7 @@ const Login = () => {
   </div>
     <button
       type="submit"
+      onClick={onSubmit}
       className="w-full bg-backgroundPrimary text-white font-semibold h-11 mt-9 text-base rounded-lg hover:bg-backgroundPrimaryHover transition"
     >
       Login

@@ -9,12 +9,16 @@
 
 
     --background-primary: #222A59;
+    --background-secondary: #ED1C24;
     --background-primary-hover: #384385;
+    --background-slate-500-hover: #737791;
+    --background-stone-300: #BDBDBD;
     --background-green-500: #3cd856;
     --text-primary: #222A59;
     --text-primary-hover: #384385;
     --stone-300: #BDBDBD;
     --neutral-400: #a2a2a6;
+    --slate-500: #737791;
 
     
     --foreground-primary: #151416;

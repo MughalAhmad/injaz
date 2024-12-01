@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import countryCodes from './CountryCode.json';
+import countryCodes from '../../json/CountryCode.json';
 
 const CountryFlags = ({ label = "text", placeholder="text", className, onFlagChange }) => {
   const [countryCode, setCountryCode] = useState(countryCodes[0].iso);

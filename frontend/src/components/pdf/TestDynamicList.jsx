@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Title from './Title';
-import Button from './Button'
+import Title from '../pdf/Title';
+import Button from '../pdf/Button'
 
 const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => {
 

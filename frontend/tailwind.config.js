@@ -14,12 +14,16 @@ export default {
       },
       colors: {
         backgroundPrimary: 'var(--background-primary)',
+        backgroundSecondary: 'var(--background-secondary)',
         backgroundPrimaryHover: 'var(--background-primary-hover)',
+        backgroundSlate500Hover: 'var(--background-slate-500-hover)',
+        backgroundStone300: 'var(--background-stone-300)',
         backgroundGreen500: 'var(--background-green-500)',
         textPrimary: 'var(--text-primary)',
         textPrimaryHover: 'var(--text-primary-hover)',
         stone300: 'var(--stone-300)',
         neutral400: 'var(--neutral-400)',
+        slate500: 'var(--slate-500)',
 
           border: 'var(--surface-overlay)',
           input: 'var(--surface-overlay)',

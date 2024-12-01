@@ -158,7 +158,7 @@ const SelectAndInput = ({
 
         {/* Custom Dropdown Button */}
         <div 
-          className={`w-[10%] flex justify-between items-center cursor-pointer rounded-lg px-2 relative`}
+          className={`w-[10%] flex justify-between items-center cursor-pointer rounded-lg px-2 relative bg-white`}
           onClick={toggleDropdown}
         >
           {/* <span className="text-center">v</span> */}

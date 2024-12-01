@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
 // import GeneratePDF from "./GeneratePDF";
-import Input from './Input';
-import Title from './Title';
-import SimpleDropdown from './simpleDropdown';
-import TestDynamicList from './TestDynamicList';
-import Button from './Button';
-import PhoneNumberInput from './PhoneNumberInput';
-import SelectAndInput from './SelectAndInput';
+import Input from '../components/pdf/Input';
+import Title from '../components/pdf/Title';
+import SimpleDropdown from '../components/pdf/simpleDropdown';
+import TestDynamicList from '../components/pdf/TestDynamicList';
+import Button from '../components/pdf/Button';
+import PhoneNumberInput from '../components/pdf/PhoneNumberInput';
+import SelectAndInput from '../components/pdf/SelectAndInput';
 import { ToWords } from 'to-words';
-import CountryFlags from './CountryFlags'
+import CountryFlags from '../components/pdf/CountryFlags';
 import moment from 'moment'
-import CheckBox from './CheckBox';
+import CheckBox from '../components/pdf/CheckBox';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import MyDocument from './GeneratePDF';
-import MyDocumentInjaz from './PDF/GeneratePDFCompany2';
+import MyDocumentInjaz from './GeneratePDFCompany2';
+import { useSelector, useDispatch } from 'react-redux';
+import { createPdf } from '../redux/features/pdfSlice';
 
 const TestForm = () => {
   const toWords = new ToWords();
+  const dispatch = useDispatch();
 
 let className = "mr-0";
 const VisitingCard = 0.3;
@@ -26,11 +29,14 @@ const [generatePDFBtn, setGeneratePDFBtn] = useState(false)
 const [btnStatus, setBtnStatus] = useState(true);
 const [btnStatusText, setBtnStatusText] = useState("generating");
 
+const { companyName } = useSelector(state => state.brandingStore);
+
+
 
   const [data, setData] = useState({
-   selectCompany:'',
-   image:'',
-   color:'',
+   selectCompany:companyName,
+   image:companyName === "Injaz" ? "/Injaz/page3Logo.png" : "/page3Logo.png" ,
+   color:companyName === "Injaz" ? '#222A59' : '#BA141A',
 
    date: "",
 
@@ -40,8 +46,8 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
    clientEmail:'',
    clientPhone:'',
 
-   visitingCard:"",
-   letterHeadPad:"",
+   visitingCard:0,
+   letterHeadPad:0,
 
    tAmount:0,
    gtAmount:0,
@@ -49,9 +55,7 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
 
    stateValue:'',
    packageIncludingVisa:'',
-   investorVisa:"",
    freeVisa:"",
-   employmentVisa:"",
 
    step1Remarks:'Government Fees',
    step1Timeline:'3-5 Working Days After Verification and Payment',
@@ -59,7 +63,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
 
    step2ApprovalFee:'',
    step2value1:'',
-   step2SharjahFee:'',
    step2Timeline:'2-3 Working Days',
    step2EstablishmentRemark:"Government Fees Renewable every year",
    step2Remark:"Government Fees Renewable every year",
@@ -69,9 +72,8 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
    step2Establishment:'',
    step2ImmigrationFee:'',
    step2value2a:'',
-   uid:'',
-   uidReq:'0',
-   uidFee:"",
+
+
    step3ImmigrationUID:'Immigration Required UID',
    step3TimelineUID:'2-3 Working Days ',
    step3Renewable:'Government Fees Renewable every year ',
@@ -198,51 +200,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
       name:'Enter Value',
     }
   ];
-
-  const selectVCPcs =[
-    {
-      id:'500',
-      name:'500',
-    },
-    {
-      id:'1000',
-      name:'1000',
-    },
-    {
-      id:'1500',
-      name:'1500',
-    },
-    {
-      id:'2000',
-      name:'2000',
-    },
-    {
-      id:0,
-      name:'Enter Value',
-    }
-  ];
-  const selectLHPPcs =[
-    {
-      id:'500',
-      name:'500',
-    },
-    {
-      id:'1000',
-      name:'1000',
-    },
-    {
-      id:'1500',
-      name:'1500',
-    },
-    {
-      id:'2000',
-      name:'2000',
-    },
-    {
-      id:0,
-      name:'Enter Value',
-    }
-  ];
     
   const stateData =[
     {
@@ -258,7 +215,7 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
       name:'Dubai (M)',
     },
     {
-      id:'Dubai',
+      id:'Dubai (IFZA)',
       name:'Dubai (IFZA)',
     },
     {
@@ -287,28 +244,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     }
   ];
 
-  const selectEmirates = [
-    {
-      id:490,
-      name:490
-    },
-    {
-      id:0,
-      name:"enter value"
-    }
-  ]
-
-  const selectMedical =[
-    {
-      id:390,
-      name:390
-    },
-    {
-      id:0,
-      name:"enter value"
-    }
-  ]
-
   const selectStep1=[
     {
       id:12790,
@@ -327,7 +262,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
       name:"enter value"
     }
   ];
-
 
   const selectStep2b=[
     {
@@ -373,7 +307,7 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
         title:"Investor Visa",
         value:0 ,
         status:"0" ,
-        filed:true,
+        filed:false,
 
     },
     {
@@ -381,7 +315,7 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
         title:"Employment Visa",
         value:0 ,
         status:"0" ,
-        filed:true,
+        filed:false,
 
     },
     {
@@ -459,17 +393,17 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     {
       id:'15',
         title:"Visiting Card",
-        value:"0 pcs" ,
+        value:0 ,
         status:"0" ,
-        filed:true,
+        filed:false,
 
     },
     {
       id:'16',
         title:"Letter Head Pad",
-        value:"0 pcs" ,
+        value:0 ,
         status:"0" ,
-        filed:true,
+        filed:false,
 
     },
     {
@@ -520,7 +454,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     }
     ]);
     
-
   const selectVisaPartner=[
     {
       id:6390,
@@ -570,12 +503,6 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     }
   ];
 
-  const handleCheckboxChange = (changedItem) => {
-    const updatedData = checkBoxData.map((item) =>
-      item.title === changedItem.title ? { ...item, status: changedItem.status=='0' ? "1" : '0' } : item
-    );
-    setCheckBoxData(updatedData);
-  };
 
   const handleFlagChange = (data) => {
     setData((prevData) => ({
@@ -647,7 +574,17 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     
   };
 
-
+const saveDataIntoDB = () =>{
+  dispatch(createPdf(data))
+    .then(response => {
+      if (response && !response.payload.hasError) {
+       console.log("responseresponseresponse",response)
+      } 
+    })
+    .catch(error => {
+      console.error('Dispatch failed:', error);
+    });
+}
   
   const handleGeneratePDF = () => {
     setTimeout(() => {
@@ -655,6 +592,7 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
       setBtnStatus(true)
     }, 2000);
     // GeneratePDF(data);
+    saveDataIntoDB()
   };
 
   
@@ -675,33 +613,42 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
     result.setDate(result.getDate() + days);
     return result;
   };
+
+  const updateTheGTValue = (totalAmount) =>{
+   return   totalAmount + (checkBoxData[14].status === "1" ? data.visitingCard : 0) + (checkBoxData[15].status === "1" ? data.letterHeadPad : 0);
+
+  }
   
 
   const handleAmount = () => {
-    let count = 0;
-    let totalAmount = [data.step1value, data.step2Establishment, data.step2value1, data.step2value2, data.step2value2a, data.step2value3, Number(data.step3EmiratesId), Number(data.step3Medical), Number(data.step2ApprovalFee), Number(data.step2ImmigrationFee), Number(data.step2SharjahFee), Number(data.uidFee) ].reduce(
+    console.log("AMOUNT CALL")
+    let totalAmount = [data.step1value, Number(data.step2ApprovalFee), data.step2value1, data.step2Establishment, data.step2value2a, data.step2value2, Number(data.discount)].reduce(
+
       (total, item) => total + Number(item), 
       0
     );
-    if(data.visitingCard){
-      count = count + (VisitingCard * Number(data.visitingCard));
-    }
-    if(data.letterHeadPad){
-      count = count + (LetterHeadPad * Number(data.letterHeadPad));
-    }
-    totalAmount = totalAmount + count;
-    let calculateDiscount = totalAmount + Number(data.discount);
-    let words = toWords.convert(calculateDiscount);
+    
+    let calculateGrandTotal = updateTheGTValue(totalAmount)
+    const roundedNumber = parseFloat(calculateGrandTotal.toFixed(1));
+    let words = toWords.convert(roundedNumber);
+
     setData(prevData => ({
       ...prevData,
       tAmount: totalAmount,
-      gtAmount: calculateDiscount,
+      gtAmount: roundedNumber,
       word:words,
       date:addDays(10)
     }));
   };
 
-
+  const handleCheckboxChange = (changedItem) => {
+    const updatedData = checkBoxData.map((item) =>
+      item.title === changedItem.title ? { ...item, status: changedItem.status=='0' ? "1" : '0' } : item
+    );
+    setCheckBoxData(updatedData);
+    console.log("hHELLLLLOOOOOO")
+    handleAmount()
+  };
 
   const clear=()=>{
     window.location.reload()
@@ -710,8 +657,14 @@ const [btnStatusText, setBtnStatusText] = useState("generating");
  // Set Step 1 value based on stateValue
  useEffect(() => {
   const getStep1Value = () => {
+    
     if (data.stateValue === "Dubai") return selectStep1[0].id;
     if (data.stateValue === "Sharjah") return selectStep1[1].id;
+
+    if (data.stateValue !== "Dubai") return selectStep1[selectStep1.length-1].id;
+    if (data.stateValue !== "Dubai (IFZA)") return selectStep1[selectStep1.length-1].id;
+    if (data.stateValue !== "Sharjah") return selectStep1[selectStep1.length-1].id;
+
     return data.step1value;
   };
 
@@ -723,12 +676,15 @@ useEffect(() => {
   const getStep2ValueB = () => {
     if (data.stateValue === "Dubai") return selectStep2b[0].id;
     if (data.stateValue === "Sharjah") return selectStep2b[1].id;
+
+    if (data.stateValue !== "Dubai") return selectStep2b[selectStep2b.length-1].id;
+    if (data.stateValue !== "Dubai (IFZA)") return selectStep2b[selectStep2b.length-1].id;
+    if (data.stateValue !== "Sharjah") return selectStep2b[selectStep2b.length-1].id;
     return data.step2Establishment;
   };
 
   setData((prevData) => ({
     ...prevData,
-    // step2value1: getStep2ValueA(),
     step2Establishment: getStep2ValueB(),
   }));
 }, [data.stateValue]);
@@ -738,18 +694,31 @@ useEffect(() => {
   const getStep3ValueA = () => {
     if (data.stateValue === "Dubai") return selectVisaPartner[0].id;
     if (data.stateValue === "Sharjah") return selectVisaPartner[1].id;
+
+    
+    if (data.stateValue !== "Dubai") return selectVisaPartner[selectVisaPartner.length-1].id;
+    if (data.stateValue !== "Dubai (IFZA)") return selectVisaPartner[selectVisaPartner.length-1].id;
+    if (data.stateValue !== "Sharjah") return selectVisaPartner[selectVisaPartner.length-1].id;
     return data.step2value2a;
   };
 
   const getStep3ValueB = () => {
     if (data.stateValue === "Dubai") return selectVisaEmployment[0].id;
     if (data.stateValue === "Sharjah") return selectVisaEmployment[1].id;
+
+    if (data.stateValue !== "Dubai") return selectVisaEmployment[selectVisaEmployment.length-1].id;
+    if (data.stateValue !== "Dubai (IFZA)") return selectVisaEmployment[selectVisaEmployment.length-1].id;
+    if (data.stateValue !== "Sharjah") return selectVisaEmployment[selectVisaEmployment.length-1].id;
     return data.step2value2;
   };
 
   const getStep3ValueC = () => {
     if (data.stateValue === "Dubai") return selectStatusChange[0].id;
     if (data.stateValue === "Sharjah") return selectStatusChange[1].id;
+
+    if (data.stateValue !== "Dubai") return selectStatusChange[selectStatusChange.length-1].id;
+    if (data.stateValue !== "Dubai (IFZA)") return selectStatusChange[selectStatusChange.length-1].id;
+    if (data.stateValue !== "Sharjah") return selectStatusChange[selectStatusChange.length-1].id;
     return data.step2value3;
   };
 
@@ -763,7 +732,7 @@ useEffect(() => {
 
   console.log("data",data)
   // console.log("stateArray",stateArray)
-  // console.log("ChecckBox",checkBoxData)
+  console.log("ChecckBox",checkBoxData)
 // console.log(btnStatus)
 
   const handlePackageChange = (e,id) => {
@@ -772,6 +741,44 @@ useEffect(() => {
         item.id === id ? { ...item, value: e.target.value } : item
       )
     );
+
+    if(id === "15"){
+      let muiltyValue = e.target.value * VisitingCard;
+      setData((prevData) => ({
+        ...prevData,
+        visitingCard:muiltyValue,
+      }));
+    }
+
+    if(id === "16"){
+      let muiltyValue = e.target.value * LetterHeadPad;
+      setData((prevData) => ({
+        ...prevData,
+        letterHeadPad:muiltyValue,
+      }));
+    }
+
+// console.log("helloooooooooooooooooooooooooooooooooo")
+//     checkBoxData.map((item)=>{
+//       if(item.id === '15'){
+//         console.log("valueeeeeeeeeeee",item.value )
+//         let muiltyValue = item.value * VisitingCard;
+//        setData((prevData) => ({
+//       ...prevData,
+//       visitingCard:muiltyValue,
+//     }));
+//       }
+//       if(item.id === '16'){
+//         let muiltyValue = item.value * LetterHeadPad;
+//         console.log("valueeeeeeeeeeee",item.value )
+
+//         setData((prevData) => ({
+//           ...prevData,
+//      letterHeadPad:muiltyValue,
+//        }));
+
+//       }
+//     })
   };
 
   const handleFullPFBtn = ()=>{
@@ -812,7 +819,7 @@ useEffect(() => {
 
 
          const auth = () =>{
-          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.visitingCard && data.letterHeadPad && data.stateValue && data.investorVisa && data.freeVisa && data.employmentVisa && data.step1value && data.step2ApprovalFee && data.step2value1 && data.step2SharjahFee && data.step2Establishment && data.step2ImmigrationFee && data.step2value2a && data.uid && data.uidFee && data.step2value2 && data.step2value3 && data.step3Medical && data.step3EmiratesId && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && stateArray[0]?.authority && data.isEmail && data.packageIncludingVisa ){
+          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1 && data.step2Establishment && data.step2value2a && data.step2value2 && data.step2value3 && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && stateArray[0]?.authority && data.isEmail && data.packageIncludingVisa){
             return true
           }
           else return false;
@@ -824,57 +831,45 @@ useEffect(() => {
     handleImageAndColor();
     handleAmount();
 
-    setCheckBoxData(prevData => 
-      prevData.map(item => 
-        item.id === '4' ? { ...item, value: data.investorVisa } : item
-      )
-    );
+    // setCheckBoxData(prevData => 
+    //   prevData.map(item => 
+    //     item.id === '4' ? { ...item, value: data.investorVisa } : item
+    //   )
+    // );
 
-    setCheckBoxData(prevData => 
-      prevData.map(item => 
-        item.id === '5' ? { ...item, value: data.employmentVisa } : item
-      )
-    );
+    // setCheckBoxData(prevData => 
+    //   prevData.map(item => 
+    //     item.id === '5' ? { ...item, value: data.employmentVisa } : item
+    //   )
+    // );
 
-    setCheckBoxData(prevData => 
-      prevData.map(item => 
-        item.id === '15' ? { ...item, value: `${data.visitingCard} Pcs ` } : item
-      )
-    );
+    // setCheckBoxData(prevData => 
+    //   prevData.map(item => 
+    //     item.id === '15' ? { ...item, value: `${data.visitingCard} Pcs ` } : item
+    //   )
+    // );
 
-    setCheckBoxData(prevData => 
-      prevData.map(item => 
-        item.id === '16' ? { ...item, value: `${data.letterHeadPad} Pcs ` } : item
-      )
-    );
-
-
-  }, [data.selectCompany, stateArray, data.discount, data.step1value, data.step2Establishment, data.step2value1, data.step2value2, data.step2value2a, data.step2value3, data.step3EmiratesId, data.step3Medical, data.step2ApprovalFee, data.step2ImmigrationFee, data.step2SharjahFee, data.pro, data.visitingCard, data.letterHeadPad, data.investorVisa, data.employmentVisa, data.uidFee ])
+    // setCheckBoxData(prevData => 
+    //   prevData.map(item => 
+    //     item.id === '16' ? { ...item, value: `${data.letterHeadPad} Pcs ` } : item
+    //   )
+    // );
+    
+  }, [stateArray, data.discount, data.step1value, data.step2Establishment, data.step2value1, data.step2value2, data.step2value2a, data.step2value3, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad])
   
 
   return (
 <div className='p-5 md:p-10'>
 
   <div className='flex flex-col items-center w-full h-auto md:m-auto'>
-  {data.image ? (
-          <img src={data.image} alt='Company Logo' className='sm:w-96' />
-        ) : (
-          <p className='text-xl font-extrabold md:text-3xl'>SELECT YOUR COMPANY</p>
-        )}
-  <p className={`text-3xl text-center md:text-main font-extrabold ${data.image ? 'ml-24' : ''}`} style={{ color: data.color }}>Quotation Form</p>
+  {companyName === "Injaz" ? <img src="/Injaz/page3Logo.png" alt='Company Logo' className='sm:w-96' /> : <img src="/page3Logo.png" alt='Company Logo' className='sm:w-96' />}
+  <p className={`text-3xl text-center md:text-main font-extrabold ml-24 ${companyName === "Injaz" ? 'text-[#222A59]' : 'text-[#BA141A]' }`}>Quotation Form</p>
   </div>
 
-
-
-{/* company and date */}
-  <div className='flex flex-col gap-5 mt-5 md:flex-row md:justify-between'>
-<SimpleDropdown label="Select Company" placeHolder="Select"  weight="bold" list={selectCompany} value={data.selectCompany} name='selectCompany' onChange={handleChange}
-/>
-  </div>
 
 {/* client detail and data */}
   <div className='mt-10'>
-    <Title title='Client Details' titleType='title' style={{ color: data.color }}/>
+    <Title title='Client Details' titleType='title' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/>
 
 {/* client name, flag, email */}
 <div className='mt-8 flex gap-5 flex-col flex-wrap md:flex-row'>
@@ -909,12 +904,7 @@ useEffect(() => {
 <Title title='State' titleType='subtitle'/> 
 <div className='flex flex-wrap gap-3 md:gap-5 '>
   <SimpleDropdown value={data.stateValue} list={stateData} name='stateValue' placeHolder='Select' onChange={handleChange} label='State'/>
-  <SelectAndInput value={data.packageIncludingVisa} list={selectVisa} name='packageIncludingVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Package Including Visa'/>
-
-  <SelectAndInput value={data.investorVisa} list={selectVisa} name='investorVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Investor Visa'/>
-  <SelectAndInput value={data.employmentVisa} list={selectVisa} name='employmentVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Employment Visa'/>
-  <SelectAndInput value={data.freeVisa} list={selectVisa} name='freeVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Free Visa'/>
-
+  <SelectAndInput value={data.packageIncludingVisa} list={selectVisa} name='packageIncludingVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='License Package Including *'/>
 </div>
 </div>
 
@@ -924,18 +914,9 @@ useEffect(() => {
 </div>
 
 
-{/* Handle Pcs dropdown */}
-<div className='mt-8 flex gap-5 flex-col flex-wrap md:flex-row'>
-<Title title='' titleType='subtitle'/> 
-
-     <SelectAndInput value={data.visitingCard} list={selectVCPcs} name='visitingCard' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visiting Card'/>
-     <SelectAndInput value={data.letterHeadPad} list={selectLHPPcs} name='letterHeadPad' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Letter Head Pad'/>
-
-</div>
-
 {/* step: 1 */}
 <div className='my-8 flex gap-5 flex-col md:flex-row'>
-<Title title='Step 1: License' titleType='subtitle' style={{ color: data.color }}/> 
+<Title title='Step 1: License' titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 <div>
 <div className='flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step1value} list={selectStep1} name='step1value' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Trade License Fees'/>
@@ -950,18 +931,18 @@ useEffect(() => {
 
 {/* step: 2 */}
 <div className='my-8 flex gap-5 flex-col md:flex-row'>
-<Title title='Step 2: Immigration' titleType='subtitle' style={{ color: data.color }}/> 
+<Title title='Step 2: Immigration' titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 <div>
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
 <Input label="E Channel Card" value={data.step2value1} name='step2value1'  placeholder='Enter E Channel' type='number' handleChange={handleChange} />
 
-  <Input label={`${data.stateValue} Immigration Fees`} value={data.step2SharjahFee} name='step2SharjahFee'  placeholder='Enter Immigration Fees' type='number' handleChange={handleChange} />
   <Input label="Remarks" disabled='disabled' value={data.step2Remark} name='step2Remark'/>
+  <Input label="Timeline" disabled='disabled' value="" name=''/>
+
 
 </div>
 <div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2Establishment} list={selectStep2b} name='step2Establishment' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Establishment Card'/>
-  <Input label="Federal Immigration Fees " value={data.step2ImmigrationFee} name='step2ImmigrationFee'  placeholder='Enter Immigration Fees' type='number' handleChange={handleChange} />
   <Input label="Remarks" disabled='disabled' value={data.step2EstablishmentRemark} name='step2Timeline'/>
   <Input label="Timeline" disabled='disabled' value={data.step2EstablishmentTimeline} name='step2EstablishmentTimeline'/>
 
@@ -971,36 +952,11 @@ useEffect(() => {
 
 {/* step: 3 */}
 <div className='my-8 flex gap-5 flex-col md:flex-row'>
-<Title title='Step  3: Entry VISA' titleType='subtitle' style={{ color: data.color }}/> 
+<Title title='Step  3: Entry VISA' titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 <div>
-<div className='flex flex-wrap gap-6 md:gap-5'>
-<Input label="UID Generate(if any) " value={data.uid} name='uid' placeholder='Enter UID' type='text' handleChange={handleChange}  />
-<div className='flex flex-col justify-center md:items-center md:flex-row'>
-<div className=''>
-<Title title='if UID Required' titleType='subtitle'/> 
 
-          <input
-  className="w-8 h-8 mr-2 mt-2 md:w-8 md:h-8"
-  type="checkbox"
-  checked={data.uidReq === '0' ? false : true}// Simplified check condition
-  onChange={() =>
-    setData(prevData => ({
-      ...prevData,
-      uidFee: prevData.uidReq === '1' ? '0' : data.uidFee,
-      uidReq: prevData.uidReq === '0' ? '1' : '0', // Toggle between '0' and '1'
-      step3TimelineUID: prevData.uidReq === '0' ? '4-5 Working Days':'2-3 Working Days'
-    }))
-  }
-/>
-</div>
-
-{data.uidReq === '1' && <Input label="UID Fee" type='number' placeholder='Enter Value' value={data.uidFee} name='uidFee' handleChange={handleChange}/>
-}
-
-
-</div>
-<Input label="Remarks" disabled='disabled' value={data.step3ImmigrationUID} name='step3ImmigrationUID'/>
-<Input label="Timeline" disabled='disabled' value={data.step3TimelineUID} name='step3TimelineUID'/>
+<div className='my-8 flex flex-wrap gap-6 md:gap-5'>
+ <SelectAndInput value={data.freeVisa} list={selectVisa} name='freeVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Free Visa'/>
 </div>
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2value2a} list={selectVisaPartner} name='step2value2a' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa (Per Visa) Partner'/>
@@ -1017,39 +973,23 @@ useEffect(() => {
  <Input label="Remarks" disabled='disabled' value={data.step3StatusChange} name='step3StatusChange'/>
   <Input label="Timeline" disabled='disabled' value={data.step3TimelineStatusChange} name='step3TimelineStatusChange'/>
 </div>
+
 <div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
-<SelectAndInput value={data.step3Medical} list={selectMedical} name='step3Medical' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Medical Test (Per visa)'/>
-
-<Input label="Timeline" disabled='disabled' value={data.TimelineMedical} name='TimelineMedical'/>
-</div>
-<div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
-<SelectAndInput value={data.step3EmiratesId} list={selectEmirates} name='step3EmiratesId' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Emirates ID (Per Visa)'/>
-
-<Input label="Timeline" disabled='disabled' value={data.TimelineEmiratesId} name='TimelineEmiratesId'/>
-</div>
-</div>
-</div>
-
-{/* total amount */}
-<div className='flex gap-5 flex-col md:flex-row'>
-<Title title='Total (Step 1, 2, 3)' titleType='subtitle'/> 
-    <Input label="Total Amount" value={data.tAmount} />
-</div>
-
-{/* discount */}
-<div className='mt-8 flex gap-5 flex-col md:flex-row'>
-<Title title='' titleType='subtitle'/> 
-    <Input label="Pro Fees"
+<Input label="Pro Fees"
     type='number'
     placeholder='Enter PRO Fees'
     value={data.discount} name='discount' handleChange={handle2500Value}
     />
 </div>
 
-{/* Grand total */}
-<div className='mt-8 flex gap-5 flex-col flex-wrap md:flex-row'>
-<Title title='Grand Total' titleType='subtitle'/> 
-    <Input label="Grand Total Amount" className={className} value={data.gtAmount}/>
+
+<div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
+<Input label="Total (Step 1, 2, 3)" value={data.tAmount} />
+</div>
+
+
+<div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
+<Input label="Grand Total Amount" className={className} value={data.gtAmount}/>
     <Input label="Date" type='date' className={className} name='date' value={moment(data.date).format("YYYY-MM-DD")} handleChange={handleChange}/>
 
     <div className={`flex flex-col mt-5`}>
@@ -1058,11 +998,14 @@ useEffect(() => {
     </div>
 </div>
 
+
+</div>
+</div>
  </div>
 
  {/* CheckBox firlds */}
  <div className='mt-10'>
- <Title title='Full Package Inclusive:' titleType='title' style={{ color: data.color }}/>
+ <Title title='Full Package Inclusive:' titleType='title' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/>
  <div className='mt-8'>
 <CheckBox data={checkBoxData} handleChange={handleCheckboxChange} handlePackage={handlePackageChange}/>
 </div>
@@ -1071,7 +1014,7 @@ useEffect(() => {
 {/* buttons */}
 
 
-  {data.selectCompany === '1' && auth()  &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
+  {companyName === "Conqueror" && auth()  &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
   {!generatePDFBtn && <Button title='Generate Company Profile' click={handleFullPFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
   {!generatePDFBtn && <Button title='Generate Invoice' click={handleProfilePFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
 
@@ -1085,42 +1028,17 @@ useEffect(() => {
         checkBox={checkBoxData}
         state={stateArray}
          />} fileName={`${data.clientName}-Quotation-Conqueror-PDF`}>
-   {/* {({ loading, error }) => 
-   {
-        if (error) {
-          setBtnStatusText("error")
-          console.error('PDF Generation Error:', error);
-          return 'try Again';
-        }
-        else{
-          // console.log('loading.....', loading);
-          if(loading){
-            setBtnStatus(true)
-            setBtnStatusText("generating")
-          }
-          else{
-            setBtnStatus(false)
-            setBtnStatusText("save")
-
-          }
-          return btnStatus ?  'Generating PDF...': 'Save PDF' ;
-          
-          // return loading ?  'Generating PDF...': 'Save PDF' ;
-        }
-       }}  */}
+  
        {({ loading, error }) => (
     <button
     onClick={handleGeneratePDF}
       disabled={btnStatus}
     >
-
 {
    handleValue(loading, error )
       
        }
-      
-      {/* {error ? 'Try Again' : loading ? 'Generating PDF...' : 'Save PDF'} */}
-    </button>
+          </button>
   )}
        
 </PDFDownloadLink>
@@ -1132,7 +1050,7 @@ useEffect(() => {
    </div>
 }
 
-{data.selectCompany === '2' && auth()  &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
+{companyName === "Injaz" && auth()  &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
   {!generatePDFBtn && <Button title='Generate Company Profile' click={handleFullPFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
   {!generatePDFBtn && <Button title='Generate Invoice' click={handleProfilePFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import countryCodes from './CountryCode.json';
+import countryCodes from '../../json/CountryCode.json';
 
 const PhoneNumberInput = ({ label = "text", placeholder="text", className, onPhoneChange }) => {
   const [countryCode, setCountryCode] = useState(countryCodes[0].code);
@@ -16,8 +16,8 @@ const PhoneNumberInput = ({ label = "text", placeholder="text", className, onPho
     <div className={`flex flex-col ${className}`}>
       <label className="text-sm text-[#222A59] font-medium mb-2">{label}</label>
 
-      <div className="max-w-64 flex items-center rounded-lg border border-[#D0D5DD] outline-none pl-2">
-      <span className="">
+      <div className="max-w-64 flex items-center rounded-lg border border-[#D0D5DD] outline-none pl-2 bg-white">
+      <span className="bg-transparent">
       {`${countryCode.split('-')[0]} ${countryCode.split('-')[1] ? countryCode.split('-')[1] : 'AF'}`} 
       </span>
         <select

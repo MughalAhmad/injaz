@@ -5,17 +5,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node  ./app.js",
-    "dev": "nodemon ./app.js"
+    "dev": "concurrently -n 'backend,frontend' -c 'green,yellow' \"nodemon ./app.js\" \"npm run frontend\"",
+    "start-prod": "pm2 delete pm2-env/env-config.json && pm2 startorestart pm2-env/env-config.json && pm2 flush && pm2 log",
+    "frontend": "cd .. && cd frontend && npm run dev"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^9.1.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.4",
     "nodemon": "^3.1.7",
     "pm2": "^5.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1"
   }
 }

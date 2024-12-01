@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "Injaz-backend",
+      "script": "app.js",
+      "instances": "1",
+      "exec_mode": "cluster",
+      "watch": false,
+      "ignore_watch": ["node_modules", "public", "•git", "public/tmp"]
+    }
+  ]
+}
