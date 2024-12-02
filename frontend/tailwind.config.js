@@ -19,6 +19,8 @@ export default {
         backgroundSlate500Hover: 'var(--background-slate-500-hover)',
         backgroundStone300: 'var(--background-stone-300)',
         backgroundGreen500: 'var(--background-green-500)',
+        backgroundGray50: 'var(--background-gray-50)',
+        backgroundYellow400: 'var(--background-yellow-400)',
         textPrimary: 'var(--text-primary)',
         textPrimaryHover: 'var(--text-primary-hover)',
         stone300: 'var(--stone-300)',
