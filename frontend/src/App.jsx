@@ -14,30 +14,56 @@ import Quotation from "./pages/quotation/Quotation";
 import Team from "./pages/team/Team";
 import Refrence from "./pages/refrence/Refrence";
 import Setting from "./pages/setting/Setting";
+import TeamForm from "./components/team/TeamForm";
 function App() {
   return (
+    // <Router>
+    //   <Routes>
+    //     <Route path="/login" element={<Login />} />
+    //     <Route element={<UserProtectedRoutes />}>
+    //       <Route path="/" element={<Layout />}>
+    //         <Route index element={<Dashboard />} />
+    //         <Route path="/form" element={<TestForm />} />
+    //         <Route path="/forgot" element={<ForgotPassword />} />
+    //         <Route path="/digit6" element={<Digit6Verify />} />
+    //         <Route path="/newpassword" element={<NewPassword />} />
+    //         <Route path="/sucessfulpassword" element={<SucessfulPassword />} />
+    
+
+    //         <Route path="/quotation" element={<Quotation />} />
+    //         <Route path="/team" element={<Team />} >
+    //         <Route path="teamForm" element={<TeamForm/>}/>
+    //         </Route>
+    //         <Route path="/refrence" element={<Refrence />} />
+    //         <Route path="/setting" element={<Setting />} />
+
+    //       </Route>
+    //     </Route>
+    //   </Routes>
+    // </Router>
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route element={<UserProtectedRoutes />}>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/form" element={<TestForm />} />
-            <Route path="/forgot" element={<ForgotPassword />} />
-            <Route path="/digit6" element={<Digit6Verify />} />
-            <Route path="/newpassword" element={<NewPassword />} />
-            <Route path="/sucessfulpassword" element={<SucessfulPassword />} />
+    <Routes>
+      {/* Public Route */}
+      <Route path="/login" element={<Login />} />
 
-
-            <Route path="/quotation" element={<Quotation />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/refrence" element={<Refrence />} />
-            <Route path="/setting" element={<Setting />} />
-
-          </Route>
+      {/* Protected Routes */}
+      <Route element={<Layout />}>
+        <Route path="/" >
+          <Route index element={<Dashboard />} />
+          <Route path="form" element={<TestForm />} />
+          <Route path="forgot" element={<ForgotPassword />} />
+          <Route path="digit6" element={<Digit6Verify />} />
+          <Route path="newpassword" element={<NewPassword />} />
+          <Route path="sucessfulpassword" element={<SucessfulPassword />} />
+          <Route path="quotation" element={<Quotation />} />
+          <Route path="team" element={<Team />}/>
+          <Route path="team/create" element={<TeamForm />} />
+          <Route path="refrence" element={<Refrence />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
-      </Routes>
-    </Router>
+      </Route>
+    </Routes>
+  </Router>
   );
 }
 

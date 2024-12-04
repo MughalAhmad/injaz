@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 const UserProtectedRoutes = () => {
 
   const location = useLocation();
-  const { isAuthenticated } = useSelector(state => state.adminStore);
+  const { isAuthenticated } = useSelector(state => state.Store);
 
   return isAuthenticated ? (
     <Outlet />

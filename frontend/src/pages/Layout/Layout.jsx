@@ -1,7 +1,6 @@
 import React, {useEffect,useState} from "react";
 import Navbar from "../../components/Navbar";
-import { useNavigate } from "react-router-dom";
-import { Outlet } from 'react-router-dom';
+import { useNavigate,Navigate, Outlet, useLocation  } from "react-router-dom";
 import User from "/svgs/user.svg";
 import ArrowDown from "/svgs/arrowDown.svg";
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +15,7 @@ const Layout = () => {
   const { companyName } = useSelector(state => state.brandingStore);
   const { user } = useSelector(state => state.adminStore);
 
+  const { isAuthenticated } = useSelector(state => state.adminStore);
 
   const dispatch = useDispatch();
 
@@ -27,14 +27,14 @@ const Layout = () => {
     dispatch(updateCompanyName(name))
   }
 
-  // console.log(location)
+  // // console.log(location)
   useEffect(() => {
     // localStorage.setItem("menu",window.location.pathname)
     setLocation(window.location.pathname)
   }, [window.location.pathname])
   
-  return (
-    <div className="flex h-screen">
+  return isAuthenticated ? (
+      <div className="flex h-screen">
       {/* Sidebar */}
       <div className="hidden md:flex md:w-80 bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
 
@@ -152,7 +152,11 @@ const Layout = () => {
         <Outlet />
       </div>
     </div>
-  );
+    ) : (
+      <Navigate to="/login" state={{ from: location }} replace />
+    );
+    
+
 };
 
 export default Layout;
