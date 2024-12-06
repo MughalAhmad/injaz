@@ -11,6 +11,7 @@ const authRouter = require ("./routes/authRoute");
 const userRouter = require ("./routes/userRoute");
 const clientRouter = require ("./routes/clientRoute");
 const pdfRouter = require ("./routes/pdfRoute");  
+const referenceRouter = require ("./routes/referenceRoute");  
 
 
 
@@ -37,7 +38,8 @@ app.use('/', express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
-app.use("/api/v1/pdf", pdfRouter);
+app.use("/api/v1/pdf", pdfRouter);   
+app.use("/api/v1/reference", referenceRouter);   
 
 
 
