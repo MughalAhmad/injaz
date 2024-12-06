@@ -23,10 +23,10 @@ const Table = () => {
       }
   return (
   
-      <div className="my-8 pt-0.5 bg-white rounded-tl-3xl rounded-tr-3xl overflow-x-hidden">
-      <h1 className="text-2xl font-medium mb-4 mt-6 px-5 text-textPrimary">Recent Quotations Table</h1>
-      <div className="min-w-96 md:w-full overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg">
+      <div className="my-8 pt-0.5 bg-white rounded-3xl overflow-hidden border border-gray-200">
+      <h1 className="text-xl md:text-2xl font-medium mb-4 mt-6 px-5 text-textPrimary">Recent Quotations Table</h1>
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 text-left font-bold text-sm text-black">ID</th>

@@ -11,9 +11,9 @@ const Navbar = () => {
   const [languageDropdown, setLanguageDropdown] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md px-4 py-3 flex items-center justify-between mt-16 md:mt-0 sticky top-0">
+    <nav className="bg-white shadow-md px-4 py-3 flex flex-col-reverse gap-5 md:gap-0 md:flex-row md:items-center md:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
       {/* Left Section: Search Bar */}
-      <div className="flex items-center h-14 w-96 rounded-2xl bg-backgroundGray50">
+      <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
       <img src={Search} alt="Search" className="m-4"/>
         <input
           type="text"
@@ -23,7 +23,7 @@ const Navbar = () => {
       </div>
 
       {/* Right Section: Icons and Dropdowns */}
-      <div className="flex items-center space-x-6">
+      <div className="flex justify-end items-center space-x-6">
         {/* Language Selector Dropdown */}
         <div className="relative mr-3">
           <button
@@ -47,7 +47,7 @@ const Navbar = () => {
             </svg>
           </button>
           {languageDropdown && (
-            <div className="absolute right-0 mt-2 w-64 bg-white border rounded-2xl shadow-lg">
+            <div className="absolute left-0 md:right-0 mt-2 w-64 bg-white border rounded-2xl shadow-lg z-10">
               <p className="text-base py-3.5 pl-5">Select Language </p>
               <hr/>
               <button className="flex items-center gap-5 px-4 py-4 text-sm hover:bg-gray-100">
@@ -76,7 +76,7 @@ const Navbar = () => {
         </button>
 
         {/* Profile Icon with Dropdown */}
-        <div className="relative pr-5">
+        <div className="relative md:pr-5">
           <button
             className="flex items-center space-x-2"
             onClick={() => setProfileDropdown(!profileDropdown)}
@@ -84,9 +84,9 @@ const Navbar = () => {
             <img
               src="https://via.placeholder.com/30"
               alt="Profile"
-              className="w-16 h-16 mr-3 rounded-xl"
+              className="w-16 h-16 mr-3 rounded-xl hidden md:block"
             />
-            <div className="pr-10 leading-5">
+            <div className="pr-5 md:pr-10 leading-5">
               <p className="text-base font-medium text-textPrimary">Asad</p>
               <p className="text-sm font-normal text-stone300">Admin</p>
             </div>

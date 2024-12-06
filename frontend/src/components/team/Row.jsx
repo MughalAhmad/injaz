@@ -49,7 +49,7 @@ const Row = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDr
           <img src="/svgs/three-dot.svg" className='h-4 w-auto' alt="three-dot" />
         </span>
         {dropdownVisible && dropdownId === index && (
-          <div className="absolute top-10 -left-9 bg-white border shadow-md rounded-lg py-2 w-28 z-10">
+          <div className={`absolute top-0 -left-16 bg-white border shadow-md rounded-lg py-2 w-28 z-10`}>
             <p
               className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
               onClick={handleEdit}

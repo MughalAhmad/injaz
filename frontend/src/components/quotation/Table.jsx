@@ -15,13 +15,12 @@ const Table = () => {
     useEffect(() => {
       getAllPdfList(companyName)
     }, [])
- 
 
   return (
     <div>
-      <div className="my-8 bg-white overflow-x-hidden rounded-bl-3xl rounded-br-3xl">
-      <div className="min-w-96 md:w-full overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg">
+      <div className="my-8 bg-white overflow-x-hidden rounded-3xl border border-gray-200">
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 text-left font-bold text-sm text-black">ID</th>

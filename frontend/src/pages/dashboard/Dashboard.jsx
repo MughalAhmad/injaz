@@ -32,7 +32,7 @@ const Dashboard = () => {
     <div className='px-3 md:px-10'>
       <div className='flex justify-between items-center'>
       <p className='font-bold text-2xl text-textPrimary py-11'>Hello Asad!</p>
-      <select className='w-32 h-14 font-normal text-sm border-2 rounded-lg pr-3 pl-1'>
+      <select className='w-32 h-10 md:h-14 font-normal text-sm border-2 rounded-lg pr-3 pl-1'>
         <option value="">Select</option>
         <option>Today</option>
         <option>Last Week</option>

@@ -33,15 +33,16 @@ const Layout = () => {
     setLocation(window.location.pathname)
   }, [window.location.pathname])
   
-  return isAuthenticated ? (
+  // return isAuthenticated ? (
+  return(
       <div className="flex h-screen">
       {/* Sidebar */}
       <div className="hidden md:flex md:w-80 bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
 
 
 
-        <div className="mt-6 flex items-center gap-2 relative">
-        {companyName === "Injaz" ? <img src= "/Injaz/page3Logo.png" className="max-w-72" alt="logo"/> : <img src= "/page3Logo.png" className="max-w-60" alt="logo"/>}
+        <div className="mt-3 flex items-center justify-between relative">
+        {companyName === "Injaz" ? <img src= "/Injaz/page3Logo.png" className="max-w-64" alt="logo"/> : <img src= "/page3Logo.png" className="max-w-56" alt="logo"/>}
         <img src={ArrowDown} alt="arrow-down" className="w-auto h-3 cursor-pointer" onClick={()=>setCompanyMenuState(!companyMenuState)} />
         {companyMenuState && <div className="h-auto w-44 bg-backgroundStone300  absolute top-20 left-24 p-2 rounded-lg">
           <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</p>
@@ -152,9 +153,10 @@ const Layout = () => {
         <Outlet />
       </div>
     </div>
-    ) : (
-      <Navigate to="/login" state={{ from: location }} replace />
-    );
+  )
+    // ) : (
+    //   <Navigate to="/login" state={{ from: location }} replace />
+    // );
     
 
 };
