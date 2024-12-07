@@ -1,10 +1,12 @@
 import React from 'react'
-import Input from '../common/Input'
+import Input from '../common/Input';
+import PhoneInput from '../common/PhoneInput';
+import Button from '../common/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import { createNewUser } from '../../redux/features/adminSlice';
+import { createUser } from '../../redux/features/generalSlice';
 
 const teamCreateSchema = Yup.object({
     firstName: Yup.string().required("First Name Required"),
@@ -31,13 +33,16 @@ const TeamForm = () => {
   const { values, errors, touched, handleBlur, handleChange, submitForm } =
         useFormik({
             initialValues: {
-                firstName: "",
-                lastName: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-                userType: "",
-                paymentDate: "",
+              firstName: "",
+              lastName: "",
+              email: "",
+              phone: "",
+              mobile: "",
+              address: "",
+              userId: "",
+              nationality: "",
+              password: "",
+              confirmPassword: "",
             },
             validationSchema: teamCreateSchema,
             enableReinitialize: true,
@@ -49,38 +54,37 @@ const TeamForm = () => {
                     email: values.email,
                     password: values.password,
                     confirmPassword: values.confirmPassword,
-                    userType: values.userType,
-                    paymentDate: values.paymentDate,
-                }
+                    phone: values.phone,
+                    mobile: values.mobile,
+                    address: values.address,
+                    userId: values.userId,
+                    nationality: values.nationality,
 
-                // dispatch(updateShowBackDropLoader(true));
-                // dispatch(createNewUser(body))
-                //     .then(resp => {
-                //         dispatch(updateShowBackDropLoader(false));
-                //         if (resp && !resp.payload.hasError) {
-                //             sweetToast(false, resp.payload.msg);
-                //             navigate('/admin/users');
-                //         } else {
-                //             sweetNotification(true, resp.payload.msg);
-                //         }
-                //     })
-                //     .catch(error => {
-                //         console.log(error);
-                //         dispatch(updateShowBackDropLoader(false));
-                //         sweetNotification(true, 'Something went wrong');
-                //     })
+                }
+                console.log(body)
+
+                dispatch(createUser(body))
+                    .then(resp => {
+                        if (resp && !resp.payload.hasError) {
+                            // sweetToast(false, resp.payload.msg);
+                            // navigate('/admin/users');
+                        } 
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
             },
         });
   return (
-    <div className='px-3 md:px-10'>
-    {/* <p className='font-semibold text-2xl text-textPrimary my-11'>Team</p> */}
+    <div className='px-3 md:px-5 xl:px-10 mb-10'>
+    <p className='font-semibold text-2xl text-textPrimary my-11'>Team</p>
 
     <div className='bg-white h-auto flex flex-col gap-3 mt-4 pb-5 rounded-3xl'>
     <p className='font-medium text-2xl text-textPrimary border-b-2 p-5'>Add New Team Member</p>
     {/* Name */}
-    <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-xl text-textPrimary w-full lg:w-[33%]'>Name</p>
-    <div className={`flex flex-col w-full lg:w-[33%] lg:mr-10`}>
+    <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='hidden font-semibold text-xl text-textPrimary w-[30%] lg:block xl:w-[33%]'>Name</p>
+    <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
     <Input
                             type="text"
                             title='First Name'
@@ -109,9 +113,12 @@ const TeamForm = () => {
   
       </div>
     {/* Email */}
-    <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-xl text-textPrimary w-full lg:w-[33%]'>Email</p>
+
+
+    <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[32.5%]'>Email</p>
     <div className={`flex flex-col w-full lg:w-[33%]`}>
+
     <Input
                             type="email"
                             title='Email'
@@ -126,32 +133,45 @@ const TeamForm = () => {
     </div>  
       </div>
       {/* Phone */}
-      <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-xl text-textPrimary w-full lg:w-[33%]'>Calling Number</p>
-    <div className={`flex flex-col w-full lg:w-[33%] lg:mr-10`}>
-        <label className='text-xl text-textPrimary font-medium mb-2'>Mobile Number</label>
-        <input placeholder="Enter first name"
-        value=""
-        autoComplete='off'
-        name=""
-        type='text' className='w-full h-16 rounded-lg border border-[#D0D5DD] outline-none text-base placeholder-[#D0D5DD] text-black px-3'/>
 
+      <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]'>Calling Number</p>
+    <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
+
+       <PhoneInput
+        type="number"
+        title='Phone Number'
+        name="phone"
+        placeholder="Enter Phone Number"
+        size="lg"
+        value={values.phone}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        feedback={[errors.phone, touched.phone]}
+       />
+      
     </div>  
     <div className={`flex flex-col w-full lg:w-[33%]`}>
-        <label className='text-xl text-textPrimary font-medium mb-2'>Phone Number</label>
-        <input placeholder="Enter last name"
-        value=""
-        autoComplete='off'
-        name=""
-        type='text' className='w-full h-16 rounded-lg border border-[#D0D5DD] outline-none text-base placeholder-[#D0D5DD] text-black px-3'/>
 
+           <PhoneInput
+        type="number"
+        title='Mobile Number'
+        name="mobile"
+        placeholder="Enter Mobile Number"
+        size="lg"
+        value={values.mobile}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        feedback={[errors.mobile, touched.mobile]}
+       />
     </div> 
   
       </div>
        {/* ID */}
-       <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-xl text-textPrimary w-full lg:w-[33%]'>ID</p>
-    <div className={`flex flex-col w-full lg:w-[33%] lg:mr-10`}>
+
+       <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]'>ID</p>
+    <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
     <Input
                             type="text"
                             title='User ID'
@@ -180,9 +200,10 @@ const TeamForm = () => {
   
       </div>
        {/* Address */}
-       <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-xl text-textPrimary w-full lg:w-[33%]'>Address</p>
-    <div className={`flex flex-col w-full lg:w-[33%]`}>
+
+       <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[32.5%]'>Address</p>
+    <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
     <Input
                             type="text"
                             title='Address'
@@ -197,9 +218,10 @@ const TeamForm = () => {
     </div>  
       </div>
        {/* Password */}
-       <div className='flex flex-col lg:flex-row px-3 md:px-10'>
-    <p className='font-semibold text-v text-textPrimary w-full lg:w-[33%]'>Password</p>
-    <div className={`flex flex-col w-full lg:w-[33%] lg:mr-10`}>
+
+       <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
+    <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]'>Password</p>
+    <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
     <Input
                             type="text"
                             title='Password'
@@ -227,7 +249,9 @@ const TeamForm = () => {
     </div> 
   
       </div>
-
+ <div className='flex justify-end mt-4 mr-3 md:mr-5 xl:mr-10'>
+      <Button title="Save" size="sm" color='bg-backgroundPrimary' onClick={() => submitForm()} />
+      </div>
     </div>
     </div>
   )

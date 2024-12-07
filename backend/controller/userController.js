@@ -78,22 +78,23 @@ module.exports = {
   },
   new: async (req, res, next) => {
     try {
-      const user = userModel.find((user) => user.name === req.body.name);
-      if (user) throw new Error("User already exists");
+      console.log(req.body)
+      // const user = userModel.find((user) => user.name === req.body);
+      // if (user) throw new Error("User already exists");
 
-      const addUser = await userModel.push(req.body);
-      if (!addUser) throw new Error("Error in Creating user");
+      // const addUser = await userModel.push(req.body);
+      // if (!addUser) throw new Error("Error in Creating user");
 
       return res.status(200).json({
         hasError: false,
         msg: "User Created!",
-        data: { user: userModel },
+        // data: { user: userModel },
       });
     } catch (error) {
       return res.status(200).json({
         hasError: true,
         msg: error.message,
-        data: { user: null },
+        // data: { user: null },
       });
     }
   },

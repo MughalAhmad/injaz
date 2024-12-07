@@ -57,7 +57,7 @@ let referenceModel = [
         });
       }
     },
-    getUser: async (req, res, next) => {
+    getReferences: async (req, res, next) => {
       try {
         const { rid } = req.params;
         const reference = referenceModel.find((reference) => reference.id === rid);
@@ -97,7 +97,7 @@ let referenceModel = [
         });
       }
     },
-    getUserList: async (req, res, next) => {
+    getReferenceList: async (req, res, next) => {
       try {
           console.log(referenceModel)
         if (referenceModel.length === 0) throw new Error("Rferences not found");
