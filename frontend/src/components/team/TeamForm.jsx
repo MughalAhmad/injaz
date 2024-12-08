@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Input from '../common/Input';
 import PhoneInput from '../common/PhoneInput';
 import Button from '../common/Button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { createUser } from '../../redux/features/generalSlice';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createUser, getUser, updateUser } from '../../redux/features/generalSlice';
 
 const teamCreateSchema = Yup.object({
     firstName: Yup.string().required("First Name Required"),
@@ -29,20 +29,27 @@ const TeamForm = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
+  let formState = 'new';
+  const [useData, setUseData] = useState([])
+  if(params?.tid){
+    formState = 'update'
+  }
 
   const { values, errors, touched, handleBlur, handleChange, submitForm } =
         useFormik({
             initialValues: {
-              firstName: "",
-              lastName: "",
-              email: "",
-              phone: "",
-              mobile: "",
-              address: "",
-              userId: "",
-              nationality: "",
-              password: "",
-              confirmPassword: "",
+
+              firstName: useData?.firstName || "",
+              lastName: useData?.lastName || "",
+              email: useData?.email || "",
+              phone: useData?.phone || "",
+              mobile: useData?.mobile || "",
+              address: useData?.address || "",
+              userId: useData?.userId || "",
+              nationality: useData?.nationality || "",
+              password: useData?.password || "",
+              confirmPassword: useData?.password || "",
             },
             validationSchema: teamCreateSchema,
             enableReinitialize: true,
@@ -59,15 +66,17 @@ const TeamForm = () => {
                     address: values.address,
                     userId: values.userId,
                     nationality: values.nationality,
-
+                };
+                if(formState === 'update'){
+                  body._id=useData._id
                 }
-                console.log(body)
+                console.log(formState)
 
-                dispatch(createUser(body))
+                dispatch( formState === 'update' ? updateUser(body) : createUser(body) )
                     .then(resp => {
                         if (resp && !resp.payload.hasError) {
                             // sweetToast(false, resp.payload.msg);
-                            // navigate('/admin/users');
+                            navigate('/team');
                         } 
                     })
                     .catch(error => {
@@ -75,6 +84,26 @@ const TeamForm = () => {
                     })
             },
         });
+
+        const getUserData = () =>{
+          dispatch(getUser(params?.tid)) // Now this refers to the Redux action
+          .then((resp) => {
+            if (resp && !resp.payload.hasError) {
+              setUseData(resp.payload.data.user);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        };
+        console.log(useData)
+          
+        useEffect(() => {
+          if(formState === 'update'){
+            getUserData()
+          }
+        }, [])
+
   return (
     <div className='px-3 md:px-5 xl:px-10 mb-10'>
     <p className='font-semibold text-2xl text-textPrimary my-11'>Team</p>

@@ -30,9 +30,16 @@ module.exports = dataBaseConfig;
 
 async function createDefaultUser() {
     const defaultUser = {
-        userName:"Admin",
+        firstName:"Admin",
+        lastName: "Admin",
         email: "injazadmin@gmail.com",
         password: "123456",
+        phone:3114608083,
+        mobile:3114608086,
+        address:"Moghalpura",
+        userId:"admin123",
+        role:"admin",
+        nationality:"none",
         updatedAt: new Date(),
         createdAt: new Date(),
     };

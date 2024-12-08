@@ -8,13 +8,14 @@ import Digit6Verify from "./pages/auth/Digit6Verify";
 import NewPassword from "./pages/auth/NewPassword";
 import SucessfulPassword from "./pages/auth/SucessfulPassword";
 import Layout from "./pages/Layout/Layout";
-import UserProtectedRoutes from "./components/UserProtectedRoutes";
+import UserProtectedRoutes from "./components/common/UserProtectedRoutes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Quotation from "./pages/quotation/Quotation";
 import Team from "./pages/team/Team";
 import Refrence from "./pages/refrence/Refrence";
 import Setting from "./pages/setting/Setting";
 import TeamForm from "./components/team/TeamForm";
+import RefForm from "./components/reference/RefForm";
 function App() {
   return (
     // <Router>
@@ -57,8 +58,12 @@ function App() {
           <Route path="sucessfulpassword" element={<SucessfulPassword />} />
           <Route path="quotation" element={<Quotation />} />
           <Route path="team" element={<Team />}/>
+          <Route path="team/:tid" element={<TeamForm />} />
           <Route path="team/create" element={<TeamForm />} />
-          <Route path="refrence" element={<Refrence />} />
+          <Route path="reference" element={<Refrence />} />
+          <Route path="reference/:rid" element={<RefForm />} />
+          <Route path="reference/create" element={<RefForm />} />
+
           <Route path="setting" element={<Setting />} />
         </Route>
       </Route>

@@ -1,29 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import Row from './Row';
+import ReferenceRow from './ReferenceRow';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUsers } from '../../redux/features/generalSlice';
-const Table = () => {
+import { getAllRefs } from '../../redux/features/generalSlice';
+const ReferenceTable = () => {
   const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [dropdownId, setDropdownId] = useState("");
     const dispatch = useDispatch();
-    const { users } = useSelector(state => state.generalStore);
+    const { refs } = useSelector(state => state.generalStore);
 
-    const getAllUsersList = () =>{
-      dispatch(getAllUsers());
+    const getAllRefsList = () =>{
+      dispatch(getAllRefs());
     }
 
-    console.log("user", users)
+    console.log("refs", refs)
   
     useEffect(() => {
-      getAllUsersList()
+      getAllRefsList()
     }, [])
 
   return (
     <div>
       <div className='flex flex-col gap-5 xl:gap-0 xl:flex-row xl:justify-between'>
-        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => navigate("/team/create")}>Add New Member</button>
+        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => navigate("/reference/create")}>Add New Reference</button>
         <div className='flex flex-col md:flex-row gap-6'>
           <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
             <img src="/svgs/search.svg" alt="Search" className="m-4" />
@@ -48,16 +48,19 @@ const Table = () => {
               <th className="px-4 py-2 text-left font-bold text-sm text-black">Sr</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Full Name</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Email Address</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Company Email Address</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Calling Number</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">Nationality</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">ID</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">Password</th>
+
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Fb ID Name</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Meta ID Name</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Ref Code</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Group Name</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users?.users?.map((row, index) => (
-                <Row row={row} index={index} key={index}
+            {refs?.refs?.map((row, index) => (
+                <ReferenceRow row={row} index={index} key={index}
                 dropdownVisible={dropdownVisible} setDropdownVisible={setDropdownVisible}
                 dropdownId={dropdownId} setDropdownId={setDropdownId}
                 />
@@ -75,4 +78,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default ReferenceTable;

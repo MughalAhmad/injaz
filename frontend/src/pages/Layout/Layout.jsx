@@ -1,15 +1,22 @@
 import React, {useEffect,useState} from "react";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/common/Navbar";
 import { useNavigate,Navigate, Outlet, useLocation  } from "react-router-dom";
 import User from "/svgs/user.svg";
 import ArrowDown from "/svgs/arrowDown.svg";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCompanyName } from '../../redux/features/companyBrandingSlice';
 
+import TestForm from "../../PDF/TestForm";
+import Dashboard from "../dashboard/Dashboard";
+import Quotation from "../quotation/Quotation";
+import Team from "../team/Team";
+import Refrence from "../refrence/Refrence";
+import Setting from "../setting/Setting";
+
 
 const Layout = () => {
-  // const [location, setLocation] = useState(localStorage.getItem("menu"))
-  const [location, setLocation] = useState("")
+  const [location, setLocation] = useState(localStorage.getItem("menu"))
+  // const [location, setLocation] = useState("")
   const [companyMenuState, setCompanyMenuState] = useState(false)
 
   const { companyName } = useSelector(state => state.brandingStore);
@@ -29,15 +36,15 @@ const Layout = () => {
 
   // // console.log(location)
   useEffect(() => {
-    // localStorage.setItem("menu",window.location.pathname)
+    localStorage.setItem("menu",window.location.pathname)
     setLocation(window.location.pathname)
   }, [window.location.pathname])
   
-  // return isAuthenticated ? (
-  return(
+  return isAuthenticated ? (
+  // return(
       <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="hidden md:flex md:w-80 bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
+      <div className="hidden md:flex md:w-[20%] bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
 
 
 
@@ -55,7 +62,7 @@ const Layout = () => {
         <div className="flex gap-5 items-center mt-6 mb-3">
           <img src={User} className="w-11 h-11 rounded-full" alt="user"/>
           <div>
-            <p className="text-xl font-normal text-textPrimary">{ user?.userName }</p>
+            <p className="text-xl font-normal text-textPrimary">{ user?.firstName }</p>
             <p className="text-slate500 font-normal text-xs"><span className="bg-backgroundGreen500 min-w-2.5 min-h-2.5 rounded-full inline-block mr-0.5"></span>Online</p>
           </div>
         </div>
@@ -77,13 +84,13 @@ const Layout = () => {
           <p onClick={()=>navigate('/team')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Team
           </p>
-          <p onClick={()=>navigate('/refrence')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/refrence" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          <p onClick={()=>navigate('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Refrence 
           </p>
           <p onClick={()=>navigate('/setting')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/setting" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Settings
           </p>
-          <p onClick={()=>navigate('/')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          <p onClick={()=>navigate("/#")} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
             Logout
           </p>
         </nav>
@@ -96,7 +103,7 @@ const Layout = () => {
 
 
       {/* Mobile Sidebar (toggleable with a menu button) */}
-      <div className="md:hidden bg-gray-800 text-white w-full fixed top-0 left-0 z-10">
+      <div className="md:hidden bg-gray-800 text-white w-full fixed top-0 left-0 z-20">
         <div className="flex items-center justify-between p-4">
           <div className="text-xl font-bold">Logo</div>
           <button
@@ -150,13 +157,20 @@ const Layout = () => {
       {/* Main Content */}
       <div className="flex-1 bg-gray-100 overflow-auto" >
         <Navbar/>
-        <Outlet />
+          {location === "/" && <Dashboard/>}
+          {location === "/team" && <Team/>}
+          {location === "/reference" && <Refrence/>}
+          {location === "/setting" && <Setting/>}
+          {location === "/quotation" && <Quotation/>}
+          {location === "/form" && <TestForm/>}
+
+        {/* <Outlet /> */}
       </div>
     </div>
-  )
-    // ) : (
-    //   <Navigate to="/login" state={{ from: location }} replace />
-    // );
+  // )
+    ) : (
+      <Navigate to="/login" state={{ from: location }} replace />
+    );
     
 
 };
