@@ -39,7 +39,7 @@ const Dashboard = () => {
         <option>Last Month</option>
       </select>
       </div>
-      <div className='flex flex-col flex-wrap gap-3 items-center justify-between md:flex-row'>
+      <div className='flex flex-col flex-wrap gap-3 items-center md:flex-row'>
       {cardData.map((item)=>(
     <Card count={item.count} title={item.title} icon={item.icon} bg={item.bg}/>
       ))}

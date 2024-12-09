@@ -1,10 +1,11 @@
 import React, {useEffect,useState} from "react";
 import Navbar from "../../components/common/Navbar";
-import { useNavigate,Navigate, Outlet, useLocation  } from "react-router-dom";
+import { useNavigate,Navigate, Outlet, useParams  } from "react-router-dom";
 import User from "/svgs/user.svg";
 import ArrowDown from "/svgs/arrowDown.svg";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCompanyName } from '../../redux/features/companyBrandingSlice';
+import Cookies from 'js-cookie';
 
 import TestForm from "../../PDF/TestForm";
 import Dashboard from "../dashboard/Dashboard";
@@ -12,17 +13,19 @@ import Quotation from "../quotation/Quotation";
 import Team from "../team/Team";
 import Refrence from "../refrence/Refrence";
 import Setting from "../setting/Setting";
+import TeamForm from "../../components/team/TeamForm";
+import RefForm from "../../components/reference/RefForm";
 
 
 const Layout = () => {
+  const params = useParams();
   const [location, setLocation] = useState(localStorage.getItem("menu"))
   // const [location, setLocation] = useState("")
   const [companyMenuState, setCompanyMenuState] = useState(false)
 
   const { companyName } = useSelector(state => state.brandingStore);
-  const { user } = useSelector(state => state.adminStore);
 
-  const { isAuthenticated } = useSelector(state => state.adminStore);
+  const { isAuthenticated, user} = useSelector(state => state.adminStore);
 
   const dispatch = useDispatch();
 
@@ -32,6 +35,12 @@ const Layout = () => {
     localStorage.setItem("companyName",name)
     setCompanyMenuState(false)
     dispatch(updateCompanyName(name))
+  }
+
+  const handleLogout = () =>{
+    Cookies.remove('auth-token'); // Deletes the cookie
+    window.location.reload();
+
   }
 
   // // console.log(location)
@@ -44,13 +53,13 @@ const Layout = () => {
   // return(
       <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="hidden md:flex md:w-[20%] bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
+      <div className="hidden md:flex md:w-[28%] lg:w-[20%] xl:w-[15%] bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
 
 
 
         <div className="mt-3 flex items-center justify-between relative">
-        {companyName === "Injaz" ? <img src= "/Injaz/page3Logo.png" className="max-w-64" alt="logo"/> : <img src= "/page3Logo.png" className="max-w-56" alt="logo"/>}
-        <img src={ArrowDown} alt="arrow-down" className="w-auto h-3 cursor-pointer" onClick={()=>setCompanyMenuState(!companyMenuState)} />
+        {companyName === "Injaz" ? <img src= "/Injaz/page3Logo.png" className="w-64" alt="logo"/> : <img src= "/page3Logo.png" className="w-56" alt="logo"/>}
+        <img src={ArrowDown} alt="arrow-down" className="w-auto h-3 cursor-pointer ml-2" onClick={()=>setCompanyMenuState(!companyMenuState)} />
         {companyMenuState && <div className="h-auto w-44 bg-backgroundStone300  absolute top-20 left-24 p-2 rounded-lg">
           <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</p>
           <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Injaz')}>Injaz</p>
@@ -81,16 +90,16 @@ const Layout = () => {
           <p onClick={()=>navigate('/form')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Create Quotations
           </p>
-          <p onClick={()=>navigate('/team')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          {user?.role === "admin" &&<p onClick={()=>navigate('/team')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Team
-          </p>
-          <p onClick={()=>navigate('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p>}
+          {user?.role === "admin" && <p onClick={()=>navigate('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Refrence 
-          </p>
+          </p>}
           <p onClick={()=>navigate('/setting')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/setting" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Settings
           </p>
-          <p onClick={()=>navigate("/#")} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          <p onClick={()=>handleLogout()} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
             Logout
           </p>
         </nav>
@@ -139,12 +148,12 @@ const Layout = () => {
           <p onClick={()=>navigate('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
           Create Quotations
           </p>
-          <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          {user?.role === "admin" && <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
           Team
-          </a>
-          <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          </a>}
+          {user?.role === "admin" &&<a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
           Refrence 
-          </a>
+          </a>}
           <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
           Settings
           </a>
@@ -163,6 +172,10 @@ const Layout = () => {
           {location === "/setting" && <Setting/>}
           {location === "/quotation" && <Quotation/>}
           {location === "/form" && <TestForm/>}
+          {location === "/team/create" && <TeamForm/>}
+          {location === `/team/${params?.tid}` && <TeamForm/>}
+          {location === "/reference/create" && <RefForm/>}
+          {location === `/reference/${params?.rid}` && <RefForm/>}
 
         {/* <Outlet /> */}
       </div>
