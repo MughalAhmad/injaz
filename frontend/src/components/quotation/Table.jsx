@@ -7,13 +7,19 @@ const Table = () => {
     const dispatch = useDispatch();
     const { list } = useSelector(state => state.pdfStore);
     const { companyName } = useSelector(state => state.brandingStore);
-    
-    const getAllPdfList = (companyName) =>{
-      dispatch(getAllPdf(companyName))
+    const { user } = useSelector(state => state.adminStore);
+
+    const getAllPdfList = () =>{
+      const data = {
+        companyName: companyName,
+        userId: user?._id,
+        role: user?.role
+      }
+      dispatch(getAllPdf(data))
     }
   
     useEffect(() => {
-      getAllPdfList(companyName)
+      getAllPdfList()
     }, [])
 
   return (

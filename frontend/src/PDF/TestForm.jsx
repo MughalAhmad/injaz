@@ -30,10 +30,12 @@ const [btnStatus, setBtnStatus] = useState(true);
 const [btnStatusText, setBtnStatusText] = useState("generating");
 
 const { companyName } = useSelector(state => state.brandingStore);
+const { user } = useSelector(state => state.adminStore);
 
 
 
   const [data, setData] = useState({
+  userId: user?._id,
    selectCompany:companyName,
    image:companyName === "Injaz" ? "/Injaz/page3Logo.png" : "/page3Logo.png" ,
    color:companyName === "Injaz" ? '#222A59' : '#BA141A',

@@ -8,17 +8,33 @@ import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLogin, updateAuthStatus, updateUser, updateToken, updateAuthSliceErrorStatus } from '../../redux/features/adminSlice';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
+
+  let env = import.meta.env.VITE_ENV;
+  let siteKey;
+  siteKey = import.meta.env.VITE_SITE_KEY_LOCAL;
+
+
+  if(env === 'production'){
+     siteKey = import.meta.env.VITE_SITE_KEY;
+  }
   const [formData, setFormData] = useState({
     email:"",
     password:""
   });
+  const [isNotRobot, setIsNotRobot] = useState("")
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { isAuthenticated } = useSelector(state => state.adminStore);
+
+  const handleRecaptcha = (value) =>{
+    console.log(value)
+    setIsNotRobot(!!value)
+  }
 
 
   useEffect(() => {
@@ -32,21 +48,28 @@ const Login = () => {
   };
   const onSubmit = (e) =>{
     e.preventDefault();
-    console.log(formData)
-    dispatch(userLogin(formData))
-    .then(response => {
-      if (response && !response.payload.hasError) {
-        Cookies.set('auth-token', response.payload.data.token, { path: '/', expires: 1, sameSite: 'Lax' });
-        dispatch(updateAuthStatus(response.payload.data.isAuthenticated));
-        dispatch(updateUser(response.payload.data.user));
-        dispatch(updateToken(response.payload.data.token));
-        dispatch(updateAuthSliceErrorStatus(response.payload.hasError));
-        navigate('/');
-      } 
-    })
-    .catch(error => {
-      console.error('Dispatch failed:', error);
-    });
+    if(isNotRobot){
+      localStorage.setItem("menu","/")
+      console.log(formData)
+      dispatch(userLogin(formData))
+      .then(response => {
+        if (response && !response.payload.hasError) {
+          Cookies.set('auth-token', response.payload.data.token, { path: '/', expires: 1, sameSite: 'Lax' });
+          dispatch(updateAuthStatus(response.payload.data.isAuthenticated));
+          dispatch(updateUser(response.payload.data.user));
+          dispatch(updateToken(response.payload.data.token));
+          dispatch(updateAuthSliceErrorStatus(response.payload.hasError));
+          navigate('/');
+        } 
+      })
+      .catch(error => {
+        console.error('Dispatch failed:', error);
+      });
+    }
+    else{
+      alert("error")
+    }
+   
   }
   if(isAuthenticated) return
 
@@ -131,6 +154,10 @@ const Login = () => {
       Forgot Password
     </a>
   </div>
+  <ReCAPTCHA
+    sitekey={siteKey}
+    onChange={handleRecaptcha}
+  />
     <button
       type="submit"
       onClick={onSubmit}

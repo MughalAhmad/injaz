@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const pdfSchema = new mongoose.Schema({
+    userId:{
+        type: String,
+        required: true
+    },
     clientName: {
         type: String,
         required: true

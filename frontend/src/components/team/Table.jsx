@@ -15,6 +15,11 @@ const Table = () => {
     }
 
     console.log("user", users)
+
+    const handleNavigation = (link) =>{
+      // localStorage.setItem("menu",link)
+      navigate(link)
+    }
   
     useEffect(() => {
       getAllUsersList()
@@ -23,7 +28,7 @@ const Table = () => {
   return (
     <div>
       <div className='flex flex-col gap-5 xl:gap-0 xl:flex-row xl:justify-between'>
-        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => navigate("/team/create")}>Add New Member</button>
+        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => handleNavigation("/team/create")}>Add New Member</button>
         <div className='flex flex-col md:flex-row gap-6'>
           <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
             <img src="/svgs/search.svg" alt="Search" className="m-4" />

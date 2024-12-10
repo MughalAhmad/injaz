@@ -16,7 +16,12 @@ import Refrence from "./pages/refrence/Refrence";
 import Setting from "./pages/setting/Setting";
 import TeamForm from "./components/team/TeamForm";
 import RefForm from "./components/reference/RefForm";
+import Page404 from "./pages/404/Page404";
+import { useSelector } from 'react-redux';
+
 function App() {
+  const {user} = useSelector(state => state.adminStore);
+
   return (
     // <Router>
     //   <Routes>
@@ -57,14 +62,15 @@ function App() {
           <Route path="newpassword" element={<NewPassword />} />
           <Route path="sucessfulpassword" element={<SucessfulPassword />} />
           <Route path="quotation" element={<Quotation />} />
-          <Route path="team" element={<Team />}/>
-          <Route path="team/:tid" element={<TeamForm />} />
-          <Route path="team/create" element={<TeamForm />} />
-          <Route path="reference" element={<Refrence />} />
-          <Route path="reference/:rid" element={<RefForm />} />
-          <Route path="reference/create" element={<RefForm />} />
+          {user?.role ==="admin" && <Route path="team" element={<Team />}/> }
+          {user?.role ==="admin" && <Route path="team/:tid" element={<TeamForm />} /> }
+          {user?.role ==="admin" && <Route path="team/create" element={<TeamForm />} /> }
+          {user?.role ==="admin" && <Route path="reference" element={<Refrence />} /> }
+          {user?.role ==="admin" && <Route path="reference/:rid" element={<RefForm />} /> }
+          {user?.role ==="admin" && <Route path="reference/create" element={<RefForm />} /> }
 
           <Route path="setting" element={<Setting />} />
+
         </Route>
       </Route>
     </Routes>

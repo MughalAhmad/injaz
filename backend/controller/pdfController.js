@@ -22,8 +22,13 @@ const pdfModel = require("../models/pdfModel");
     },
     getAllPdf: async (req, res, next) => {
       try {
-        const {company} = req.query;
-         const pdf = await pdfModel.find({selectCompany:company})
+        const {company, userId, role} = req.query;
+        let pdf;
+        if(role === 'admin'){
+           pdf = await pdfModel.find({selectCompany:company})
+        }else{
+           pdf = await pdfModel.find({selectCompany:company, userId:userId})
+        }
         if (!pdf) throw new Error("Error to find pdf");
         console.log(pdf)
   
