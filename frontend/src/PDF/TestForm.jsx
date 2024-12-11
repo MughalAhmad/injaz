@@ -16,11 +16,12 @@ import MyDocument from './GeneratePDF';
 import MyDocumentInjaz from './GeneratePDFCompany2';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPdf } from '../redux/features/pdfSlice';
-
+import {sweetNotification} from "../components/common/SweetAlert"
+import {useNavigate} from "react-router-dom"
 const TestForm = () => {
   const toWords = new ToWords();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
 let className = "mr-0";
 const VisitingCard = 0.3;
 const LetterHeadPad = 0.3;
@@ -581,9 +582,15 @@ const saveDataIntoDB = () =>{
     .then(response => {
       if (response && !response.payload.hasError) {
        console.log("responseresponseresponse",response)
-      } 
+       navigate("/quotation")
+       sweetNotification(false, resp.payload.msg)
+      }
+      else{
+        sweetNotification(true, resp.payload.msg)
+      }
     })
     .catch(error => {
+      sweetNotification(true, 'Something went wrong');
       console.error('Dispatch failed:', error);
     });
 }
@@ -595,6 +602,7 @@ const saveDataIntoDB = () =>{
     }, 2000);
     // GeneratePDF(data);
     saveDataIntoDB()
+    
   };
 
   

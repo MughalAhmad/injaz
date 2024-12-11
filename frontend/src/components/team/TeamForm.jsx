@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createUser, getUser, updateUser } from '../../redux/features/generalSlice';
-
+import {sweetNotification} from "../common/SweetAlert";
 const teamCreateSchema = Yup.object({
     firstName: Yup.string().required("First Name Required"),
     lastName: Yup.string().required("Last Name Required"),
@@ -75,11 +75,14 @@ const TeamForm = () => {
                 dispatch( formState === 'update' ? updateUser(body) : createUser(body) )
                     .then(resp => {
                         if (resp && !resp.payload.hasError) {
-                            // sweetToast(false, resp.payload.msg);
+                            sweetNotification(false, resp.payload.msg);
                             navigate('/team');
-                        } 
+                        }else{
+                          sweetNotification(true, resp.payload.msg);
+                        }
                     })
                     .catch(error => {
+                      sweetNotification(true, 'Something went wrong');
                         console.log(error);
                     })
             },
@@ -279,7 +282,7 @@ const TeamForm = () => {
   
       </div>
  <div className='flex justify-end mt-4 mr-3 md:mr-5 xl:mr-10'>
-      <Button title="Save" size="sm" color='bg-backgroundPrimary' onClick={() => submitForm()} />
+      <Button title="Save" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => submitForm()} />
       </div>
     </div>
     </div>

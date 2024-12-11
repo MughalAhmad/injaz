@@ -26,8 +26,8 @@ const ReferenceTable = () => {
         <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => navigate("/reference/create")}>Add New Reference</button>
         <div className='flex flex-col md:flex-row gap-6'>
           <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
-            <img src="/svgs/search.svg" alt="Search" className="m-4" />
-            <input
+          <img src={localStorage.getItem("companyName") === "Conqueror" ? "/svgs/searchRed.svg" : "/svgs/search.svg" } alt="Search" className="m-4" />
+          <input
               type="text"
               placeholder="Search here..."
               className="w-full text-lg text-black text-opacity-50 font-normal pr-4 outline-none bg-transparent"

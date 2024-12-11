@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createRef, getRef, updateRef } from '../../redux/features/generalSlice';
+import {sweetNotification} from "../common/SweetAlert";
 
 const refCreateSchema = Yup.object({
     fullName: Yup.string().required("Full Name Required"),
@@ -74,11 +75,14 @@ const RefForm = () => {
                 dispatch( formState === 'update' ? updateRef(body) : createRef(body) )
                     .then(resp => {
                         if (resp && !resp.payload.hasError) {
-                            // sweetToast(false, resp.payload.msg);
+                            sweetNotification(false, resp.payload.msg);
                             navigate('/reference');
-                        } 
+                        }else{
+                          sweetNotification(true, resp.payload.msg);
+                        }
                     })
                     .catch(error => {
+                      sweetNotification(true, 'Something went wrong');
                         console.log(error);
                     })
             },
@@ -266,7 +270,7 @@ const RefForm = () => {
       </div>
     
  <div className='flex justify-end mt-4 mr-3 md:mr-5 xl:mr-10'>
-      <Button title="Save" size="sm" color='bg-backgroundPrimary' onClick={() => submitForm()} />
+      <Button title="Save" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => submitForm()} />
       </div>
     </div>
     </div>

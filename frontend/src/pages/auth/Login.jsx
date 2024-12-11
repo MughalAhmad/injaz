@@ -9,9 +9,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLogin, updateAuthStatus, updateUser, updateToken, updateAuthSliceErrorStatus } from '../../redux/features/adminSlice';
 import ReCAPTCHA from "react-google-recaptcha";
+import {sweetNotification} from "../../components/common/SweetAlert";
 
 const Login = () => {
-
   let env = import.meta.env.VITE_ENV;
   let siteKey;
   siteKey = import.meta.env.VITE_SITE_KEY_LOCAL;
@@ -60,14 +60,19 @@ const Login = () => {
           dispatch(updateToken(response.payload.data.token));
           dispatch(updateAuthSliceErrorStatus(response.payload.hasError));
           navigate('/');
+          sweetNotification(false, response.payload.msg);
         } 
+        else{
+          sweetNotification(true, response.payload.msg);
+        }
       })
       .catch(error => {
+        sweetNotification(true, 'Something went wrong');
         console.error('Dispatch failed:', error);
       });
     }
     else{
-      alert("error")
+      sweetNotification(true, 'Recaptcha required');
     }
    
   }

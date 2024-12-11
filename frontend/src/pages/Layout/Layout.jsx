@@ -1,20 +1,21 @@
 import React, {useEffect,useState} from "react";
 import Navbar from "../../components/common/Navbar";
-import { useNavigate,Navigate, Outlet, useParams  } from "react-router-dom";
+import { useNavigate,Navigate, Outlet, useParams} from "react-router-dom";
 import User from "/svgs/user.svg";
 import ArrowDown from "/svgs/arrowDown.svg";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCompanyName } from '../../redux/features/companyBrandingSlice';
 import Cookies from 'js-cookie';
-
+import {sweetNotification} from "../../components/common/SweetAlert";
 import TestForm from "../../PDF/TestForm";
 import Dashboard from "../dashboard/Dashboard";
 import Quotation from "../quotation/Quotation";
 import Team from "../team/Team";
 import Refrence from "../refrence/Refrence";
-import Setting from "../setting/Setting";
+import Setting from "../profile/Profile";
 import TeamForm from "../../components/team/TeamForm";
 import RefForm from "../../components/reference/RefForm";
+import ProfileForm from "../../components/profile/ProfileForm";
 
 
 const Layout = () => {
@@ -26,7 +27,7 @@ const Layout = () => {
   
   const [companyMenuState, setCompanyMenuState] = useState(false)
   const { companyName } = useSelector(state => state.brandingStore);
-  const { isAuthenticated, user} = useSelector(state => state.adminStore);
+  const {user, isAuthenticated} = useSelector(state => state.adminStore);
   const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-lg text-white text-center pt-3`;
 
   const handleCompanyMenu = (name) =>{
@@ -41,10 +42,9 @@ const Layout = () => {
     navigate(link);
   }
 
-console.log("location",location)
-
   const handleLogout = () =>{
     Cookies.remove('auth-token');
+    sweetNotification(false, "Logout successfully ")
     window.location.reload();
   }
 
@@ -90,9 +90,9 @@ useEffect(() => {
   };
 }, []); // Empty dependency array means this effect runs once when the component mounts
 
+
   
-  return isAuthenticated ? (
-  // return(
+  return(
       <div className="flex h-screen">
       {/* Sidebar */}
       <div className="hidden md:flex md:w-[28%] lg:w-[20%] xl:w-[15%] bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
@@ -138,8 +138,8 @@ useEffect(() => {
           {user?.role === "admin" && <p onClick={()=>handleMenu('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Refrence 
           </p>}
-          <p onClick={()=>handleMenu('/setting')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/setting" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
-          Settings
+          <p onClick={()=>handleMenu('/profile')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          Profile
           </p>
           <p onClick={()=>handleLogout()} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
             Logout
@@ -181,27 +181,27 @@ useEffect(() => {
           </button>
         </div>
         <div id="mobile-menu" className="hidden flex-col px-4 py-2">
-        <p onClick={()=>navigate('/')} className="block py-2 px-4 rounded hover:bg-gray-700">
+        <p onClick={()=>handleMenu('/')} className="block py-2 px-4 rounded hover:bg-gray-700">
             Dashboard
           </p>
-          <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          <p onClick={()=>handleMenu('/quotation')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Quotations
-          </a>
-          <p onClick={()=>navigate('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
+          </p>
+          <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
           Create Quotations
           </p>
-          {user?.role === "admin" && <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          {user?.role === "admin" && <p onClick={()=>handleMenu('/team')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Team
-          </a>}
-          {user?.role === "admin" &&<a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          </p>}
+          {user?.role === "admin" &&<p onClick={()=>handleMenu('/reference')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Refrence 
-          </a>}
-          <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
-          Settings
-          </a>
-          <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700">
+          </p>}
+          <p onClick={()=>handleMenu('/profile')} className="block py-2 px-4 rounded hover:bg-gray-700">
+          Profile
+          </p>
+          <p onClick={()=>handleLogout()} className="block py-2 px-4 rounded hover:bg-gray-700">
             Logout
-          </a>
+          </p>
         </div>
       </div>
 
@@ -217,16 +217,14 @@ useEffect(() => {
           {location === "/team/create" && <TeamForm/>}
           {location === `/team/${params?.tid}` && <TeamForm/>}
           {location === "/reference/create" && <RefForm/>}
-          {location === `/reference/${params?.rid}` && <RefForm/>}
+          {location === `/reference/${params?.rid}` && <RefForm/>} 
+          {location === `/profile` && <ProfileForm/>} 
+
 
         {/* <Outlet /> */}
       </div>
     </div>
-  // )
-    ) : (
-      <Navigate to="/login" state={{ from: location }} replace />
-    );
-    
+  )
 
 };
 

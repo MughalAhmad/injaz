@@ -2,11 +2,18 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteUser, getAllUsers } from '../../redux/features/generalSlice';
+import ThreeDot from '/svgs/three-dot.svg';
 
 const Row = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDropdownId}) => {
     
 const navigate = useNavigate();
 const dispatch = useDispatch();
+
+const [isHovered, setIsHovered] = useState(false);
+
+const handleMouseEnter = () => setIsHovered(true);
+const handleMouseLeave = () => setIsHovered(false);
+
 
   const toggleDropdown = (index) => {
     if(index !== dropdownId){
@@ -53,10 +60,19 @@ const dispatch = useDispatch();
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.password}</td>
       <td className="px-4 py-2 flex justify-center relative">
         <span
-          className="h-6 w-4 rounded-full cursor-pointer hover:bg-slate-200 flex justify-center"
+          className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${localStorage.getItem("companyName") === "Conqueror" ? "hover:bg-red-300  " : "hover:bg-blue-200" } flex justify-center items-center`}
           onClick={()=>toggleDropdown(index)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          <img src="/svgs/three-dot.svg" className='h-4 w-auto' alt="three-dot" />
+          <img 
+          // src="/svgs/three-dot.svg" 
+          src={isHovered
+            ? (localStorage.getItem("companyName") === "Injaz" 
+                ? "/svgs/threeDotBlue.svg" 
+                : "/svgs/threeDotRed.svg")
+            : "/svgs/three-dot.svg"}
+          className='h-4 w-auto' alt="three-dot" />
         </span>
         {dropdownVisible && dropdownId === index && (
           <div className={`absolute top-0 -left-16 bg-white border shadow-md rounded-lg py-2 w-28 z-10`}>
