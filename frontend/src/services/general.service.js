@@ -25,8 +25,8 @@ class GeneralService extends Service {
     async createRef(data) {
         return await this.ApiClient.post('/reference/new',data);
     }
-    async getAllRefs() {
-        return await this.ApiClient.get('/reference/');
+    async getAllRefs(data) {
+        return await this.ApiClient.get(`/reference/getReferenceList${data.queryParams}`);
     }
     async getRef(data) {
         return await this.ApiClient.get(`/reference/${data}`);

@@ -106,7 +106,7 @@ module.exports = {
       ];
 
       if(sortOrder){
-        options.push({ $sort: { firstName: sortOrder } })
+        options.unshift({ $sort: { firstName: sortOrder } })
       }
 
       const users = await UserModel.aggregate([

@@ -1,45 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import ReferenceRow from './ReferenceRow';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllRefs } from '../../redux/features/generalSlice';
+import { useSelector } from 'react-redux';
 const ReferenceTable = () => {
-  const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [dropdownId, setDropdownId] = useState("");
-    const dispatch = useDispatch();
     const { refs } = useSelector(state => state.generalStore);
-
-    const getAllRefsList = () =>{
-      dispatch(getAllRefs());
-    }
-
     console.log("refs", refs)
-  
-    useEffect(() => {
-      getAllRefsList()
-    }, [])
+    
+
+
 
   return (
     <div>
-      <div className='flex flex-col gap-5 xl:gap-0 xl:flex-row xl:justify-between'>
-        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => navigate("/reference/create")}>Add New Reference</button>
-        <div className='flex flex-col md:flex-row gap-6'>
-          <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
-          <img src={localStorage.getItem("companyName") === "Conqueror" ? "/svgs/searchRed.svg" : "/svgs/search.svg" } alt="Search" className="m-4" />
-          <input
-              type="text"
-              placeholder="Search here..."
-              className="w-full text-lg text-black text-opacity-50 font-normal pr-4 outline-none bg-transparent"
-            />
-          </div>
-          <select className='w-28 h-10 md:h-14 font-normal text-sm border-2 rounded-lg pr-3 pl-1'>
-            <option value=''>Select</option>
-            <option>Name: A-Z</option>
-            <option>Name: Z-A</option>
-          </select>
-        </div>
-      </div>
+
       <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
       <div className="w-full">
         <table className="min-w-full">

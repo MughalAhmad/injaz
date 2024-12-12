@@ -85,14 +85,53 @@
     },
     getReferenceList: async (req, res, next) => {
       try {
+        const {currentPage, filter, sortValue} = req.query; 
+        const searchQuery = filter;
+        const sortOrder = Number(sortValue) ;
+        const page = currentPage || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+  
+        const options = [
+          { $skip: skip }, // Pagination skip
+          { $limit: limit },
+        ];
+  
+        if(sortOrder){
+          options.unshift({ $sort: { fullName: sortOrder } })
+        }
+
+        const refs = await ReferenceModel.aggregate([
+          {
+            $match: {
+              fullName: {
+                $regex: searchQuery,
+                $options: "i",
+              },
+            },
+          },
+          {
+            $facet: {
+              refs: options,
+              totalCount: [
+                { $count: "count" }, // Count the total number of documents matching the filter
+              ],
+            },
+          },
+        ]);
+
+        const refList = refs[0]?.refs || [];
+        const totalDocuments = refs[0]?.totalCount[0]?.count || 0;
+        const refCount = Math.ceil(totalDocuments / limit);
+
+
          
-        const refs = await ReferenceModel.find();
         if (!refs) throw new Error("References not found");
   
         return res.status(200).json({
           hasError: false,
           msg: "All References Successfully Finded",
-          data: { refs: refs },
+          data: { refs: refList, pages:refCount  },
         });
       } catch (error) {
         return res.status(200).json({

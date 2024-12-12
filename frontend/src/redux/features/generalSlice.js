@@ -49,8 +49,8 @@ export const createRef = createAsyncThunk(
 );
 export const getAllRefs = createAsyncThunk(
     'getAllRefs',
-    async () => {
-        const response = await generalService.getAllRefs();
+    async (data) => {
+        const response = await generalService.getAllRefs(data);
         return response.data;
     }
 );
@@ -78,7 +78,7 @@ export const deleteRef = createAsyncThunk(
 
 const initialstate = {
     users: {},
-    refs:[],
+    refs:{},
     status: 'idle',
     error: null,
     isLoading: true,

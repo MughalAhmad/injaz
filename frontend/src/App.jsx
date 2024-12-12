@@ -12,7 +12,7 @@ import UserProtectedRoutes from "./components/common/UserProtectedRoutes";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Quotation from "./pages/quotation/Quotation";
 import Team from "./pages/team/Team";
-import Refrence from "./pages/refrence/Refrence";
+import Reference from "./pages/reference/Reference";
 import Profile from "./pages/profile/Profile";
 import TeamForm from "./components/team/TeamForm";
 import RefForm from "./components/reference/RefForm";
@@ -43,7 +43,7 @@ function App() {
           <Route path="team" element={<Team />}/> 
           <Route path="team/:tid" element={<TeamForm />} /> 
           <Route path="team/create" element={<TeamForm />} /> 
-          <Route path="reference" element={<Refrence />} /> 
+          <Route path="reference" element={<Reference />} /> 
           <Route path="reference/:rid" element={<RefForm />} /> 
           <Route path="reference/create" element={<RefForm />} /> 
           <Route path="profile" element={<Profile />} />

@@ -11,7 +11,7 @@ import TestForm from "../../PDF/TestForm";
 import Dashboard from "../dashboard/Dashboard";
 import Quotation from "../quotation/Quotation";
 import Team from "../team/Team";
-import Refrence from "../refrence/Refrence";
+import Reference from "../reference/Reference";
 import Setting from "../profile/Profile";
 import TeamForm from "../../components/team/TeamForm";
 import RefForm from "../../components/reference/RefForm";
@@ -210,7 +210,7 @@ useEffect(() => {
         <Navbar/>
           {location === "/" && <Dashboard/>}
           {location === "/team" && <Team/>}
-          {location === "/reference" && <Refrence/>}
+          {location === "/reference" && <Reference/>}
           {location === "/setting" && <Setting/>}
           {location === "/quotation" && <Quotation/>}
           {location === "/form" && <TestForm/>}
