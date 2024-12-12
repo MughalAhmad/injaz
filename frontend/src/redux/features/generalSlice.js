@@ -11,8 +11,8 @@ export const createUser = createAsyncThunk(
 );
 export const getAllUsers = createAsyncThunk(
     'getAllUsers',
-    async () => {
-        const response = await generalService.getAllUsers();
+    async (data) => {
+        const response = await generalService.getAllUsers(data);
         return response.data;
     }
 );
@@ -77,7 +77,7 @@ export const deleteRef = createAsyncThunk(
 );
 
 const initialstate = {
-    users: [],
+    users: {},
     refs:[],
     status: 'idle',
     error: null,

@@ -51,7 +51,7 @@ const handleMouseLeave = () => setIsHovered(false);
     >
       <td className="px-4 py-2 font-semibold text-sm">{index + 1}</td>
       <td className="px-4 py-2 font-semibold text-sm text-center">
-        {row.FirstName} {row.lastName}
+        {row.firstName} {row.lastName}
       </td>
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.email}</td>
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.phone}</td>

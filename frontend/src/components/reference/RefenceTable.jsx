@@ -40,8 +40,8 @@ const ReferenceTable = () => {
           </select>
         </div>
       </div>
-      <div className="my-8 bg-white overflow-x-hidden rounded-3xl border border-gray-200">
-      <div className="w-full overflow-x-auto">
+      <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
+      <div className="w-full">
         <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>

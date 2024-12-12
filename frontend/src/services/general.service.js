@@ -8,7 +8,7 @@ class GeneralService extends Service {
         return await this.ApiClient.post('/user/new',data);
     }
     async getAllUsers() {
-        return await this.ApiClient.get('/user/');
+        return await this.ApiClient.get(`/user/`);
     }
     async getUser(data) {
         return await this.ApiClient.get(`/user/${data}`);
