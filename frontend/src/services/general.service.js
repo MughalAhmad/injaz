@@ -7,8 +7,8 @@ class GeneralService extends Service {
     async createUser(data) {
         return await this.ApiClient.post('/user/new',data);
     }
-    async getAllUsers() {
-        return await this.ApiClient.get(`/user/`);
+    async getAllUsers(data) {
+        return await this.ApiClient.get(`/user/getUserList${data.queryParams}`);
     }
     async getUser(data) {
         return await this.ApiClient.get(`/user/${data}`);

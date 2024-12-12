@@ -93,12 +93,21 @@ module.exports = {
   },
   getUserList: async (req, res, next) => {
     try {
-      // const {currentPage} = req.query; 
-      const searchQuery = "ahmad";
-      const sortOrder = 1;
-      const page = 1;
+      const {currentPage, filter, sortValue} = req.query; 
+      const searchQuery = filter;
+      const sortOrder = Number(sortValue) ;
+      const page = currentPage || 1;
       const limit = 10;
       const skip = (page - 1) * limit;
+
+      const options = [
+        { $skip: skip }, // Pagination skip
+        { $limit: limit },
+      ];
+
+      if(sortOrder){
+        options.push({ $sort: { firstName: sortOrder } })
+      }
 
       const users = await UserModel.aggregate([
         {
@@ -111,27 +120,25 @@ module.exports = {
           },
         },
         {
-          $sort: {
-            firstName: sortOrder,
+          $facet: {
+            users: options,
+            totalCount: [
+              { $count: "count" }, // Count the total number of documents matching the filter
+            ],
           },
         },
-        {
-          $skip: skip,
-        },
-        {
-          $limit: limit,
-        },
       ]);
-
-      const countDoc = await UserModel.countDocuments({ role: "user" });
-       const userCount = Math.ceil(countDoc / limit);
+      
+      const userList = users[0]?.users || [];
+      const totalDocuments = users[0]?.totalCount[0]?.count || 0;
+      const userCount = Math.ceil(totalDocuments / limit);
 
       if (!users) throw new Error("Users not found");
 
       return res.status(200).json({
         hasError: false,
         msg: "All Users Successfully Finded",
-        data: { users: users, pages :userCount },
+        data: { users: userList, pages :userCount },
       });
     } catch (error) {
       return res.status(200).json({

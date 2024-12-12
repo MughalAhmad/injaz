@@ -9,7 +9,7 @@ const TeamPaginate = ({ setCurrentPage }) => {
   const { users } = useSelector(state => state.generalStore);
 
   const handlePageClick = (data) => {
-    localStorage.setItem("currentPage",data.selected+1)
+    // localStorage.setItem("currentPage",data.selected+1)
     setCurrentPage(data.selected+1);
   };
 
