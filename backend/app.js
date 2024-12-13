@@ -20,6 +20,7 @@ const allowedOrigins = [
     'http://localhost:4000',
     'http://localhost:4001',
     'https://portal.injazgroup.co.uk',
+    'https://quotation.injazgroup.co.uk',
     'https://94.136.189.148:4000',
 ];
 
