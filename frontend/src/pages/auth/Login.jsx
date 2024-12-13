@@ -92,7 +92,7 @@ const Login = () => {
   </video>
 
     <div className='w-full h-full bg-[#222A59A8] bg-opacity-66 absolute'></div>
-<div className="w-full px-5 md:max-w-3xl bg-white bg-opacity-80 rounded-3xl sm:px-32 pt-20 md:pt-28 pb-10 relative">
+<div className="w-full p-5 md:px-20 md:py-16 md:max-w-3xl bg-white bg-opacity-80 rounded-3xl relative">
   <h2 className="text-2xl font-poppins font-semibold text-center mb-2.5 text-textPrimary md:text-left">
     Welcome
   </h2>
@@ -159,10 +159,12 @@ const Login = () => {
       Forgot Password
     </a>
   </div>
+  <div className='w-full flex justify-center items-center mt-5'>
   <ReCAPTCHA
     sitekey={siteKey}
     onChange={handleRecaptcha}
   />
+  </div>
     <button
       type="submit"
       onClick={onSubmit}
@@ -171,21 +173,21 @@ const Login = () => {
       Login
     </button>
   </form>
-  <div className='absolute right-14 top-6 md:top-12' >
+  {/* <div className='absolute right-14 top-6 md:top-12' >
   <span className='font-normal text-xs mr-1 text-stone300'>Don,t have an account?</span>
   <span className='font-semibold text-xs text-textPrimary hover:text-texPrimaryHover cursor-pointer'>Signup</span>
-  </div>
+  </div> */}
 
-  <div className="flex items-center justify-center mt-7 md:mt-14">
+  {/* <div className="flex items-center justify-center mt-7 md:mt-14">
   <hr className="w-[36%] border-neutral400" />
   <span className="text-sm font-normal mx-3 text-center -mt-1 text-neutral400">
     or continue with
   </span>
   <hr className="w-[36%] border-neutral400" />
 
-</div>
+</div> */}
 
-  <div className="flex items-center justify-center mt-5 md:mt-10 space-x-5">
+  {/* <div className="flex items-center justify-center mt-5 md:mt-10 space-x-5">
     <a
       href="#"
       className="bg-white w-[43px] h-[40px] flex justify-center items-center rounded-lg"
@@ -204,7 +206,7 @@ const Login = () => {
     >
      <img src={Linkedin} className='w-[60%] h-auto' alt='facebook'/>
     </a>
-  </div>
+  </div> */}
 </div>
 </div>
   )

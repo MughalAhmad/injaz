@@ -18,6 +18,7 @@ const referenceRouter = require ("./routes/referenceRoute");
 
 const allowedOrigins = [
     'http://localhost:4000',
+    'http://localhost:5000',
     'http://localhost:4001',
     'https://portal.injazgroup.co.uk',
     'https://quotation.injazgroup.co.uk',

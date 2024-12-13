@@ -29,6 +29,11 @@ const pdfSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    pdfStatus:{
+        type: String,
+        required: true,
+        default:'pending',
+    },
     createdAt: {
         type: Date,
         default: Date.now

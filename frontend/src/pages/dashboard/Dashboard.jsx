@@ -1,37 +1,56 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Card from '../../components/dashboard/Card';
 import Table from '../../components/dashboard/Table';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {getDashboardData} from "../../redux/features/pdfSlice";
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+  
   const {user} = useSelector(state => state.adminStore);
+  const { pdfData } = useSelector(state => state.pdfStore);
+  const { companyName } = useSelector(state => state.brandingStore);
 
   const cardData= [
     {
-      count:'30,000',
+      count:pdfData?.cardData?.pending + pdfData?.cardData?.approved + pdfData?.cardData?.rejected,
       title:'Total Quotation',
       icon:'/svgs/dashboard.svg',
       bg:'bg-blue-500'
     },
     {
-      count:'1,200',
+      count:pdfData?.cardData?.pending,
       title:'Pending Approvals',
       icon:'/svgs/dashboard.svg',
       bg:'bg-yellow-500'
       },
     {
-      count:'1,000',
+      count:pdfData?.cardData?.approved,
       title:'Approved Quotations',
       icon:'/svgs/dashboard.svg',
       bg:'bg-green-500'
     },
     {
-      count:'1,000',
+      count:pdfData?.cardData?.rejected,
       title:'Rejected Quotations',
       icon:'/svgs/dashboard.svg',
       bg:'bg-rose-400'
     }
   ]
+
+    const getAllDashboardData = () =>{
+
+      const data = {
+        companyName: companyName,
+        userId: user?._id,
+        role: user?.role
+      }
+      dispatch(getDashboardData(data))
+    }
+
+   useEffect(() => {
+    getAllDashboardData()
+    }, [localStorage.getItem("companyName")])
 
   return (
     <div className='px-3 md:px-10'>

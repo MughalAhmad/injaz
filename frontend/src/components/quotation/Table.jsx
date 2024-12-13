@@ -5,7 +5,7 @@ import { getAllPdf } from '../../redux/features/pdfSlice';
 const Table = () => {
 
     const dispatch = useDispatch();
-    const { list } = useSelector(state => state.pdfStore);
+    const { pdfData } = useSelector(state => state.pdfStore);
     const { companyName } = useSelector(state => state.brandingStore);
     const { user } = useSelector(state => state.adminStore);
 
@@ -40,7 +40,7 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {list?.map((row, index) => (
+            {pdfData?.list?.map((row, index) => (
               <tr
                 key={row.id}
                 className={`${index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'} py-10`}
@@ -54,9 +54,9 @@ const Table = () => {
                 <td className="px-4 py-2 font-semibold text-sm text-center">{row.stateValue}</td>
                 <td className="px-4 py-2 flex justify-evenly">
                     <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>View</button>
-                    <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Edit</button>
+                    {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Edit</button> */}
                     <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Send</button>
-                    <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Delete</button>
+                    {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Delete</button> */}
                 </td>
               </tr>
             ))}

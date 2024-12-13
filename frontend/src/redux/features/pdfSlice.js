@@ -18,9 +18,20 @@ export const getAllPdf = createAsyncThunk(
         return response.data;
     }
 );
+export const getDashboardData = createAsyncThunk(
+    'getDashboardData',
+    async (data) => {
+        const response = await pdfService.getDashboardData(data);
+        return response.data;
+    }
+);
 
 const initialstate = {
-    list:[],
+    pdfData:{list:[], pages:1, cardData:{
+        pending:30,
+        approved:34,
+        rejected:346, 
+      }},
     status: 'idle',
     error: null,
     isLoading: true,
@@ -43,11 +54,33 @@ const pdfSlice = createSlice({
                 state.status = 'succeeded';
                 state.showLoader = false;
                 if (!action.payload.hasError) {
-                    state.list = action.payload.data.pdf;
+                    state.pdfData.list = action.payload.data.pdfs;
                     state.isLoading = false;
                 }
             })
             .addCase(getAllPdf.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = true;
+                state.isLoading = false;
+                state.showLoader = false;
+            })
+            .addCase(getDashboardData.pending, (state) => {
+                state.status = 'loading';
+                state.isLoading = true;
+                state.showLoader = true;
+            })
+            .addCase(getDashboardData.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.showLoader = false;
+                if (!action.payload.hasError) {
+                    state.pdfData.list = action.payload.data.pdfs;
+                    state.pdfData.pages = action.payload.data.pages
+                    state.pdfData.cardData = action.payload.data.cardData;
+
+                    state.isLoading = false;
+                }
+            })
+            .addCase(getDashboardData.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = true;
                 state.isLoading = false;
