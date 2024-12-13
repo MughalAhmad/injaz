@@ -5,16 +5,29 @@ import English from "/svgs/english.svg";
 import Spanish  from "/svgs/spanish.svg";
 import Checked from "/svgs/gray-check.svg";
 import Notification from "/svgs/notification.svg";
+import { useSelector } from 'react-redux';
+import SearchRed from "/svgs/searchRed.svg";
+import {useNavigate} from "react-router-dom";
+import {sweetNotification} from "./SweetAlert";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
+  const {user} = useSelector(state => state.adminStore);
+  const navigate = useNavigate();
+
+  const handleLogout = () =>{
+    Cookies.remove('auth-token');
+    sweetNotification(false, "Logout successfully ")
+    window.location.reload();
+  }
 
   return (
     <nav className="bg-white shadow-md px-4 py-3 flex flex-col-reverse gap-5 md:gap-0 md:flex-row md:items-center md:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
       {/* Left Section: Search Bar */}
       <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
-      <img src={Search} alt="Search" className="m-4"/>
+      <img src={localStorage.getItem("companyName") === "Conqueror" ? SearchRed : Search } alt="Search" className="m-4"/>
         <input
           type="text"
           placeholder="Search here..."
@@ -70,10 +83,10 @@ const Navbar = () => {
         </div>
 
         {/* Notification Icon */}
-        <button className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
+       {user?.role === "admin" && <button className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
          <img src={Notification} alt="Notification" className="" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        </button>}
 
         {/* Profile Icon with Dropdown */}
         <div className="relative md:pr-5">
@@ -87,8 +100,8 @@ const Navbar = () => {
               className="w-16 h-16 mr-3 rounded-xl hidden md:block"
             />
             <div className="pr-5 md:pr-10 leading-5">
-              <p className="text-base font-medium text-textPrimary">Asad</p>
-              <p className="text-sm font-normal text-stone300">Admin</p>
+              <p className="text-base font-medium text-textPrimary">{user?.firstName}</p>
+              <p className="text-sm font-normal text-stone300">{user?.role}</p>
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,15 +120,12 @@ const Navbar = () => {
           </button>
           {profileDropdown && (
             <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
-              <button className="block px-4 py-2 text-sm hover:bg-gray-100">
+              <p className=" px-4 py-2 cursor-pointer text-sm hover:bg-gray-100" onClick={()=>navigate("/profile")}>
                 Profile
-              </button>
-              <button className="block px-4 py-2 text-sm hover:bg-gray-100">
-                Settings
-              </button>
-              <button className="block px-4 py-2 text-sm hover:bg-gray-100">
+              </p>
+              <p className=" px-4 py-2 cursor-pointer text-sm hover:bg-gray-100"  onClick={handleLogout}>
                 Logout
-              </button>
+              </p>
             </div>
           )}
         </div>

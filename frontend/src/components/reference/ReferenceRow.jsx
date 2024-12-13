@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteUser, getAllUsers } from '../../redux/features/generalSlice';
-import ThreeDot from '/svgs/three-dot.svg';
+import { deleteRef, getAllRefs } from '../../redux/features/generalSlice';
 
-const Row = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDropdownId}) => {
+const ReferenceRow = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDropdownId}) => {
     
 const navigate = useNavigate();
 const dispatch = useDispatch();
@@ -13,7 +12,6 @@ const [isHovered, setIsHovered] = useState(false);
 
 const handleMouseEnter = () => setIsHovered(true);
 const handleMouseLeave = () => setIsHovered(false);
-
 
   const toggleDropdown = (index) => {
     if(index !== dropdownId){
@@ -31,15 +29,15 @@ const handleMouseLeave = () => setIsHovered(false);
   const handleEdit = () => {
     // alert(`Edit action for ${row.FirstName}`);
     setDropdownVisible(false);
-    navigate(`/team/${row.userId}`)
+    navigate(`/reference/${row._id}`)
     };
 
   const handleDelete = () => {
     // alert(`Delete action for ${row.FirstName}`);
     setDropdownVisible(false);
-    dispatch(deleteUser(row._id)).then((resp)=>{
+    dispatch(deleteRef(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
-        dispatch(getAllUsers())
+        dispatch(getAllRefs())
       }
     })
   };
@@ -50,16 +48,16 @@ const handleMouseLeave = () => setIsHovered(false);
       className={`${index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'} py-10`}
     >
       <td className="px-4 py-2 font-semibold text-sm">{index + 1}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">
-        {row.firstName} {row.lastName}
-      </td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.fullName}</td>
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.email}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.phone}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.nationality}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.userId}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.password}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.companyEmail}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.mobile}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.fbId}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.metaId}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.refCode}</td>
+      <td className="px-4 py-2 font-semibold text-sm text-center">{row.company}</td>
       <td className="px-4 py-2 flex justify-center relative">
-        <span
+      <span
           className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${localStorage.getItem("companyName") === "Conqueror" ? "hover:bg-red-300  " : "hover:bg-blue-200" } flex justify-center items-center`}
           onClick={()=>toggleDropdown(index)}
           onMouseEnter={handleMouseEnter}
@@ -97,4 +95,4 @@ const handleMouseLeave = () => setIsHovered(false);
   )
 }
 
-export default Row
+export default ReferenceRow

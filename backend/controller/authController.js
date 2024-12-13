@@ -70,6 +70,7 @@ module.exports = {
         if (err) throw new Error(err);
         return res.status(200).json({
             hasError: false,
+            msg: "Login successful",
             data: {
                 user,
                 token,
@@ -78,7 +79,11 @@ module.exports = {
         });
 
     } catch (error) {
-        next(error);
+      return res.status(200).json({
+        hasError: true,
+        msg: error.message,
+        data: null,
+      });
     }
 },
   logout: async (req, res, next) => {

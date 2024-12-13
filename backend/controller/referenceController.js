@@ -1,53 +1,40 @@
-let referenceModel = [
-    {
-      id: "1",
-      name: "abc1",
-      phone: "12345678",
-    },
-    {
-      id: "2",
-      name: "abc2",
-      phone: "12345678",
-    },
-  ];
-  
+  const ReferenceModel = require("../models/referenceModel")
   module.exports = {
     edit: async (req, res, next) => {
       try {
         const { rid } = req.params;
-  
-        const reference = userModel.find((reference) => reference.id === rid);
-        if (reference) {
-          Object.assign(reference, req.body);
-          console.log("reference updated:", reference);
-        }
-        if (!reference) throw new Error("reference update process failed");
+        const findRef = await ReferenceModel.findOne({_id:rid})
+        if (!findRef) throw new Error("Reference Not Found");
+         
+        const upadatedRef = await ReferenceModel.findByIdAndUpdate({ _id: rid }, req.body, { new: true });
+        if (!upadatedRef) throw new Error('Reference update process failed');
   
         return res.status(200).json({
           hasError: false,
           msg: "Reference Updated! ",
-          data: { reference: reference },
+          data: { ref: upadatedRef },
         });
       } catch (error) {
         return res.status(200).json({
           hasError: true,
           msg: error.message,
-          data: { reference: null },
+          data: { ref: null },
         });
       }
     },
     delete: async (req, res, next) => {
       try {
         const { rid } = req.params;
-        const reference = referenceModel.find((reference) => reference.id === rid);
-        if (!reference) throw new Error("Reference not found");
-        if (reference) {
-            referenceModel = referenceModel.filter((reference) => reference.id !== rid);
-        }
+        const findRef = await ReferenceModel.findOne({_id:rid})
+        if (!findRef) throw new Error("Reference Not Found");
+         
+        const upadatedRef = await ReferenceModel.findByIdAndDelete({ _id: rid }, req.body, { new: true });
+        if (!upadatedRef) throw new Error('Reference update process failed');
+  
         return res.status(200).json({
           hasError: false,
           msg: "Reference Deleted!",
-          data: referenceModel,
+          data: null,
         });
       } catch (error) {
         return res.status(200).json({
@@ -60,58 +47,97 @@ let referenceModel = [
     getReferences: async (req, res, next) => {
       try {
         const { rid } = req.params;
-        const reference = referenceModel.find((reference) => reference.id === rid);
-        if (!reference) throw new Error("Reference Not Found");
+        const findRef = await ReferenceModel.findOne({_id:rid})
+        if (!findRef) throw new Error("Reference Not Found");
   
         return res.status(200).json({
           hasError: false,
           msg: "Reference Successfully Finded",
-          data: { reference: reference },
+          data: { ref: findRef },
         });
       } catch (error) {
         return res.status(200).json({
           hasError: true,
           msg: error.message,
-          data: { reference: null },
+          data: { ref: null },
         });
       }
     },
     new: async (req, res, next) => {
       try {
-        const reference = referenceModel.find((reference) => reference.name === req.body.name);
-        if (reference) throw new Error("Reference already exists");
-  
-        const addReference = await referenceModel.push(req.body);
-        if (!addReference) throw new Error("Error in Creating user");
+         const findRef = await ReferenceModel.findOne({refCode:req.body.refCode});
+         if (findRef) throw new Error("Reference code already exists");
+        const ref = await ReferenceModel.create(req.body)
+        if (!ref) throw new Error("Error in Creating reference");
   
         return res.status(200).json({
           hasError: false,
           msg: "Reference Created!",
-          data: { reference: referenceModel },
+          data: { ref: ref },
         });
       } catch (error) {
         return res.status(200).json({
           hasError: true,
           msg: error.message,
-          data: { reference: null },
+          data: { ref: null },
         });
       }
     },
     getReferenceList: async (req, res, next) => {
       try {
-          console.log(referenceModel)
-        if (referenceModel.length === 0) throw new Error("Rferences not found");
+        const {currentPage, filter, sortValue} = req.query; 
+        const searchQuery = filter;
+        const sortOrder = Number(sortValue) ;
+        const page = currentPage || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+  
+        const options = [
+          { $skip: skip }, // Pagination skip
+          { $limit: limit },
+        ];
+  
+        if(sortOrder){
+          options.unshift({ $sort: { fullName: sortOrder } })
+        }
+
+        const refs = await ReferenceModel.aggregate([
+          {
+            $match: {
+              fullName: {
+                $regex: searchQuery,
+                $options: "i",
+              },
+            },
+          },
+          {
+            $facet: {
+              refs: options,
+              totalCount: [
+                { $count: "count" }, // Count the total number of documents matching the filter
+              ],
+            },
+          },
+        ]);
+
+        const refList = refs[0]?.refs || [];
+        const totalDocuments = refs[0]?.totalCount[0]?.count || 0;
+        const refCount = Math.ceil(totalDocuments / limit);
+
+
+         
+        if (!refs) throw new Error("References not found");
   
         return res.status(200).json({
           hasError: false,
           msg: "All References Successfully Finded",
-          data: { reference: referenceModel ? referenceModel : [] },
+          data: { refs: refList, pages:refCount  },
         });
       } catch (error) {
         return res.status(200).json({
           hasError: true,
           msg: error.message,
-          data: { reference: null },
+          data: { refs: null },
         });
       }
     },

@@ -5,13 +5,37 @@ const referenceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    fbId: {
+        type: String,
+        required: true
+    },
+    metaId: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
     },
-    password: {
+    companyEmail: {
         type: String,
         required: true
+    },
+    mobile: {
+        type: Number,
+        required: true
+    },
+    phone:{
+        type: Number,
+        required: true,
+    },
+    company:{
+        type: String,
+        required: true,
+    },
+    refCode:{
+        type: String,
+        required: true,
     },
     createdAt: {
         type: Date,

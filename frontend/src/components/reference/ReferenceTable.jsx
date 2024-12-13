@@ -1,34 +1,39 @@
 import React, {useState} from 'react';
-import Row from './Row';
+import ReferenceRow from './ReferenceRow';
 import { useSelector } from 'react-redux';
-const Table = () => {
-
-  
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+const ReferenceTable = () => {
+    const [dropdownVisible, setDropdownVisible] = useState(false);
     const [dropdownId, setDropdownId] = useState("");
-    const { users } = useSelector(state => state.generalStore);
-    console.log("user", users)
+    const { refs } = useSelector(state => state.generalStore);
+    console.log("refs", refs)
+    
+
+
+
   return (
     <div>
-    
-      <div className="my-8 bg-white rounded-3xl overflow-auto border border-gray-200">
-      <div className="w-full ">
+
+      <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
+      <div className="w-full">
         <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 text-left font-bold text-sm text-black">Sr</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Full Name</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Email Address</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Company Email Address</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Calling Number</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">Nationality</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">ID</th>
-              <th className="px-4 py-2 font-bold text-sm text-black text-center">Password</th>
+
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Fb ID Name</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Meta ID Name</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Ref Code</th>
+              <th className="px-4 py-2 font-bold text-sm text-black text-center">Group Name</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users?.users?.map((row, index) => (
-                <Row row={row} index={index} key={index}
+            {refs?.refs?.map((row, index) => (
+                <ReferenceRow row={row} index={index} key={index}
                 dropdownVisible={dropdownVisible} setDropdownVisible={setDropdownVisible}
                 dropdownId={dropdownId} setDropdownId={setDropdownId}
                 />
@@ -46,4 +51,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default ReferenceTable;

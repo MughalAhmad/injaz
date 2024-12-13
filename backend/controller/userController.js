@@ -1,32 +1,22 @@
-let userModel = [
-  {
-    id: "1",
-    name: "abc1",
-    phone: "12345678",
-  },
-  {
-    id: "2",
-    name: "abc2",
-    phone: "12345678",
-  },
-];
-
+const UserModel = require("../models/userModel"); 
 module.exports = {
   edit: async (req, res, next) => {
     try {
       const { uid } = req.params;
+      const findUser = await UserModel.findOne({ _id: uid });
+      if (!findUser) throw new Error("User Not Found");
 
-      const user = userModel.find((user) => user.id === uid);
-      if (user) {
-        Object.assign(user, req.body);
-        console.log("User updated:", user);
-      }
-      if (!user) throw new Error("user update process failed");
+      const upadatedUser = await UserModel.findByIdAndUpdate(
+        { _id: uid },
+        req.body,
+        { new: true }
+      );
+      if (!upadatedUser) throw new Error("User update process failed");
 
       return res.status(200).json({
         hasError: false,
         msg: "User Updated! ",
-        data: { user: user },
+        data: { user: upadatedUser },
       });
     } catch (error) {
       return res.status(200).json({
@@ -39,15 +29,20 @@ module.exports = {
   delete: async (req, res, next) => {
     try {
       const { uid } = req.params;
-      const user = userModel.find((user) => user.id === uid);
-      if (!user) throw new Error("User not found");
-      if (user) {
-        userModel = userModel.filter((user) => user.id !== uid);
-      }
+      const findUser = await UserModel.findOne({ _id: uid });
+      if (!findUser) throw new Error("User Not Found");
+
+      const upadatedUser = await UserModel.findByIdAndDelete(
+        { _id: uid },
+        req.body,
+        { new: true }
+      );
+      if (!upadatedUser) throw new Error("User update process failed");
+
       return res.status(200).json({
         hasError: false,
         msg: "User Deleted!",
-        data: userModel,
+        data: null,
       });
     } catch (error) {
       return res.status(200).json({
@@ -60,13 +55,13 @@ module.exports = {
   getUser: async (req, res, next) => {
     try {
       const { uid } = req.params;
-      const user = userModel.find((user) => user.id === uid);
-      if (!user) throw new Error("User Not Found");
+      const findUser = await UserModel.findOne({ userId: uid });
+      if (!findUser) throw new Error("User Not Found");
 
       return res.status(200).json({
         hasError: false,
         msg: "User Successfully Finded",
-        data: { user: user },
+        data: { user: findUser },
       });
     } catch (error) {
       return res.status(200).json({
@@ -78,35 +73,72 @@ module.exports = {
   },
   new: async (req, res, next) => {
     try {
-      console.log(req.body)
-      // const user = userModel.find((user) => user.name === req.body);
-      // if (user) throw new Error("User already exists");
-
-      // const addUser = await userModel.push(req.body);
-      // if (!addUser) throw new Error("Error in Creating user");
+      const findUser = await UserModel.findOne({ email: req.body.email });
+      if (findUser) throw new Error("User already exists");
+      const user = await UserModel.create(req.body);
+      if (!user) throw new Error("Error in Creating user");
 
       return res.status(200).json({
         hasError: false,
         msg: "User Created!",
-        // data: { user: userModel },
+        data: { user: user },
       });
     } catch (error) {
       return res.status(200).json({
         hasError: true,
         msg: error.message,
-        // data: { user: null },
+        data: { user: null },
       });
     }
   },
   getUserList: async (req, res, next) => {
     try {
-        console.log(userModel)
-      if (userModel.length === 0) throw new Error("Users not found");
+      const {currentPage, filter, sortValue} = req.query; 
+      const searchQuery = filter;
+      const sortOrder = Number(sortValue) ;
+      const page = currentPage || 1;
+      const limit = 10;
+      const skip = (page - 1) * limit;
+
+      const options = [
+        { $skip: skip }, // Pagination skip
+        { $limit: limit },
+      ];
+
+      if(sortOrder){
+        options.unshift({ $sort: { firstName: sortOrder } })
+      }
+
+      const users = await UserModel.aggregate([
+        {
+          $match: {
+            role: "user",
+            firstName: {
+              $regex: searchQuery,
+              $options: "i",
+            },
+          },
+        },
+        {
+          $facet: {
+            users: options,
+            totalCount: [
+              { $count: "count" }, // Count the total number of documents matching the filter
+            ],
+          },
+        },
+      ]);
+      
+      const userList = users[0]?.users || [];
+      const totalDocuments = users[0]?.totalCount[0]?.count || 0;
+      const userCount = Math.ceil(totalDocuments / limit);
+
+      if (!users) throw new Error("Users not found");
 
       return res.status(200).json({
         hasError: false,
         msg: "All Users Successfully Finded",
-        data: { users: userModel ? userModel : [] },
+        data: { users: userList, pages :userCount },
       });
     } catch (error) {
       return res.status(200).json({

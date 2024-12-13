@@ -13,8 +13,8 @@ export const createPdf = createAsyncThunk(
 
 export const getAllPdf = createAsyncThunk(
     'getAllPdf',
-    async (companyName) => {
-        const response = await pdfService.getAllPdf(companyName);
+    async (data) => {
+        const response = await pdfService.getAllPdf(data);
         return response.data;
     }
 );

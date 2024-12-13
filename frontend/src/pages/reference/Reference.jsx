@@ -1,16 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import Table from '../../components/team/Table'
-import TeamPaginate from '../../components/team/TeamPaginate'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getAllUsers } from '../../redux/features/generalSlice';
+import { getAllRefs } from '../../redux/features/generalSlice';
+import ReferencePaginate from '../../components/reference/ReferencePagination';
 
 
-
-const Team = () => {
+const Refrence = () => {
   const [currentPage, setCurrentPage] = useState(1)
-
-
 
 
   const navigate = useNavigate();
@@ -18,13 +14,12 @@ const Team = () => {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("");
 
-  
-  const getAllUsersList = () =>{
+
+  const getAllRefsList = () =>{
     let queryParams = `?currentPage=${currentPage}&&filter=${query}&&sortValue=${sort}`;
-    dispatch(getAllUsers({queryParams}));
+    dispatch(getAllRefs({queryParams}));
   }
-  
-  
+
   const handleNavigation = (link) =>{
     // localStorage.setItem("menu",link)
     navigate(link)
@@ -38,15 +33,16 @@ const Team = () => {
   const handleSort = (e) =>{
   setSort(e.target.value);
   }
-  
+
+
   useEffect(() => {
-    getAllUsersList()
+    getAllRefsList()
   }, [currentPage, query, sort])
   return (
     <div className='px-3 md:px-10'>
-      <p className='font-semibold text-2xl text-textPrimary my-11'>Team</p>
+      <p className='font-semibold text-2xl text-textPrimary my-11'>Reference</p>
       <div className='flex flex-col gap-5 xl:gap-0 xl:flex-row xl:justify-between'>
-        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => handleNavigation("/team/create")}>Add New Member</button>
+        <button className='bg-backgroundGreen500 max-w-60 text-base font-medium text-white px-6 py-3 rounded-lg' onClick={() => handleNavigation("/reference/create")}>Add New Reference</button>
         <div className='flex flex-col md:flex-row gap-6'>
           <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
             <img src={localStorage.getItem("companyName") === "Conqueror" ? "/svgs/searchRed.svg" : "/svgs/search.svg" } alt="Search" className="m-4" />
@@ -63,14 +59,14 @@ const Team = () => {
             <option value='1'>Name: A-Z</option>
             <option value='-1'>Name: Z-A</option>
           </select>
+          
         </div>
       </div>
-      <TeamPaginate
-       setCurrentPage={setCurrentPage}
-       currentPage={currentPage}
-      />
+      <ReferencePaginate
+      setCurrentPage={setCurrentPage}
+      currentPage={currentPage}/>
     </div>
   )
 }
 
-export default Team
+export default Refrence
