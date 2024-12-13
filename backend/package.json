@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node  ./app.js",
+    "backend": "nodemon ./app.js",
     "dev": "concurrently -n 'backend,frontend' -c 'green,yellow' \"nodemon ./app.js\" \"npm run frontend\"",
     "start-prod": "pm2 delete pm2-env/env-config.json && pm2 startorestart pm2-env/env-config.json && pm2 flush && pm2 log",
     "frontend": "cd .. && cd frontend && npm run dev"

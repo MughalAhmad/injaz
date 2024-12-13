@@ -41,6 +41,10 @@ app.use("/api/v1/client", clientRouter);
 app.use("/api/v1/pdf", pdfRouter);   
 app.use("/api/v1/reference", referenceRouter);   
 
+app.get("/", (req, res) => {
+	res.send("Server running");
+});
+
 
 
 app.use('*', (req, res) => {
