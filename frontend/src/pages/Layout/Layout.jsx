@@ -28,7 +28,7 @@ const Layout = () => {
   const [companyMenuState, setCompanyMenuState] = useState(false)
   const { companyName } = useSelector(state => state.brandingStore);
   const {user, isAuthenticated} = useSelector(state => state.adminStore);
-  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-lg text-white text-center pt-3`;
+  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-lg text-white text-center pt-3 justify-center`;
 
   const handleCompanyMenu = (name) =>{
     localStorage.setItem("companyName",name)
@@ -46,11 +46,17 @@ const Layout = () => {
     Cookies.remove('auth-token');
     sweetNotification(false, "Logout successfully ")
     window.location.reload();
+    navigate("/login")
   }
 
   useEffect(() => {
-    setLocation(window.location.pathname)
-    navigate(window.location.pathname)
+    if(isAuthenticated){
+      setLocation(window.location.pathname)
+      navigate(window.location.pathname)
+    }
+    else{
+      navigate("/login")
+    }
   }, [window.location.pathname])
 
 
@@ -123,27 +129,71 @@ useEffect(() => {
 
 
         <nav className="flex-1  space-y-2 mt-10">
-        <p onClick={()=>handleMenu('/')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
-            Dashboard
-          </p>
-          <p onClick={()=>handleMenu('/quotation')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/')}>
+           <img src={`/svgs/${location === "/" ? "dashboardWhite":"dashboardGray"}.svg`} alt="dashboard-icon" className={`${location === "/" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+            <p>Dashboard</p>
+          </span>
+
+          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/quotation')}>
+           <img src={`/svgs/${location === "/quotation" ? "quotationWhite":"quotationGray"}.svg`} alt="dashboard-icon" className={`${location === "/quotation" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+            <p>Quotations</p>
+          </span>
+
+          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/form')}>
+           <img src={`/svgs/${location === "/form" ? "quotationWhite":"formGray"}.svg`} alt="dashboard-icon" className={`${location === "/form" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+            <p>Create Quotations</p>
+          </span>}
+
+          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/team')}>
+           <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+            <p>Team</p>
+          </span>}
+
+          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/reference')}>
+           <img src={`/svgs/${location === "/reference" ? "referenceWhite":"referenceGray"}.svg`} alt="dashboard-icon" className={`${location === "/reference" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+            <p>Refrence</p>
+          </span>}
+
+          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/profile')}>
+          <svg 
+  xmlns="http://www.w3.org/2000/svg" 
+  viewBox="0 0 24 24" 
+  width="24" 
+  height="24" 
+  fill="currentColor"
+>
+  <circle cx="12" cy="8" r="4" />
+  <ellipse cx="12" cy="18" rx="8" ry="5" />
+</svg>
+           {/* <img src={`/svgs/${location === "/profile" ? "profileGray":"profileGray"}.svg`} alt="dashboard-icon" className={`${location === "/profile" ? "w-7 h-auto" : "w-5 h-auto"} `}/> */}
+            <p>Profile</p>
+          </span>
+
+          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 font-normal text-sm pl-4 text-slate500`} onClick={()=>handleLogout()}>
+           <img src={`/svgs/${companyName === "Injaz" ? "logoutBlue":"logoutRed"}.svg`} alt="dashboard-icon" className="w-5 h-auto"/>
+            <p>Logout</p>
+          </span>
+
+
+
+          {/* <p onClick={()=>handleMenu('/quotation')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Quotations
-          </p>
-          <p onClick={()=>handleMenu('/form')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p> */}
+          {/* {user?.role === "admin" &&  <p onClick={()=>handleMenu('/form')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Create Quotations
-          </p>
-          {user?.role === "admin" &&<p onClick={()=>handleMenu('/team')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p>} */}
+          {/* {user?.role === "admin" &&<p onClick={()=>handleMenu('/team')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Team
-          </p>}
-          {user?.role === "admin" && <p onClick={()=>handleMenu('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p>} */}
+          {/* {user?.role === "admin" && <p onClick={()=>handleMenu('/reference')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Refrence 
-          </p>}
-          <p onClick={()=>handleMenu('/profile')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p>} */}
+          {/* <p onClick={()=>handleMenu('/profile')} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
           Profile
-          </p>
-          <p onClick={()=>handleLogout()} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
+          </p> */}
+          {/* <p onClick={()=>handleLogout()} className={`block py-2 rounded-2xl cursor-pointer h-14 ${location === "/#" ? highLight : "font-normal text-sm pl-4 text-slate500" } `}>
             Logout
-          </p>
+          </p> */}
         </nav>
 
 
@@ -187,9 +237,9 @@ useEffect(() => {
           <p onClick={()=>handleMenu('/quotation')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Quotations
           </p>
-          <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
+          {user?.role === "admin" && <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
           Create Quotations
-          </p>
+          </p>}
           {user?.role === "admin" && <p onClick={()=>handleMenu('/team')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Team
           </p>}
@@ -208,7 +258,7 @@ useEffect(() => {
       {/* Main Content */}
       <div className="flex-1 bg-gray-100 overflow-auto" >
         <Navbar/>
-          {location === "/" && <Dashboard/>}
+          {/* {location === "/" && <Dashboard/>}
           {location === "/team" && <Team/>}
           {location === "/reference" && <Reference/>}
           {location === "/setting" && <Setting/>}
@@ -218,10 +268,10 @@ useEffect(() => {
           {location === `/team/${params?.tid}` && <TeamForm/>}
           {location === "/reference/create" && <RefForm/>}
           {location === `/reference/${params?.rid}` && <RefForm/>} 
-          {location === `/profile` && <ProfileForm/>} 
+          {location === `/profile` && <ProfileForm/>}  */}
 
 
-        {/* <Outlet /> */}
+        <Outlet />
       </div>
     </div>
   )

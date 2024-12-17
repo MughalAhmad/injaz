@@ -24,11 +24,13 @@ const DateDropDown = ({ label, onDateChange }) => {
 
   // Handle changes and pass to the parent component
   useEffect(() => {
-    onDateChange({ day: selectedDay, month: selectedMonth, year: selectedYear });
+    // onDateChange({ day: selectedDay, month: selectedMonth, year: selectedYear });
+    onDateChange(`${selectedDay}-${selectedMonth}-${selectedYear}`);
+
   }, [selectedDay, selectedMonth, selectedYear]);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <label className={`text-sm text-[#222A59] font-medium`}>{label}</label>
       <div className="flex gap-2">
         {/* Day */}

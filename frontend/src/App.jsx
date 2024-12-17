@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 import "sweetalert2/dist/sweetalert2.min.css";
 
 function App() {
-  const {user} = useSelector(state => state.adminStore);
+  const {user, isAuthenticated} = useSelector(state => state.adminStore);
 
   return (
 
@@ -31,24 +31,25 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       {/* Protected Routes */}
-      <Route element={<UserProtectedRoutes />}>
-        <Route path="/" element={<Layout/>}>
-          <Route index element={<Dashboard />} />
-          <Route path="form" element={<TestForm />} />
-          <Route path="forgot" element={<ForgotPassword />} />
-          <Route path="digit6" element={<Digit6Verify />} />
-          <Route path="newpassword" element={<NewPassword />} />
-          <Route path="sucessfulpassword" element={<SucessfulPassword />} />
-          <Route path="quotation" element={<Quotation />} />
-          <Route path="team" element={<Team />}/> 
-          <Route path="team/:tid" element={<TeamForm />} /> 
-          <Route path="team/create" element={<TeamForm />} /> 
-          <Route path="reference" element={<Reference />} /> 
-          <Route path="reference/:rid" element={<RefForm />} /> 
-          <Route path="reference/create" element={<RefForm />} /> 
-          <Route path="profile" element={<Profile />} />
+      {/* <Route element={<UserProtectedRoutes />}> */}
+         <Route path="/" element={<Layout/>}>
+         <Route index element={<Dashboard />} />
+          {user?.role === "admin" && isAuthenticated && <Route path="form" element={<TestForm />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="forgot" element={<ForgotPassword />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="digit6" element={<Digit6Verify />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="newpassword" element={<NewPassword />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="sucessfulpassword" element={<SucessfulPassword />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="team" element={<Team />}/> }
+          {isAuthenticated && user?.role === "admin" && <Route path="team/:tid" element={<TeamForm />} />} 
+          {isAuthenticated && user?.role === "admin" && <Route path="team/create" element={<TeamForm />} />} 
+          {isAuthenticated && user?.role === "admin" && <Route path="reference" element={<Reference />} />}
+          {isAuthenticated && user?.role === "admin" && <Route path="reference/:rid" element={<RefForm />} />} 
+          {isAuthenticated && user?.role === "admin" && <Route path="reference/create" element={<RefForm />} />}           
+          {isAuthenticated && <Route path="quotation" element={<Quotation />} />}
+          {isAuthenticated && <Route path="profile" element={<Profile />} />}
+        {/* <Route path="*" element={<Page404/>}/> */}
         </Route>
-      </Route>
+      {/* </Route> */}
     </Routes>
   </Router>
   );

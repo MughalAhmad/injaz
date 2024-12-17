@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createPdf } from '../redux/features/pdfSlice';
 import {sweetNotification} from "../components/common/SweetAlert"
 import {useNavigate} from "react-router-dom"
+import DateDropDown from '../components/pdf/DateDropDown';
 const TestForm = () => {
   const toWords = new ToWords();
   const dispatch = useDispatch();
@@ -61,38 +62,58 @@ const { user } = useSelector(state => state.adminStore);
    freeVisa:"",
 
    step1Remarks:'Government Fees',
-   step1Timeline:'3-5 Working Days After Verification and Payment',
+   step1Timeline:'3-5 Working Days',
    step1value:'',
+
+
+   preRemarks:'One-time',
+   preTimeline:"5-10 Days",
+
 
    step2ApprovalFee:'',
    step2value1:'',
+   step2value1IN:'',
    step2Timeline:'2-3 Working Days',
-   step2EstablishmentRemark:"Government Fees Renewable every year",
+   step2EstablishmentRemark:"Federel Immigration Fees Renewable every year",
    step2Remark:"Government Fees Renewable every year",
-   step2EstablishmentTimeline:"2-3 working days After Payment" ,
+   step2EstablishmentTimeline:"2-3 Working Days After License" ,
    step3RenewableEmployment:"Government Fees Renewable every year ",
-   step3StatusChange:"if you are in UAE ",
+   step3StatusChange:"AED 1650 – If You Are In UAE",
    step2Establishment:'',
+   step2EstablishmentIN:'',
    step2ImmigrationFee:'',
    step2value2a:'',
+   step2value2aIN:"",
 
 
    step3ImmigrationUID:'Immigration Required UID',
    step3TimelineUID:'2-3 Working Days ',
-   step3Renewable:'Government Fees Renewable every year ',
-   step3Timeline:'2-3 working days After Payment ',
+   step3Renewable:'Renewable Every 2 Years',
+   step3Timeline:'4-7 Working Days',
    step2value2:'',
+   step2value2IN:'',
    step3TimelineEmployment:'5-7 Working Days',
    step2value3:'',
+   step2value3IN:'',
    step3Medical:"",
    TimelineMedical:'1-2 working days after apply',
    step3EmiratesId:"",
    TimelineEmiratesId:'5-10 working days after apply',
-   step3TimelineStatusChange:'During Application ',
+   step3TimelineStatusChange:'During Application',
    pro:2500,
    word:'',
    flag:'',
    country:'',
+
+   medical:"",
+   medicalIN:"",
+   medicalTimeline:"1-2 Working Days After Apply",
+
+   emiratesId:'',
+   emiratesIdIN:"",
+   emiratesIdTimeline:"3-5 Working Days After Apply",
+
+   quotationDate:'',
 
    pdfLenght:'',
    isEmail:""
@@ -550,6 +571,13 @@ const { user } = useSelector(state => state.adminStore);
   
    }
 
+   const handleQuotationDate = (date)=>{
+    setData(prevData => ({
+      ...prevData,
+      quotationDate:date
+    }));
+   }
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
     if(e.target.name==="clientEmail"){
@@ -583,10 +611,10 @@ const saveDataIntoDB = () =>{
       if (response && !response.payload.hasError) {
        console.log("responseresponseresponse",response)
        navigate("/quotation")
-       sweetNotification(false, resp.payload.msg)
+       sweetNotification(false, response.payload.msg)
       }
       else{
-        sweetNotification(true, resp.payload.msg)
+        sweetNotification(true, response.payload.msg)
       }
     })
     .catch(error => {
@@ -632,13 +660,16 @@ const saveDataIntoDB = () =>{
 
   const handleAmount = () => {
     console.log("AMOUNT CALL")
-    let totalAmount = [data.step1value, Number(data.step2ApprovalFee), data.step2value1, data.step2Establishment, data.step2value2a, data.step2value2, Number(data.discount)].reduce(
+    let totalAmount = [data.step1value, Number(data.step2ApprovalFee),   Number(data.step2EstablishmentIN),         data.step2value1IN,  data.step2value2aIN, data.step2value2IN, Number(data.discount), Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
 
       (total, item) => total + Number(item), 
       0
     );
     
-    let calculateGrandTotal = updateTheGTValue(totalAmount)
+    let calculateGrandTotal = updateTheGTValue(totalAmount);
+
+    // calculateGrandTotal = calculateGrandTotal + Number(data.medicalIN) + Number(data.emiratesIdIN)
+
     const roundedNumber = parseFloat(calculateGrandTotal.toFixed(1));
     let words = toWords.convert(roundedNumber);
 
@@ -696,6 +727,8 @@ useEffect(() => {
   setData((prevData) => ({
     ...prevData,
     step2Establishment: getStep2ValueB(),
+    step2EstablishmentIN: getStep2ValueB(),
+
   }));
 }, [data.stateValue]);
 
@@ -735,8 +768,14 @@ useEffect(() => {
   setData((prevData) => ({
     ...prevData,
     step2value2a: getStep3ValueA(),
+    step2value2aIN: getStep3ValueA(),
+
     step2value2: getStep3ValueB(),
+    step2value2IN: getStep3ValueB(),
+
     step2value3: getStep3ValueC(),
+    step2value3IN: getStep3ValueC(),
+
   }));
 }, [data.stateValue]);
 
@@ -829,7 +868,7 @@ useEffect(() => {
 
 
          const auth = () =>{
-          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1 && data.step2Establishment && data.step2value2a && data.step2value2 && data.step2value3 && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && stateArray[0]?.authority && data.isEmail && data.packageIncludingVisa){
+          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1IN && data.step2value1 && data.step2Establishment && data.step2EstablishmentIN && data.step2value2a && data.step2value2aIN && data.step2value2 && data.step2value2IN && data.step2value3 && data.step2value3IN && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && stateArray[0]?.authority && data.isEmail && data.packageIncludingVisa && data.medical && data.medicalIN && data.emiratesId && data.emiratesIdIN){
             return true
           }
           else return false;
@@ -865,7 +904,7 @@ useEffect(() => {
     //   )
     // );
     
-  }, [stateArray, data.discount, data.step1value, data.step2Establishment, data.step2value1, data.step2value2, data.step2value2a, data.step2value3, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad])
+  }, [stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
   
 
   return (
@@ -896,6 +935,7 @@ useEffect(() => {
     />
     {data.isEmail === false &&<span style={{paddingLeft:'7px', paddingTop:"5px", fontSize:'15px', color:"red"}}>Enter Valid Email*</span>}
       </div>
+      <DateDropDown label="Date" onDateChange={handleQuotationDate}/>
 </div>
 
 {/* client phone and Refrence */}
@@ -933,9 +973,7 @@ useEffect(() => {
   <Input label="Remarks" disabled='disabled' value={data.step1Remarks} name='step1Remarks' />
   <Input label="Timeline" disabled='disabled' value={data.step1Timeline} name='step1Timeline'/>
 </div>
-<div className='flex flex-wrap gap-6 md:gap-5 my-8'>
-<Input label="Pre Approval Fee" value={data.step2ApprovalFee} name='step2ApprovalFee' placeholder='Enter Approval Fee' type='number' handleChange={handleChange}  />
-</div>
+
 </div>
 </div>
 
@@ -943,18 +981,31 @@ useEffect(() => {
 <div className='my-8 flex gap-5 flex-col md:flex-row'>
 <Title title='Step 2: Immigration' titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 <div>
-<div className='my-8 flex flex-wrap gap-6 md:gap-5'>
-<Input label="E Channel Card" value={data.step2value1} name='step2value1'  placeholder='Enter E Channel' type='number' handleChange={handleChange} />
-
-  <Input label="Remarks" disabled='disabled' value={data.step2Remark} name='step2Remark'/>
-  <Input label="Timeline" disabled='disabled' value="" name=''/>
+<div className='flex flex-wrap gap-6 md:gap-5 my-8'>
+<Input label="Pre Approval Fee" value={data.step2ApprovalFee} name='step2ApprovalFee' placeholder='Enter Approval Fee' type='number' handleChange={handleChange}  />
 
 
+<Input label="Remarks" disabled='disabled' value={data.preRemarks} name='preRemarks'/>
+<Input label="Timeline" disabled='disabled' value={data.preTimeline} name='preTimeline'/>
 </div>
+
 <div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2Establishment} list={selectStep2b} name='step2Establishment' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Establishment Card'/>
+ 
+ <SelectAndInput value={data.step2EstablishmentIN} list={selectStep2b} name='step2EstablishmentIN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Establishment Card (include)'/>
+
   <Input label="Remarks" disabled='disabled' value={data.step2EstablishmentRemark} name='step2Timeline'/>
   <Input label="Timeline" disabled='disabled' value={data.step2EstablishmentTimeline} name='step2EstablishmentTimeline'/>
+
+</div>
+
+<div className='my-8 flex flex-wrap gap-6 md:gap-5'>
+<Input label="E Channel Card" value={data.step2value1} name='step2value1'  placeholder='Enter E Channel' type='number' handleChange={handleChange} />
+<Input label="E Channel Card (include)" value={data.step2value1IN} name='step2value1IN'  placeholder='Enter E Channel' type='number' handleChange={handleChange} />
+
+  {/* <Input label="Remarks" disabled='disabled' value={data.step2Remark} name='step2Remark'/>
+  <Input label="Timeline" disabled='disabled' value="" name=''/> */}
+
 
 </div>
 </div>
@@ -968,21 +1019,54 @@ useEffect(() => {
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.freeVisa} list={selectVisa} name='freeVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Free Visa'/>
 </div>
+
+
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2value2a} list={selectVisaPartner} name='step2value2a' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa (Per Visa) Partner'/>
+ <SelectAndInput value={data.step2value2aIN} list={selectVisaPartner} name='step2value2aIN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa (Per Visa) Partner (include)'/>
+
  <Input label="Remarks" disabled='disabled' value={data.step3Renewable} name='step3Renewable'/>
   <Input label="Timeline" disabled='disabled' value={data.step3Timeline} name='step3Timeline'/>
 </div>
+
+
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2value2} list={selectVisaEmployment} name='step2value2' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa (Per Visa) Employment'/>
-  <Input label="Remarks" disabled='disabled' value={data.step3RenewableEmployment} name='step3RenewableEmployment'/>
-  <Input label="Timeline" disabled='disabled' value={data.step3TimelineEmployment} name='step3TimelineEmployment'/>
+ <SelectAndInput value={data.step2value2IN} list={selectVisaEmployment} name='step2value2IN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa (Per Visa) Employment (include)'/>
+
+  {/* <Input label="Remarks" disabled='disabled' value={data.step3RenewableEmployment} name='step3RenewableEmployment'/>
+  <Input label="Timeline" disabled='disabled' value={data.step3TimelineEmployment} name='step3TimelineEmployment'/> */}
 </div>
+
+
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
  <SelectAndInput value={data.step2value3} list={selectStatusChange} name='step2value3' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa Status Change'/>
+ <SelectAndInput value={data.step2value3IN} list={selectStatusChange} name='step2value3IN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa Status Change (include)'/>
+
  <Input label="Remarks" disabled='disabled' value={data.step3StatusChange} name='step3StatusChange'/>
   <Input label="Timeline" disabled='disabled' value={data.step3TimelineStatusChange} name='step3TimelineStatusChange'/>
 </div>
+
+
+<div className='my-8 flex flex-wrap gap-6 md:gap-5 justify-between'>
+  <div className='flex gap-6'>
+<Input label="Medical Test (Per visa)" value={data.medical} name='medical'  placeholder='Enter Medical Test' type='number' handleChange={handleChange} />
+<Input label="Medical Test (Per visa) (include)" value={data.medicalIN} name='medicalIN'  placeholder='Enter Medical Test' type='number' handleChange={handleChange} />
+  </div>
+  {/* <Input label="Remarks" disabled='disabled' value={data.step2Remark} name='step2Remark'/> */}
+  <Input label="Timeline" disabled='disabled' value={data.medicalTimeline} name='medicalTimeline'/>
+</div>
+
+<div className='my-8 flex flex-wrap gap-6 md:gap-5 justify-between'>
+  <div className='flex gap-6'>
+<Input label="Emirates ID (Per Visa)" value={data.emiratesId} name='emiratesId'  placeholder='Enter Emirates ID' type='number' handleChange={handleChange} />
+<Input label="Emirates ID (Per Visa) (include)" value={data.emiratesIdIN} name='emiratesIdIN'  placeholder='Enter Emirates ID' type='number' handleChange={handleChange} />
+  </div>
+  {/* <Input label="Remarks" disabled='disabled' value={data.step2Remark} name='step2Remark'/> */}
+  <Input label="Timeline" disabled='disabled' value={data.emiratesIdTimeline} name='emiratesIdTimeline'/>
+</div>
+
+
 
 <div className='mb-8 flex flex-wrap gap-6 md:gap-5'>
 <Input label="Pro Fees"

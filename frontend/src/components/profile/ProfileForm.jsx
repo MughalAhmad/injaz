@@ -48,8 +48,8 @@ const dispatch = useDispatch();
     <p className='font-semibold text-2xl text-textPrimary my-11'>Profile</p>
 
     <div className='bg-white h-auto flex flex-col lg:flex-row  mt-4 pb-5 rounded-3xl py-10'>
-        <div className='w-full lg:w-[25%] flex justify-center  relative'>
-            <div className='border-2 w-60 h-60 rounded-full'>
+        <div className='w-full lg:w-[25%] flex justify-center  relative pl-3'>
+            <div className='border-2 w-60 h-60 lg:w-52 lg:h-52 xl:w-60 xl:h-60 rounded-full'>
             <img src={img} alt='' className="w-full h-full rounded-full object-cover"/>
             </div>
             <input type='file' className='w-60 h-60 absolute rounded-full opacity-0' onChange={(e) => handleChangeImg(e)} />

@@ -21,19 +21,19 @@ const Dashboard = () => {
     {
       count:pdfData?.cardData?.pending,
       title:'Pending Approvals',
-      icon:'/svgs/dashboard.svg',
+      icon:'/svgs/dashboardPendding.svg',
       bg:'bg-yellow-500'
       },
     {
       count:pdfData?.cardData?.approved,
       title:'Approved Quotations',
-      icon:'/svgs/dashboard.svg',
+      icon:'/svgs/dashboardApproved.svg',
       bg:'bg-green-500'
     },
     {
       count:pdfData?.cardData?.rejected,
       title:'Rejected Quotations',
-      icon:'/svgs/dashboard.svg',
+      icon:'/svgs/dashboardReject.svg',
       bg:'bg-rose-400'
     }
   ]
