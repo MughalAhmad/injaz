@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllPdf } from '../../redux/features/pdfSlice';
+// import { getAllPdf } from '../../redux/features/pdfSlice';
 
 const Table = () => {
 
@@ -9,23 +9,21 @@ const Table = () => {
     const { companyName } = useSelector(state => state.brandingStore);
     const { user } = useSelector(state => state.adminStore);
 
-    const getAllPdfList = () =>{
-      const data = {
-        companyName: companyName,
-        userId: user?._id,
-        role: user?.role
-      }
-      dispatch(getAllPdf(data))
-    }
+    // const getAllPdfList = () =>{
+    //   const data = {
+    //     companyName: companyName,
+    //     userId: user?._id,
+    //     role: user?.role
+    //   }
+    //   dispatch(getAllPdf(data))
+    // }
   
-    useEffect(() => {
-      getAllPdfList()
-    }, [localStorage.getItem("companyName")])
+    // useEffect(() => {
+    //   getAllPdfList()
+    // }, [localStorage.getItem("companyName")])
 
   return (
-    <div>
-      <div className="my-8 bg-white overflow-x-hidden rounded-3xl border border-gray-200">
-      <div className="w-full overflow-x-auto">
+      <div className="w-full">
         <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
@@ -63,13 +61,7 @@ const Table = () => {
           </tbody>
         </table>
       </div>
-      <div className="py-5 px-5">
-        <p className="text-textPrimary font-normal text-sm">
-      Showing 1 to 10 of 100 entries
-        </p>
-      </div>
-     </div>
-     </div>
+    
   );
 };
 

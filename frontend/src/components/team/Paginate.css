@@ -5,7 +5,7 @@
     list-style: none;
     padding: 0;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 0px;
   }
   
   /* Style for individual page items */
@@ -14,23 +14,25 @@
     font-size: smaller;
   }
   
+
   .pagination li a {
     padding: 5px 8px;
     border: 1px solid #ddd;
     cursor: pointer;
-    color: #007BFF;
-    text-decoration: none;
+    color: gray;
+    /* text-decoration: none; */
   }
   
   .pagination li a:hover {
     background-color: gray;
+    color:white;
   }
   
   /* Active page styling */
   .pagination li.active a {
     background-color: gray;
-    color: gray;
-    border: 1px solid gray;
+    color: white;
+    /* border: 1px solid gray; */
   }
   
   /* Disabled navigation buttons */

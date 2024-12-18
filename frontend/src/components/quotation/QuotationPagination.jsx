@@ -2,12 +2,12 @@ import React from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Paginate.css";
 import { useSelector } from 'react-redux';
-import ReferenceTable from "./ReferenceTable";
+import QuotationTable from "./Table";
 import { current } from '@reduxjs/toolkit';
 
-const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
+const QuoationPaginate = ({ setCurrentPage, currentPage }) => {
 
-  const { refs } = useSelector(state => state.generalStore);
+  const { pdfData } = useSelector(state => state.pdfStore);
 
   const handlePageClick = (data) => {
     // localStorage.setItem("currentPage",data.selected+1)
@@ -15,17 +15,17 @@ const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
   };
 
     const renderItems = () => {
-    return <ReferenceTable/>
+    return <QuotationTable/>
   };
 
   return (
-    <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
+    <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200 mt-10 mb-10">
       <div>{renderItems()}</div>
 
 
       <div className="py-5 px-5 flex justify-between items-center">
         <p className="text-textPrimary font-normal text-sm">
-      Showing {currentPage} to {refs?.pages} of {refs?.total} entries
+      Showing {currentPage} to {pdfData?.pages} of {pdfData?.total} entries
         </p>
       
 
@@ -33,7 +33,7 @@ const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
         previousLabel={'<'}
         nextLabel={'>'}
         breakLabel={'...'}
-        pageCount={refs.pages}
+        pageCount={pdfData.pages}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}
@@ -46,4 +46,4 @@ const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
     </div>
   );
 };
-export default ReferencePaginate;
+export default QuoationPaginate;

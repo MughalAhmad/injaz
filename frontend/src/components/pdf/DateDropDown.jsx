@@ -25,7 +25,7 @@ const DateDropDown = ({ label, onDateChange }) => {
   // Handle changes and pass to the parent component
   useEffect(() => {
     // onDateChange({ day: selectedDay, month: selectedMonth, year: selectedYear });
-    onDateChange(`${selectedDay}-${selectedMonth}-${selectedYear}`);
+    onDateChange(`${selectedYear}-${selectedMonth}-${selectedDay}`);
 
   }, [selectedDay, selectedMonth, selectedYear]);
 

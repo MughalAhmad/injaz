@@ -5,6 +5,10 @@ const pdfSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    quotationDate:{
+        type: String,
+        required: true
+    },
     clientName: {
         type: String,
         required: true

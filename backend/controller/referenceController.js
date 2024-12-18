@@ -131,7 +131,7 @@
         return res.status(200).json({
           hasError: false,
           msg: "All References Successfully Finded",
-          data: { refs: refList, pages:refCount  },
+          data: { refs: refList, pages:refCount, total:totalDocuments  },
         });
       } catch (error) {
         return res.status(200).json({

@@ -3,16 +3,13 @@ import Input from '../common/Input';
 import PhoneInput from '../common/PhoneInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../redux/features/generalSlice';
-
+import {updateUserImg} from '../../redux/features/adminSlice';
 
 
 
 const ProfileForm = () => {
     const [useData, setUseData] = useState([])
-    const {user} = useSelector(state => state.adminStore);
-    const [img, setImg] = useState("");
-
-    console.log(img)
+    const {user, userImg} = useSelector(state => state.adminStore);
 
 const dispatch = useDispatch();
         const getUserData = () =>{
@@ -27,17 +24,30 @@ const dispatch = useDispatch();
           });
         };
 
-        const handleChangeImg = (e) =>{
-            const file = e.target.files[0];
-            if (file) {
-              const reader = new FileReader();
-              reader.onload = (event) => {
-                setImg(event.target.result); // Set the base64 image data
-              };
-              reader.readAsDataURL(file);
-            }
-        }
-          
+        // const handleChangeImg = (e) =>{
+        //     const file = e.target.files[0];
+        //     if (file) {
+        //       const reader = new FileReader();
+        //       reader.onload = (event) => {
+        //         setImg(event.target.result); // Set the base64 image data
+        //       };
+        //       reader.readAsDataURL(file);
+        //     }
+        // }
+        const handleChangeImg = (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const base64 = event.target.result;
+              localStorage.setItem("profileImage", base64); // Save to localStorage
+              dispatch(updateUserImg(base64));
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+
+
         useEffect(() => {
             getUserData()
         
@@ -50,7 +60,7 @@ const dispatch = useDispatch();
     <div className='bg-white h-auto flex flex-col lg:flex-row  mt-4 pb-5 rounded-3xl py-10'>
         <div className='w-full lg:w-[25%] flex justify-center  relative pl-3'>
             <div className='border-2 w-60 h-60 lg:w-52 lg:h-52 xl:w-60 xl:h-60 rounded-full'>
-            <img src={img} alt='' className="w-full h-full rounded-full object-cover"/>
+            <img src={userImg} alt='' className="w-full h-full rounded-full object-cover"/>
             </div>
             <input type='file' className='w-60 h-60 absolute rounded-full opacity-0' onChange={(e) => handleChangeImg(e)} />
         </div>
@@ -99,25 +109,37 @@ const dispatch = useDispatch();
       <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
     {/* <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]'>Calling Number</p> */}
     <div className={`flex flex-col w-full lg:w-[50%] md:mr-5 xl:mr-10`}>
-
-       <PhoneInput
+    <Input
+                              type="number"
+                              title='Phone Number'
+                              disabled={true}
+                              size="lg"
+                              value={useData?.phone}
+                        />
+       {/* <PhoneInput
         type="number"
         title='Phone Number'
         disabled={true}
         size="lg"
         value={useData?.phone}
-       />
+       /> */}
       
     </div>  
     <div className={`flex flex-col w-full lg:w-[50%]`}>
-
-           <PhoneInput
+    <Input
+                                 type="number"
+                                 title='Mobile Number'
+                                 disabled={true}
+                                 size="lg"
+                                 value={useData?.mobile}
+                        />
+           {/* <PhoneInput
         type="number"
         title='Mobile Number'
         disabled={true}
         size="lg"
         value={useData?.mobile}
-       />
+       /> */}
     </div> 
   
       </div>

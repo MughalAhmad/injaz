@@ -17,13 +17,9 @@ const Table = () => {
         }
       }
   return (
-  
-    <div>
-    <div className="my-8 bg-white overflow-x-hidden rounded-3xl border border-gray-200">
-      <p className='pl-6 pt-6 pb-4 text-2xl font-medium text-textPrimary'>Recent Quotations Table</p>
-    <div className="w-full overflow-x-auto">
-      <table className="min-w-full">
-        <thead className="bg-gray-100">
+    <div className="w-full">
+    <table className="min-w-full">
+      <thead className="bg-gray-100">
           <tr>
             <th className="px-4 py-2 text-left font-bold text-sm text-black">ID</th>
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Customer Name</th>
@@ -59,13 +55,6 @@ const Table = () => {
         </tbody>
       </table>
     </div>
-    <div className="py-5 px-5">
-      <p className="text-textPrimary font-normal text-sm">
-    Showing 1 to 10 of 100 entries
-      </p>
-    </div>
-   </div>
-   </div>
   );
 };
 

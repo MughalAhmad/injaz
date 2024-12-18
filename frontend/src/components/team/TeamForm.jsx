@@ -170,7 +170,18 @@ const TeamForm = () => {
     <p className='font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]'>Calling Number</p>
     <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
 
-       <PhoneInput
+    <Input
+                           type="number"
+                           title='Phone Number'
+                           name="phone"
+                           placeholder="Enter Phone Number"
+                           size="lg"
+                           value={values.phone}
+                           onChange={handleChange}
+                           onBlur={handleBlur}
+                           feedback={[errors.phone, touched.phone]}
+                        />
+       {/* <PhoneInput
         type="number"
         title='Phone Number'
         name="phone"
@@ -180,12 +191,22 @@ const TeamForm = () => {
         onChange={handleChange}
         onBlur={handleBlur}
         feedback={[errors.phone, touched.phone]}
-       />
+       /> */}
       
     </div>  
     <div className={`flex flex-col w-full lg:w-[33%]`}>
-
-           <PhoneInput
+    <Input
+                            type="number"
+                            title='Mobile Number'
+                            name="mobile"
+                            placeholder="Enter Mobile Number"
+                            size="lg"
+                            value={values.mobile}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            feedback={[errors.mobile, touched.mobile]}
+                        />
+           {/* <PhoneInput
         type="number"
         title='Mobile Number'
         name="mobile"
@@ -195,7 +216,7 @@ const TeamForm = () => {
         onChange={handleChange}
         onBlur={handleBlur}
         feedback={[errors.mobile, touched.mobile]}
-       />
+       /> */}
     </div> 
   
       </div>

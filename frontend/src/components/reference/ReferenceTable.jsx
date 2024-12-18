@@ -11,9 +11,8 @@ const ReferenceTable = () => {
 
 
   return (
-    <div>
 
-      <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
+      // <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
       <div className="w-full">
         <table className="min-w-full">
           <thead className="bg-gray-100">
@@ -41,13 +40,12 @@ const ReferenceTable = () => {
           </tbody>
         </table>
       </div>
-      <div className="py-5 px-5">
-        <p className="text-textPrimary font-normal text-sm">
-      Showing 1 to 10 of 100 entries
-        </p>
-      </div>
-     </div>
-     </div>
+    //   <div className="py-5 px-5">
+    //     <p className="text-textPrimary font-normal text-sm">
+    //   Showing 1 to 10 of 100 entries
+    //     </p>
+    //   </div>
+    //  </div>
   );
 };
 

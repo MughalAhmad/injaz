@@ -31,7 +31,7 @@ const initialstate = {
         pending:30,
         approved:34,
         rejected:346, 
-      }},
+      },total:0 },
     status: 'idle',
     error: null,
     isLoading: true,
@@ -76,6 +76,7 @@ const pdfSlice = createSlice({
                     state.pdfData.list = action.payload.data.pdfs;
                     state.pdfData.pages = action.payload.data.pages
                     state.pdfData.cardData = action.payload.data.cardData;
+                    state.pdfData.total = action.payload.data.total;
 
                     state.isLoading = false;
                 }

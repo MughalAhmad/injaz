@@ -9,9 +9,6 @@ const Table = () => {
     const { users } = useSelector(state => state.generalStore);
     console.log("user", users)
   return (
-    <div>
-    
-      <div className="my-8 bg-white rounded-3xl overflow-auto border border-gray-200">
       <div className="w-full ">
         <table className="min-w-full">
           <thead className="bg-gray-100">
@@ -36,13 +33,7 @@ const Table = () => {
           </tbody>
         </table>
       </div>
-      <div className="py-5 px-5">
-        <p className="text-textPrimary font-normal text-sm">
-      Showing 1 to 10 of 100 entries
-        </p>
-      </div>
-     </div>
-     </div>
+
   );
 };
 

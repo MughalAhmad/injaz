@@ -4,7 +4,7 @@ import "./Paginate.css";
 import { useSelector } from 'react-redux';
 import Table from "./Table";
 
-const TeamPaginate = ({ setCurrentPage }) => {
+const TeamPaginate = ({ setCurrentPage, currentPage }) => {
 
   const { users } = useSelector(state => state.generalStore);
 
@@ -18,8 +18,15 @@ const TeamPaginate = ({ setCurrentPage }) => {
   };
 
   return (
-    <div>
+    <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
       <div>{renderItems()}</div>
+
+
+      <div className="py-5 px-5 flex justify-between items-center">
+        <p className="text-textPrimary font-normal text-sm">
+      Showing {currentPage} to {users?.pages} of {users?.total} entries
+        </p>
+      
       <ReactPaginate
         previousLabel={'<'}
         nextLabel={'>'}
@@ -32,6 +39,7 @@ const TeamPaginate = ({ setCurrentPage }) => {
         activeClassName={'active'}
         forcePage={localStorage.getItem("currentPage") - 1}
       />
+    </div>
     </div>
   );
 };

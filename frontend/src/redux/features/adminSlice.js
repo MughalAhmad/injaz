@@ -46,6 +46,7 @@ export const changePassword = createAsyncThunk(
 const initialstate = {
     isAuthenticated: false,
     token: null,
+    userImg:localStorage.getItem('profileImage'),
     user: {},
     status: 'idle',
     error: null,
@@ -76,6 +77,9 @@ const adminSlice = createSlice({
         updateShowBackDropLoader(state, action) {
             state.showBackDropLoader = action.payload;
         },
+        updateUserImg(state, action) {
+            state.userImg = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -105,5 +109,5 @@ const adminSlice = createSlice({
 });
 
 export const { updateAuthStatus, updateToken, updateUser, updateAuthSliceErrorStatus,
-     updateShowLoader, updateShowBackDropLoader } = adminSlice.actions;
+     updateShowLoader, updateShowBackDropLoader, updateUserImg } = adminSlice.actions;
 export default adminSlice;

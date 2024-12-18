@@ -14,7 +14,8 @@ import Cookies from 'js-cookie';
 const Navbar = () => {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
-  const {user} = useSelector(state => state.adminStore);
+  const {user, userImg} = useSelector(state => state.adminStore);
+  
   const navigate = useNavigate();
 
   const handleLogout = () =>{
@@ -22,6 +23,7 @@ const Navbar = () => {
     sweetNotification(false, "Logout successfully ")
     window.location.reload();
   }
+  
 
   return (
     <nav className="bg-white shadow-md px-4 py-3 flex flex-col-reverse gap-5 md:gap-0 md:flex-row md:items-center md:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
@@ -95,7 +97,7 @@ const Navbar = () => {
             onClick={() => setProfileDropdown(!profileDropdown)}
           >
             <img
-              src="https://via.placeholder.com/30"
+              src={userImg}
               alt="Profile"
               className="w-16 h-16 mr-3 rounded-xl hidden md:block"
             />

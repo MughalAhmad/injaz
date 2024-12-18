@@ -27,7 +27,7 @@ const Layout = () => {
   
   const [companyMenuState, setCompanyMenuState] = useState(false)
   const { companyName } = useSelector(state => state.brandingStore);
-  const {user, isAuthenticated} = useSelector(state => state.adminStore);
+  const {user, isAuthenticated, userImg} = useSelector(state => state.adminStore);
   const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-lg text-white text-center pt-3 justify-center`;
 
   const handleCompanyMenu = (name) =>{
@@ -45,8 +45,8 @@ const Layout = () => {
   const handleLogout = () =>{
     Cookies.remove('auth-token');
     sweetNotification(false, "Logout successfully ")
-    window.location.reload();
     navigate("/login")
+    window.location.reload();
   }
 
   useEffect(() => {
@@ -117,7 +117,7 @@ useEffect(() => {
 
 
         <div className="flex gap-5 items-center mt-6 mb-3">
-          <img src={User} className="w-11 h-11 rounded-full" alt="user"/>
+          <img src={userImg} className="w-11 h-11 rounded-full" alt="user"/>
           <div>
             <p className="text-xl font-normal text-textPrimary">{ user?.firstName }</p>
             <p className="text-slate500 font-normal text-xs"><span className="bg-backgroundGreen500 min-w-2.5 min-h-2.5 rounded-full inline-block mr-0.5"></span>Online</p>

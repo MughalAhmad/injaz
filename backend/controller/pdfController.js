@@ -22,21 +22,55 @@ const pdfModel = require("../models/pdfModel");
     },
     getAllPdf: async (req, res, next) => {
       try {
-        const {company, userId, role} = req.query;
-        let pdf;
-        if(role === 'admin'){
-           pdf = await pdfModel.find({selectCompany:company})
-        }else{
-           pdf = await pdfModel.find({selectCompany:company, userId:userId})
-        }
-        if (!pdf) throw new Error("Error to find pdf");
-        console.log(pdf)
+        const {currentPage, company,role, userId} = req.query; 
+        const page = currentPage || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
   
-        return res.status(200).json({
-          hasError: false,
-          msg: "get pdf succeeded!",
-          data: { pdfs: pdf},
-        });
+        const options = [
+          { $skip: skip }, // Pagination skip
+          { $limit: limit },
+        ];
+
+        let matchOptions ='';
+
+if(role === "admin"){
+  matchOptions = {selectCompany:company}
+}else{
+  matchOptions = {selectCompany:company, userId:userId}
+
+}
+
+const pdfs = await pdfModel.aggregate([
+  {
+    $match: {
+      ...matchOptions,
+         },
+  },
+  {
+    $facet: {
+      limitedPdfs:options,
+      totalCount: [
+        { $count: "count" }, // Count the total number of documents matching the filter
+      ],
+    },
+  },
+]);
+
+
+const pdfList = pdfs[0]?.limitedPdfs || [];
+const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
+const pdfCount = Math.ceil(totalDocuments / limit);
+
+if (!pdfs) throw new Error("Pdfs not found");
+
+return res.status(200).json({
+  hasError: false,
+  msg: "All Pdfs Successfully Finded",
+  data: { pdfs: pdfList, pages :pdfCount, total:totalDocuments },
+});
+
+
       } catch (error) {
         return res.status(200).json({
           hasError: true,
@@ -47,53 +81,78 @@ const pdfModel = require("../models/pdfModel");
     },
     dashboardData: async (req, res, next) => {
       try {
-            const {currentPage, filter, company,role, userId} = req.query; 
+            const {currentPage, sortValue, company,role, userId} = req.query; 
             const searchQuery = '';
             const page = currentPage || 1;
             const limit = 10;
             const skip = (page - 1) * limit;
 
-            const filterBy = "";
+            const filterBy = sortValue;
       
             const options = [
               { $skip: skip }, // Pagination skip
               { $limit: limit },
             ];
 
-            // Get the current date
+          // Get the current date
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed in JS
+const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed in JavaScript
 const currentDay = currentDate.getDate();
+const currentWeek = Math.ceil((currentDay + (new Date(currentYear, currentMonth - 1, 1).getDay())) / 7); // Calculate ISO week
 
-// Choose the filter condition (current date, month, or year)
-let dateFilter = {}; // Default to no date filter
+let dateFilter = {};
+
+// Assuming you are comparing the "quotationDate" field in the format "YYYY-MM-DD"
+const quotationDate = "2024-12-18"; // Example date
+
+// Filter by Day (e.g., "2024-12-18")
 if (filterBy === "day") {
+  const [year, month, day] = quotationDate.split("-").map(Number);
+
   dateFilter = {
     $expr: {
       $and: [
-        { $eq: [{ $year: "$createdAt" }, currentYear] },
-        { $eq: [{ $month: "$createdAt" }, currentMonth] },
-        { $eq: [{ $dayOfMonth: "$createdAt" }, currentDay] },
+        { $eq: [{ $year: "$quotationDate" }, currentYear] },
+        { $eq: [{ $month: "$quotationDate" }, currentMonth] },
+        { $eq: [{ $dayOfMonth: "$quotationDate" }, currentDay] },
       ],
-    },
-  };
-} else if (filterBy === "month") {
-  dateFilter = {
-    $expr: {
-      $and: [
-        { $eq: [{ $year: "$createdAt" }, currentYear] },
-        { $eq: [{ $month: "$createdAt" }, currentMonth] },
-      ],
-    },
-  };
-} else if (filterBy === "year") {
-  dateFilter = {
-    $expr: {
-      $eq: [{ $year: "$createdAt" }, currentYear],
     },
   };
 }
+
+// Filter by Week (ISO Week)
+else if (filterBy === "week") {
+  const [year, month, day] = quotationDate.split("-").map(Number);
+  const date = new Date(currentYear, currentMonth - 1, currentDay);
+  const weekOfYear = Math.ceil((date.getDate() + (new Date(currentYear, currentMonth - 1, 1).getDay())) / 7);
+
+  dateFilter = {
+    $expr: {
+      $and: [
+        { $eq: [{ $year: "$quotationDate" }, currentYear] },
+        { $eq: [{ $isoWeek: "$quotationDate" }, weekOfYear] }, // Use $isoWeek for ISO week calculation
+      ],
+    },
+  };
+}
+
+// Filter by Month (e.g., December 2024)
+else if (filterBy === "month") {
+  const [year, month] = quotationDate.split("-").map(Number);
+
+  dateFilter = {
+    $expr: {
+      $and: [
+        { $eq: [{ $year: "$quotationDate" }, currentYear] },
+        { $eq: [{ $month: "$quotationDate" }, currentMonth] },
+      ],
+    },
+  };
+}
+
+           
+            
 
 let matchOptions ='';
 
@@ -119,7 +178,8 @@ if(role === "admin"){
               },
               {
                 $facet: {
-                  pdfs: options,
+                  pdfs: [],
+                  limitedPdfs:options,
                   totalCount: [
                     { $count: "count" }, // Count the total number of documents matching the filter
                   ],
@@ -147,7 +207,7 @@ if(role === "admin"){
 
             })
             
-            const pdfList = pdfs[0]?.pdfs || [];
+            const pdfList = pdfs[0]?.limitedPdfs || [];
             const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
             const pdfCount = Math.ceil(totalDocuments / limit);
       
@@ -156,7 +216,7 @@ if(role === "admin"){
             return res.status(200).json({
               hasError: false,
               msg: "All Pdfs Successfully Finded",
-              data: { pdfs: pdfList, pages :pdfCount, cardData:statusCount },
+              data: { pdfs: pdfList, pages :pdfCount, cardData:statusCount, total:totalDocuments },
             });
           } catch (error) {
             return res.status(200).json({
