@@ -13,6 +13,10 @@ const pdfSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    notify: {
+        type: String,
+        default:"null"
+    },
     clientEmail: {
         type: String,
         required: true

@@ -1,4 +1,6 @@
 const UserModel = require("../models/userModel"); 
+const PdfModel = require("../models/pdfModel"); 
+
 module.exports = {
   edit: async (req, res, next) => {
     try {
@@ -145,6 +147,67 @@ module.exports = {
         hasError: true,
         msg: error.message,
         data: { users: null },
+      });
+    }
+  },
+  getAllUsersNameAndId: async (req, res, next) => {
+    try {
+     
+      const users = await UserModel.aggregate([
+        {
+          $match: {role: "user"},
+        },
+        {
+          $project:{
+            firstName:1,
+            lastName:1,
+            _id:1
+          }
+        }
+      ]);
+      
+      const userList = users || [];    
+      if (!users) throw new Error("Users not found");
+
+      return res.status(200).json({
+        hasError: false,
+        msg: "All Users Successfully Finded",
+        data: { users: userList },
+      });
+    } catch (error) {
+      return res.status(200).json({
+        hasError: true,
+        msg: error.message,
+        data: { users: null },
+      });
+    }
+  },
+  assignToUser: async (req, res, next) => {
+    try {
+      const { uid } = req.params;
+      const findUser = await UserModel.findOne({ _id: uid });
+      if (!findUser) throw new Error("User Not Found");
+
+      req.body.userId=uid;
+      req.body.notify="true";
+
+      const upadatedPdf = await PdfModel.findByIdAndUpdate(
+        { _id: req.body._id },
+        req.body,
+        { new: true }
+      );
+      if (!upadatedPdf) throw new Error("Pdf update process failed");
+
+      return res.status(200).json({
+        hasError: false,
+        msg: "Pdf Updated! ",
+        data: { user: upadatedPdf },
+      });
+    } catch (error) {
+      return res.status(200).json({
+        hasError: true,
+        msg: error.message,
+        data: { user: null },
       });
     }
   },

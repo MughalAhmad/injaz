@@ -1,6 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 // import { getAllPdf } from '../../redux/features/pdfSlice';
+import '@coreui/coreui/dist/css/coreui.min.css'
+import AssigmModel from './AssigmModel';
 
 const Table = () => {
 
@@ -8,6 +10,8 @@ const Table = () => {
     const { pdfData } = useSelector(state => state.pdfStore);
     const { companyName } = useSelector(state => state.brandingStore);
     const { user } = useSelector(state => state.adminStore);
+    const [visible, setVisible] = useState(false)
+    const [row, setRow] = useState({})
 
     // const getAllPdfList = () =>{
     //   const data = {
@@ -22,6 +26,11 @@ const Table = () => {
     //   getAllPdfList()
     // }, [localStorage.getItem("companyName")])
 
+    const handleRowData = (row) =>{
+      setRow(row)
+      setVisible(!visible)
+    }
+
   return (
       <div className="w-full">
         <table className="min-w-full">
@@ -34,6 +43,7 @@ const Table = () => {
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Reference</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Company</th>
               <th className="px-4 py-2 font-bold text-sm text-black text-center">State</th>
+              {user.role === 'admin' && <th className="px-4 py-2 font-bold text-sm text-black text-center">Assign</th>}
               <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
             </tr>
           </thead>
@@ -50,8 +60,9 @@ const Table = () => {
                 <td className="px-4 py-2 font-semibold text-sm text-center">{row.reference}</td>
                 <td className="px-4 py-2 font-semibold text-sm text-center">{row.selectCompany}</td>
                 <td className="px-4 py-2 font-semibold text-sm text-center">{row.stateValue}</td>
+               {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
                 <td className="px-4 py-2 flex justify-evenly">
-                    <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>View</button>
+                     <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`} onClick={() => handleRowData(row)}>assign</button>
                     {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Edit</button> */}
                     <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Send</button>
                     {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Delete</button> */}
@@ -60,6 +71,14 @@ const Table = () => {
             ))}
           </tbody>
         </table>
+
+
+        {/* <CButton color="primary" onClick={() => setVisible(!visible)}>Vertically centered modal</CButton> */}
+  
+{visible && <AssigmModel visible={visible} setVisible={setVisible} userData={row}/>}
+
+
+
       </div>
     
   );

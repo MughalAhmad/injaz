@@ -10,11 +10,17 @@ class GeneralService extends Service {
     async getAllUsers(data) {
         return await this.ApiClient.get(`/user/getUserList${data.queryParams}`);
     }
+    async getAllUsersNameAndId() {
+        return await this.ApiClient.get(`/user/getAllUsersNameAndId`);
+    }
     async getUser(data) {
         return await this.ApiClient.get(`/user/${data}`);
     }
     async updateUser(data) {
         return await this.ApiClient.put(`/user/edit/${data._id}`,data);
+    }
+    async assignToUser(data) {
+        return await this.ApiClient.put(`/user/assign/${data.id}`,data.userData);
     }
     async deleteUser(data) {
         return await this.ApiClient.delete(`/user/delete/${data}`);

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "start-prod": "pm2 delete pm2-env/env-config.json && pm2 startOrRestart pm2-env/env-config.json && pm2 flush && pm2 log",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "jspdf-autotable": "^3.8.4",
     "material-react-table": "^1.14.0",
     "moment": "^2.30.1",
+    "pm2": "^5.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",

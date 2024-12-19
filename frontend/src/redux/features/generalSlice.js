@@ -16,6 +16,13 @@ export const getAllUsers = createAsyncThunk(
         return response.data;
     }
 );
+export const getAllUsersNameAndId = createAsyncThunk(
+    'getAllUsersNameAndId',
+    async () => {
+        const response = await generalService.getAllUsersNameAndId();
+        return response.data;
+    }
+);
 export const getUser = createAsyncThunk(
     'getUser',
     async (data) => {
@@ -27,6 +34,13 @@ export const updateUser = createAsyncThunk(
     'updateUser',
     async (data) => {
         const response = await generalService.updateUser(data);
+        return response.data;
+    }
+);
+export const assignToUser = createAsyncThunk(
+    'assignToUser',
+    async (data) => {
+        const response = await generalService.assignToUser(data);
         return response.data;
     }
 );
