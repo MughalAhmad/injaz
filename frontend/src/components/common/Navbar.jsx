@@ -73,7 +73,7 @@ const Navbar = () => {
     if(window.location.pathname === "/"){
     getAllDashboardData()
     }
-  }, [visible])
+  }, [visible,localStorage.getItem("companyName")])
 
   return (
     <>

@@ -106,7 +106,7 @@ useEffect(() => {
 
 
         <div className="mt-3 flex items-center justify-between relative">
-        {companyName === "Injaz" ? <img src= "/Injaz/page3Logo.png" className="w-64" alt="logo"/> : <img src= "/page3Logo.png" className="w-56" alt="logo"/>}
+        {companyName === "Conqueror" ? <img src= "/page3Logo.png" className="w-56" alt="logo"/> : <img src= "/Injaz/page3Logo.png" className="w-64" alt="logo"/> }
         <img src={ArrowDown} alt="arrow-down" className="w-auto h-3 cursor-pointer ml-2" onClick={()=>setCompanyMenuState(!companyMenuState)} />
         {companyMenuState && <div className="h-auto w-44 bg-backgroundStone300  absolute top-20 left-20 p-2 rounded-lg z-50">
           <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</p>
