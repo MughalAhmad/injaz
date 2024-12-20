@@ -37,7 +37,7 @@ const pdfModel = require("../models/pdfModel");
 if(role === "admin"){
   matchOptions = {selectCompany:company}
 }else{
-  matchOptions = {selectCompany:company, userId:userId}
+  matchOptions = {selectCompany:company, userId:userId, notify:'false'}
 
 }
 
@@ -159,8 +159,7 @@ let matchOptions ='';
 if(role === "admin"){
   matchOptions = {selectCompany:company}
 }else{
-  matchOptions = {selectCompany:company, userId:userId}
-
+  matchOptions = {selectCompany:company, userId:userId, notify:'false'}
 }
 
       
@@ -225,6 +224,66 @@ if(role === "admin"){
               data: { pdfs: null },
             });
           }
-    }
+    },
+    getNoficationData: async (req, res, next) => {
+      try {
+        const {company, userId} = req.query; 
+    
+
+const pdfs = await pdfModel.aggregate([
+  {
+    $match: {
+      selectCompany:company, 
+      userId:userId, 
+      notify:'true'
+         },
+  },
+]);
+
+if (!pdfs) throw new Error("Notification not found");
+
+
+
+
+return res.status(200).json({
+  hasError: false,
+  msg: "All Notification Successfully Finded",
+  data: { notificationData: pdfs, },
+});
+
+
+      } catch (error) {
+        return res.status(200).json({
+          hasError: true,
+          msg: error.message,
+          data: { notificationData: null },
+        });
+      }
+    },
+    updateNotification: async (req, res, next) => {
+      try {
+        const {pdfId} = req.query; 
+        const findPdf = await pdfModel.findOne({_id:pdfId});
+        if (!findPdf) throw new Error("Notification not found");
+        findPdf.notify = 'false';
+        const notifys = await pdfModel.findByIdAndUpdate({_id:pdfId}, findPdf, {new:true} );
+        if (!notifys) throw new Error("Notification not update");
+
+
+return res.status(200).json({
+  hasError: false,
+  msg: "Notification Successfully Updated",
+  data: { notification: notifys, },
+});
+
+
+      } catch (error) {
+        return res.status(200).json({
+          hasError: true,
+          msg: error.message,
+          data: { notificationData: null },
+        });
+      }
+    },
   };
   

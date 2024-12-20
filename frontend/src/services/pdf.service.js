@@ -11,6 +11,12 @@ class PdfService extends Service {
     async getAllPdf(data) {
         return await this.ApiClient.get(`/pdf/getAllPdf?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}`);
     }
+    async getNoficationData(data) {
+        return await this.ApiClient.get(`/pdf/getNoficationData?company=${data.companyName}&&userId=${data.userId}`);
+    }
+    async updateNotification(data) {
+        return await this.ApiClient.put(`/pdf/updateNotification?pdfId=${data}`);
+    }
     async getDashboardData(data) {
         return await this.ApiClient.get(`/pdf/dashboard?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}&&sortValue=${data.sortValue}`);
     }

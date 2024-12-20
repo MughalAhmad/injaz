@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Search from "/svgs/search.svg";
 import French from "/svgs/french.svg";
 import English from "/svgs/english.svg";
 import Spanish  from "/svgs/spanish.svg";
 import Checked from "/svgs/gray-check.svg";
 import Notification from "/svgs/notification.svg";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchRed from "/svgs/searchRed.svg";
 import {useNavigate} from "react-router-dom";
 import {sweetNotification} from "./SweetAlert";
 import Cookies from 'js-cookie';
+import NotifyModel from "./NotifyModel";
+import {getNoficationData, getAllPdf, getDashboardData} from "../../redux/features/pdfSlice";
 
 const Navbar = () => {
+      const dispatch = useDispatch();
+  
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const {user, userImg} = useSelector(state => state.adminStore);
+  const { companyName } = useSelector(state => state.brandingStore);
+  
+      const [visible, setVisible] = useState(false)
+  const [notifications, setNotifications] = useState([])
   
   const navigate = useNavigate();
 
@@ -24,8 +32,51 @@ const Navbar = () => {
     window.location.reload();
   }
   
+  const getPdfData =()=>{
+        if(user?.role === 'user'){
+          const data = {
+            companyName: companyName,
+            userId: user?._id,
+          }
+          dispatch(getNoficationData(data)).then((res)=>{
+            setNotifications(res.payload.data.notificationData);
+          })
+        }
+         
+      }
+        const getAllQuotationData = () =>{
+              const data = {
+                companyName: companyName,
+                userId: user?._id,
+                role: user?.role,
+                currentPage:1,
+              }
+              dispatch(getAllPdf(data))
+            }
+
+             const getAllDashboardData = () =>{
+                  const data = {
+                    companyName: companyName,
+                    userId: user?._id,
+                    role: user?.role,
+                    currentPage:1,
+                    sortValue:""
+                  }
+                  dispatch(getDashboardData(data))
+                }
+
+  useEffect(() => {
+    getPdfData()
+    if(window.location.pathname === "/quotation"){
+      getAllQuotationData()
+    }
+    if(window.location.pathname === "/"){
+    getAllDashboardData()
+    }
+  }, [visible])
 
   return (
+    <>
     <nav className="bg-white shadow-md px-4 py-3 flex flex-col-reverse gap-5 md:gap-0 md:flex-row md:items-center md:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
       {/* Left Section: Search Bar */}
       <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
@@ -85,10 +136,10 @@ const Navbar = () => {
         </div>
 
         {/* Notification Icon */}
-       {user?.role === "admin" && <button className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
+        <button onClick={()=>setVisible(!visible)} className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
          <img src={Notification} alt="Notification" className="" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>}
+          <div className="absolute top-1 right-1 text-white w-5 h-5 bg-red-500 rounded-full flex justify-center items-center">{notifications.length}</div>
+        </button>
 
         {/* Profile Icon with Dropdown */}
         <div className="relative md:pr-5">
@@ -133,6 +184,8 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    {visible && <NotifyModel visible={visible} setVisible={setVisible} notifications={notifications} getPdfData={getPdfData}/>}
+    </>
   );
 };
 

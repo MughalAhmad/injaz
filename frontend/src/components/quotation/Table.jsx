@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-// import { getAllPdf } from '../../redux/features/pdfSlice';
+import { getAllPdf } from '../../redux/features/pdfSlice';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import AssigmModel from './AssigmModel';
 
-const Table = () => {
+const Table = ({currentPage}) => {
 
     const dispatch = useDispatch();
     const { pdfData } = useSelector(state => state.pdfStore);
@@ -13,23 +13,30 @@ const Table = () => {
     const [visible, setVisible] = useState(false)
     const [row, setRow] = useState({})
 
-    // const getAllPdfList = () =>{
-    //   const data = {
-    //     companyName: companyName,
-    //     userId: user?._id,
-    //     role: user?.role
-    //   }
-    //   dispatch(getAllPdf(data))
-    // }
-  
-    // useEffect(() => {
-    //   getAllPdfList()
-    // }, [localStorage.getItem("companyName")])
+    
+    
+      const getAllQuotationData = () =>{
+        const data = {
+          companyName: companyName,
+          userId: user?._id,
+          role: user?.role,
+          currentPage:currentPage,
+        }
+        dispatch(getAllPdf(data))
+      }
+    
+    
 
     const handleRowData = (row) =>{
       setRow(row)
       setVisible(!visible)
     }
+
+    
+    useEffect(() => {
+      getAllQuotationData()
+      }, [localStorage.getItem("companyName"), currentPage])
+   
 
   return (
       <div className="w-full">
@@ -62,18 +69,15 @@ const Table = () => {
                 <td className="px-4 py-2 font-semibold text-sm text-center">{row.stateValue}</td>
                {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
                 <td className="px-4 py-2 flex justify-evenly">
-                     <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`} onClick={() => handleRowData(row)}>assign</button>
-                    {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Edit</button> */}
+                     {user?.role === "admin" && <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`} onClick={() => handleRowData(row)}>assign</button>}
+                     <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Status</button>
                     <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Send</button>
-                    {/* <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Delete</button> */}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-
-        {/* <CButton color="primary" onClick={() => setVisible(!visible)}>Vertically centered modal</CButton> */}
   
 {visible && <AssigmModel visible={visible} setVisible={setVisible} userData={row}/>}
 

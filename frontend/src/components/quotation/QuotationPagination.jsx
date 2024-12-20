@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Paginate.css";
 import { useSelector } from 'react-redux';
 import QuotationTable from "./Table";
 import { current } from '@reduxjs/toolkit';
 
-const QuoationPaginate = ({ setCurrentPage, currentPage }) => {
+const QuoationPaginate = () => {
+  const [currentPage, setCurrentPage] = useState(1)
 
   const { pdfData } = useSelector(state => state.pdfStore);
 
@@ -15,7 +16,7 @@ const QuoationPaginate = ({ setCurrentPage, currentPage }) => {
   };
 
     const renderItems = () => {
-    return <QuotationTable/>
+    return <QuotationTable currentPage={currentPage}/>
   };
 
   return (
