@@ -12,6 +12,8 @@ const userRouter = require ("./routes/userRoute");
 const clientRouter = require ("./routes/clientRoute");
 const pdfRouter = require ("./routes/pdfRoute");  
 const referenceRouter = require ("./routes/referenceRoute");  
+const mailRoute = require ("./routes/mailRoute");  
+
 
 
 
@@ -43,6 +45,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/client", clientRouter);
 app.use("/api/v1/pdf", pdfRouter);   
 app.use("/api/v1/reference", referenceRouter);   
+app.use("/api/v1/mail", mailRoute);   
 
 app.get("/", (req, res) => {
 	res.send("Server running");
