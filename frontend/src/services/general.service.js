@@ -26,7 +26,7 @@ class GeneralService extends Service {
         return await this.ApiClient.delete(`/user/delete/${data}`);
     }
     async sendEmailAndPassword(data) {
-        return await this.ApiClient.get(`/user/sendEmailAndPassword/${data._id}`);
+        return await this.ApiClient.get(`/user/sendEmailAndPassword/${data}`);
     }
 
     // Reference

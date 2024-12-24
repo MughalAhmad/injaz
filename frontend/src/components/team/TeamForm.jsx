@@ -112,7 +112,7 @@ const TeamForm = () => {
     <p className='font-semibold text-2xl text-textPrimary my-11'>Team</p>
 
     <div className='bg-white h-auto flex flex-col gap-3 mt-4 pb-5 rounded-3xl'>
-    <p className='font-medium text-2xl text-textPrimary border-b-2 p-5'>Add New Team Member</p>
+    <p className='font-medium text-2xl text-textPrimary border-b-2 py-5 pl-4'>Add New Team Member</p>
     {/* Name */}
     <div className='flex flex-col lg:flex-row px-3 md:px-5 xl:px-10'>
     <p className='hidden font-semibold text-xl text-textPrimary w-[30%] lg:block xl:w-[33%]'>Name</p>

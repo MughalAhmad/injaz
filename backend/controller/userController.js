@@ -259,7 +259,7 @@ module.exports = {
 
       let message = {
         from: process.env.MAIL_EMAIL_CONQUEROR,
-        to: upadatedUser.email,
+        to: findUser.email,
         subject: 'User Info Updated',
         html:  `
         <div style="text-align: center">

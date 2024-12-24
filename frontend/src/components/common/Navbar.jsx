@@ -12,11 +12,11 @@ import {sweetNotification} from "./SweetAlert";
 import Cookies from 'js-cookie';
 import NotifyModel from "./NotifyModel";
 import {getNoficationData, getAllPdf, getDashboardData} from "../../redux/features/pdfSlice";
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 
 const Navbar = () => {
       const dispatch = useDispatch();
   
-  const [profileDropdown, setProfileDropdown] = useState(false);
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const {user, userImg} = useSelector(state => state.adminStore);
   const { companyName } = useSelector(state => state.brandingStore);
@@ -142,21 +142,19 @@ const Navbar = () => {
         </button>
 
         {/* Profile Icon with Dropdown */}
-        <div className="relative md:pr-5">
-          <button
-            className="flex items-center space-x-2"
-            onClick={() => setProfileDropdown(!profileDropdown)}
-          >
+          <div className=" flex  items-center md:pr-5">
             <img
               src={userImg}
               alt="Profile"
               className="w-16 h-16 mr-3 rounded-xl hidden md:block"
             />
-            <div className="pr-5 md:pr-10 leading-5">
+            <div className="pr-2 leading-5">
               <p className="text-base font-medium text-textPrimary">{user?.firstName}</p>
               <p className="text-sm font-normal text-stone300">{user?.role}</p>
             </div>
-            <svg
+            <CDropdown>
+              <CDropdownToggle>
+              <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -170,18 +168,13 @@ const Navbar = () => {
                 d="M19 9l-7 7-7-7"
               />
             </svg>
-          </button>
-          {profileDropdown && (
-            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
-              <p className=" px-4 py-2 cursor-pointer text-sm hover:bg-gray-100" onClick={()=>navigate("/profile")}>
-                Profile
-              </p>
-              <p className=" px-4 py-2 cursor-pointer text-sm hover:bg-gray-100"  onClick={handleLogout}>
-                Logout
-              </p>
-            </div>
-          )}
-        </div>
+              </CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem className="cursor-pointer" onClick={() => navigate("/profile")}>Profile</CDropdownItem>
+                <CDropdownItem className="cursor-pointer" onClick={handleLogout}>Logout</CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
+          </div>
       </div>
     </nav>
     {visible && <NotifyModel visible={visible} setVisible={setVisible} notifications={notifications} getPdfData={getPdfData}/>}

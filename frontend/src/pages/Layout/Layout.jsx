@@ -16,6 +16,7 @@ import Setting from "../profile/Profile";
 import TeamForm from "../../components/team/TeamForm";
 import RefForm from "../../components/reference/RefForm";
 import ProfileForm from "../../components/profile/ProfileForm";
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 
 
 const Layout = () => {
@@ -25,14 +26,12 @@ const Layout = () => {
   // const [location, setLocation] = useState(localStorage.getItem("menu"))
   const [location, setLocation] = useState("")
   
-  const [companyMenuState, setCompanyMenuState] = useState(false)
   const { companyName } = useSelector(state => state.brandingStore);
   const {user, isAuthenticated, userImg} = useSelector(state => state.adminStore);
-  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-lg text-white text-center pt-3 justify-center`;
+  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-base text-white text-center pt-3 justify-center`;
 
   const handleCompanyMenu = (name) =>{
     localStorage.setItem("companyName",name)
-    setCompanyMenuState(false)
     dispatch(updateCompanyName(name))
   }
 
@@ -103,20 +102,20 @@ useEffect(() => {
       {/* Sidebar */}
       <div className="hidden md:flex md:w-[28%] lg:w-[20%] xl:w-[15%] bg-white text-black flex-col overflow-auto px-7 text-textPrimary">
 
-
-
-        <div className="mt-3 flex items-center justify-between relative">
-        {companyName === "Conqueror" ? <img src= "/page3Logo.png" className="w-56" alt="logo"/> : <img src= "/Injaz/page3Logo.png" className="w-64" alt="logo"/> }
-        <img src={ArrowDown} alt="arrow-down" className="w-auto h-3 cursor-pointer ml-2" onClick={()=>setCompanyMenuState(!companyMenuState)} />
-        {companyMenuState && <div className="h-auto w-44 bg-backgroundStone300  absolute top-20 left-20 p-2 rounded-lg z-50">
-          <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</p>
-          <p className="text-black font-normal cursor-pointer hover:bg-backgroundSlate500Hover p-1 rounded-lg" onClick={()=>handleCompanyMenu('Injaz')}>Injaz</p>
-        </div>}
+        <div className="mt-3 flex items-center justify-between mr-5">
+        {companyName === "Conqueror" ? <img src= "/page3Logo.png" alt="logo"/> : <img src= "/Injaz/page3Logo.png" alt="logo"/> }
+         <CDropdown>
+                      <CDropdownToggle className="w-10 h-10">
+                      <img src={ArrowDown} alt="arrow-down" className="w-auto h-9 cursor-pointer" />
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        <CDropdownItem className="cursor-pointer" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</CDropdownItem>
+                        <CDropdownItem className="cursor-pointer" onClick={()=>handleCompanyMenu('Injaz')}>Injaz</CDropdownItem>
+                      </CDropdownMenu>
+                    </CDropdown>
         </div>
 
-
-
-        <div className="flex gap-5 items-center mt-6 mb-3">
+        <div className="flex gap-3 items-center mt-6 mb-3">
           <img src={userImg} className="w-11 h-11 rounded-full" alt="user"/>
           <div>
             <p className="text-xl font-normal text-textPrimary">{ user?.firstName }</p>
@@ -124,9 +123,7 @@ useEffect(() => {
           </div>
         </div>
 
-
         <hr/>
-
 
         <nav className="flex-1  space-y-2 mt-10">
           <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/')}>
@@ -196,12 +193,7 @@ useEffect(() => {
           </p> */}
         </nav>
 
-
       </div>
-
-
-
-
 
       {/* Mobile Sidebar (toggleable with a menu button) */}
       <div className="md:hidden bg-gray-800 text-white w-full fixed top-0 left-0 z-20">

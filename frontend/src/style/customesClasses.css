@@ -1,0 +1,6 @@
+.dropdown-toggle::after {
+    display: none;
+  }
+.dropdown-menu{
+  --cui-dropdown-link-active-bg:none
+}

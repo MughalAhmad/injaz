@@ -4,7 +4,7 @@ const Input = ({
   title = "text",
   color = "bg-transparent",
   px = "px-3",
-  py = "py-4",
+  py = "py-3",
   size = "text-lg", ...props }) => {
   return (
     <>

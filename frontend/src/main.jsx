@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { Provider } from "react-redux";
 import Store from "./redux/Store";
 import './style/index.css';
+import './style/customesClasses.css';
 import { initialFetch } from './redux/features/adminSlice.js';
 Store.dispatch(initialFetch());
 
