@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteUser, getAllUsers } from '../../redux/features/generalSlice';
+import { deleteUser, getAllUsers, sendEmailAndPassword } from '../../redux/features/generalSlice';
 import ThreeDot from '/svgs/three-dot.svg';
 
 const Row = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDropdownId}) => {
@@ -38,6 +38,16 @@ const handleMouseLeave = () => setIsHovered(false);
     // alert(`Delete action for ${row.FirstName}`);
     setDropdownVisible(false);
     dispatch(deleteUser(row._id)).then((resp)=>{
+      if (resp && !resp.payload.hasError) {
+        dispatch(getAllUsers())
+      }
+    })
+  };
+
+  const handleMail = () => {
+    // alert(`Delete action for ${row.FirstName}`);
+    setDropdownVisible(false);
+    dispatch(sendEmailAndPassword(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
         dispatch(getAllUsers())
       }
@@ -88,6 +98,13 @@ const handleMouseLeave = () => setIsHovered(false);
             >
 
               Delete
+            </p>
+            <p
+              className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+              onClick={handleMail}
+            >
+
+              send
             </p>
           </div>
         )}

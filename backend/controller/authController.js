@@ -1,17 +1,7 @@
-const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
-
-// const userModel = [
-//   {
-//     email: "user@gmail.com",
-//     password: "user123",
-//   },
-//   {
-//     email: "admin@gmail.com",
-//     password: "admin123",
-//   },
-// ];
+const {sendMail} = require("../integrations/sendMail");
+const { use } = require("../routes/authRoute");
 
 module.exports = {
   initialFetch: async (req, res) => {
@@ -24,42 +14,6 @@ module.exports = {
         data: { user, token, isAuthenticated }
     });
 },
-  // login: async (req, res, next) => {
-  //   try {
-  //     const { email, password } = req.body;
-  //     console.log(email, password )
-  //     const user = userModel.find((user) => user.email === email);
-  //     if (!user) throw new Error("Invalid emaill or password");
-  //     if (password !== user.password)
-  //       throw new Error("Invalid email or password");
-  //     const token = jwt.sign(
-  //       {
-  //         email: user.email,
-  //       },
-  //       process.env.JWT_SECRET_KEY, // Secret key for JWT signing
-  //       {
-  //         expiresIn: "1d", // Token expiration
-  //       }
-  //     );
-  //     if (!token) throw new Error("Error in creating auth token");
-
-  //     return res.status(200).json({
-  //       hasError: false,
-  //       msg: `Welcome ${email}`,
-  //       data: {
-  //         user,
-  //         token,
-  //         isAuthenticated: true,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     return res.status(200).json({
-  //       hasError: true,
-  //       msg: error.message,
-  //       data: { isAuthenticated: false },
-  //     });
-  //   }
-  // },
   login: async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -97,6 +51,104 @@ module.exports = {
       next(error);
     }
   },
+  forgot: async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        console.log(req.body)
+        const user = await userModel.findOne({ email: email });
+        if (!user) throw new Error("Invalid emial");
+       let code = (Date.now() % 1000000).toString().padStart(6, '0');
+       user.sixDigitCode = code;
+
+      const upadatedUser = await userModel.findByIdAndUpdate(
+        { _id: user._id },
+        user,
+        { new: true }
+      );
+      if (!upadatedUser) throw new Error("Failed to Code process");
+
+      let message = {
+        from: process.env.MAIL_EMAIL_CONQUEROR,
+        to: user.email,
+        subject: 'Forgot Code',
+        html:  `
+        <div style="text-align: center">
+          <p>6 Digit Code for Forgot the password</p>
+          </br>
+          <p>Code: ${code} </p>
+        </div>
+      `, 
+      };
+
+      const { error } =  await sendMail(message);
+
+      if (error) throw new Error('Forgot Email Send Process Failed!');
+
+
+
+        return res.status(200).json({
+            hasError: false,
+            msg: "Forgot successful",
+            data: null,
+        });
+
+    } catch (error) {
+      return res.status(200).json({
+        hasError: true,
+        msg: error.message,
+        data: null,
+      });
+    }
+},
+checkCode: async (req, res, next) => {
+  try {
+      const { email, code } = req.body;
+      const user = await userModel.findOne({ email: email });
+      if (!user) throw new Error("Invalid emial or password");
+      if(user.sixDigitCode !== parseInt(code) ) throw new Error("Code Invalid");
+
+      return res.status(200).json({
+          hasError: false,
+          msg: "Code Verified",
+          data:null,
+      });
+
+  } catch (error) {
+    return res.status(200).json({
+      hasError: true,
+      msg: error.message,
+      data: null,
+    });
+  }
+},
+newPassword: async (req, res, next) => {
+  try {
+      const { email, password } = req.body;
+      const user = await userModel.findOne({ email: email });
+      if (!user) throw new Error("Invalid emial");
+    user.password = password;
+
+    const upadatedUser = await userModel.findByIdAndUpdate(
+      { _id: user._id },
+      user,
+      { new: true }
+    );
+    if (!upadatedUser) throw new Error("Failed to Code process");
+
+      return res.status(200).json({
+          hasError: false,
+          msg: "Password successfully changed",
+          data: null,
+      });
+
+  } catch (error) {
+    return res.status(200).json({
+      hasError: true,
+      msg: error.message,
+      data: null,
+    });
+  }
+},
 };
 
 

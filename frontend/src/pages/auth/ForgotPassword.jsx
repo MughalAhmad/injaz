@@ -1,15 +1,47 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ArrowLeft from "/svgs/arrow-left.svg";
 import Message from "/svgs/message.svg";
+import { useNavigate } from 'react-router-dom';
+import { forgot } from '../../redux/features/adminSlice';
+import { useDispatch } from 'react-redux';
+import {sweetNotification} from "../../components/common/SweetAlert";
+
 const ForgotPassword = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState('')
+    
+
+    const handleSubmit = (e) =>{ 
+      e.preventDefault();
+      const data={
+        email:email
+      }        
+           dispatch(forgot(data))
+           .then(response => {
+             if (response && !response.payload.hasError) {
+               navigate('/digit6',{state:{email:email}});
+               sweetNotification(false, response.payload.msg);
+             } 
+             else{
+               sweetNotification(true, response.payload.msg);
+             }
+           })
+           .catch(error => {
+             sweetNotification(true, 'Something went wrong');
+             console.error('Dispatch failed:', error);
+           });
+         
+    }
+  
   return (
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
     className="absolute top-0 left-0 w-full h-full object-cover"
-    autoPlay
-    loop
-    muted
-    playsInline
+    // autoPlay
+    // loop
+    // muted
+    // playsInline
   >
     <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
@@ -20,7 +52,7 @@ const ForgotPassword = () => {
 
 
 <div className="flex items-center justify-between ">
-  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center'>
+  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center cursor-pointer' onClick={()=>navigate("/login")} >
   <img src={ArrowLeft} alt='arrow-left' className='w-1.5 h-auto'/>
     Back
     </span>
@@ -54,12 +86,13 @@ const ForgotPassword = () => {
         className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
         placeholder="Enter your email"
         required
+        onChange={(e)=>setEmail(e.target.value)}
       />
       </div>
      
     </div>
     <button
-      type="submit"
+    onClick={handleSubmit}
       className="w-full bg-backgroundPrimary text-white font-semibold h-11 mt-3 sm:mt-12 md:mt-18 text-base rounded-lg hover:bg-backgroundPrimaryHover transition"
     >
       Continue

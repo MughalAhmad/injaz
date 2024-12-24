@@ -1,11 +1,54 @@
 const pdfModel = require("../models/pdfModel");
+const {sendMail} = require("../integrations/sendMail");
 
   module.exports = {
     createPdf: async (req, res, next) => {
       try {
          const pdf = await pdfModel.create(req.body)
         if (!pdf) throw new Error("Error in Creating pdf");
-        console.log(pdf)
+
+        let message = {
+          from: process.env.MAIL_EMAIL_CONQUEROR,
+          to: pdf.clientEmail,
+          subject: 'Quotaion Info',
+          html:  `
+          <div style="text-align: center">
+          <h3>Hello [Client Name XYZ]</h3>
+          </br>
+            <p>This is a quotation regarding your visa. Could you please review the details we have provided in this email?</p>
+            </br>
+            <p>If everything looks good, kindly click the "Accept" button. If you decide not to proceed with us, please click the "Reject" button to update your records.</p>
+            </br>
+
+             <a href="#" style="
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white;
+                    background-color: green;
+                    text-decoration: none;
+                    border-radius: 25px;
+                  ">Accept</a>
+            </br>
+
+               <a href="#" style="
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white;
+                    background-color: red;
+                    text-decoration: none;
+                    border-radius: 25px;
+                  ">Reject</a>
+
+          </div>
+        `, 
+        };
+  
+        const { error } =  await sendMail(message);
+  
+        if (error) throw new Error('User Email Send Process Failed!');
+  
   
         return res.status(200).json({
           hasError: false,

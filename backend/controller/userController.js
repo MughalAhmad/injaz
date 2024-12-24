@@ -1,6 +1,6 @@
 const UserModel = require("../models/userModel"); 
 const PdfModel = require("../models/pdfModel"); 
-
+const {sendMail} = require("../integrations/sendMail");
 module.exports = {
   edit: async (req, res, next) => {
     try {
@@ -14,6 +14,26 @@ module.exports = {
         { new: true }
       );
       if (!upadatedUser) throw new Error("User update process failed");
+
+      let message = {
+        from: process.env.MAIL_EMAIL_CONQUEROR,
+        to: upadatedUser.email,
+        subject: 'User Info Updated',
+        html:  `
+        <div style="text-align: center">
+          <p>Your email has been successfully created. Here are the credentials for login.</p>
+          </br>
+          <p>Email: ${upadatedUser.email} </p>
+          <p>Password: ${upadatedUser.password} </p>
+
+        </div>
+      `, 
+      };
+
+      const { error } =  await sendMail(message);
+
+      if (error) throw new Error('User Email Send Process Failed!');
+
 
       return res.status(200).json({
         hasError: false,
@@ -79,6 +99,26 @@ module.exports = {
       if (findUser) throw new Error("User already exists");
       const user = await UserModel.create(req.body);
       if (!user) throw new Error("Error in Creating user");
+
+      let message = {
+        from: process.env.MAIL_EMAIL_CONQUEROR,
+        to: upadatedUser.email,
+        subject: 'User Info Updated',
+        html:  `
+        <div style="text-align: center">
+          <p>Your email has been successfully created. Here are the credentials for login.</p>
+          </br>
+          <p>Email: ${user.email} </p>
+          <p>Password: ${user.password} </p>
+
+        </div>
+      `, 
+      };
+
+      const { error } =  await sendMail(message);
+
+      if (error) throw new Error('User Email Send Process Failed!');
+
 
       return res.status(200).json({
         hasError: false,
@@ -208,6 +248,45 @@ module.exports = {
         hasError: true,
         msg: error.message,
         data: { user: null },
+      });
+    }
+  },
+  sendEmailAndPassword: async (req, res, next) => {
+    try {
+      const { uid } = req.params;
+      const findUser = await UserModel.findOne({ _id: uid });
+      if (!findUser) throw new Error("User Not Found");
+
+      let message = {
+        from: process.env.MAIL_EMAIL_CONQUEROR,
+        to: upadatedUser.email,
+        subject: 'User Info Updated',
+        html:  `
+        <div style="text-align: center">
+          <p>Your email has been successfully created. Here are the credentials for login.</p>
+          </br>
+          <p>Email: ${findUser.email} </p>
+          <p>Password: ${findUser.password} </p>
+
+        </div>
+      `, 
+      };
+
+      const { error } =  await sendMail(message);
+
+      if (error) throw new Error('User Email Send Process Failed!');
+
+
+      return res.status(200).json({
+        hasError: false,
+        msg: "Mail Sended! ",
+        data: { mail: findUser },
+      });
+    } catch (error) {
+      return res.status(200).json({
+        hasError: true,
+        msg: error.message,
+        data: { mail: null },
       });
     }
   },

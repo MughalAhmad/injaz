@@ -82,10 +82,10 @@ const Login = () => {
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
     className="absolute top-0 left-0 w-full h-full object-cover"
-    autoPlay
-    loop
-    muted
-    playsInline
+    // autoPlay
+    // loop
+    // muted
+    // playsInline
   >
     <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
@@ -152,12 +152,12 @@ const Login = () => {
             <span className='font-medium text-neutral400 text-xs'>Remember Me</span>
         </div>
 
-    <a
-      href="#"
-      className="text-xs font-medium text-textPrimary hover:text-textPrimaryHover"
+    <p
+      onClick={()=>navigate("/forgot")}
+      className="text-xs font-medium text-textPrimary hover:text-textPrimaryHover cursor-pointer"
     >
       Forgot Password
-    </a>
+    </p>
   </div>
   <div className='w-full flex justify-center items-center mt-5'>
   <ReCAPTCHA

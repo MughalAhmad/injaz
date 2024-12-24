@@ -21,6 +21,15 @@ class AdminService extends Service {
             timeout: 120000
         });
     }
+    async forgot(data) {
+        return await this.ApiClient.post('/auth/forgot', data);
+    }
+    async checkCode(data) {
+        return await this.ApiClient.post('/auth/checkCode', data);
+    }
+    async newPassword(data) {
+        return await this.ApiClient.post('/auth/newPassword', data);
+    }
     async resetPassword(data) {
         return await this.ApiClient.post('/resetPassword', data);
     }

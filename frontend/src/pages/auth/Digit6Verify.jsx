@@ -1,7 +1,17 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState  } from "react";
 import ArrowLeft from "/svgs/arrow-left.svg";
+import {useLocation, useNavigate} from "react-router-dom";
+import { checkCode } from '../../redux/features/adminSlice';
+import { useDispatch } from 'react-redux';
+import {sweetNotification} from "../../components/common/SweetAlert";
+
 const Digit6Verify = () => {
+  const location = useLocation();
+   const dispatch = useDispatch();
+      const navigate = useNavigate();
+  
   const inputRefs = useRef([]);
+  const [code, setCode] = useState(""); // State to store the full 6-digit code
 
   useEffect(() => {
     // Auto-focus on the first input when the component loads
@@ -24,6 +34,9 @@ const Digit6Verify = () => {
       if (index < 5) {
         inputRefs.current[index + 1]?.focus(); // Move focus to the next input
       }
+       // Update the full code state
+       const currentCode = inputRefs.current.map((input) => input?.value || "").join("");
+       setCode(currentCode);
     } else {
       e.target.value = ""; // Clear invalid input
     }
@@ -45,18 +58,40 @@ const Digit6Verify = () => {
         }
       });
       inputRefs.current[5]?.focus(); // Move focus to the last input
+
+      // Update the full code state
+      setCode(pasteData);
     }
     e.preventDefault(); // Prevent default paste action
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+   const data={
+    email:location?.state?.email,
+    code:code
+   }
+    dispatch(checkCode(data)).then(response => {
+                if (response && !response.payload.hasError) {
+                  navigate('/newpassword',{state:{email:location?.state?.email}});
+                  sweetNotification(false, response.payload.msg);
+                } 
+                else{
+                  sweetNotification(true, response.payload.msg);
+                }
+              })
+              .catch(error => {
+                sweetNotification(true, 'Something went wrong');
+                console.error('Dispatch failed:', error);
+              });
+  };
   return (
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
     className="absolute top-0 left-0 w-full h-full object-cover"
-    autoPlay
-    loop
-    muted
-    playsInline
+    // autoPlay
+    // loop
+    // muted
+    // playsInline
   >
     <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
@@ -100,7 +135,7 @@ const Digit6Verify = () => {
     </div>
 
     <button
-      type="submit"
+     onClick={handleSubmit}
       className="w-full bg-backgroundPrimary text-white font-semibold h-11 mt-6 sm:mt-12 md:mt-24 text-base rounded-lg hover:bg-backgroundPrimaryHover transition"
     >
       Verify

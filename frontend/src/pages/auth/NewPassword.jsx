@@ -1,12 +1,50 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ArrowLeft from "/svgs/arrow-left.svg";
 import Lock from "/svgs/lock.svg";
 import CheckedTick from "/svgs/checked-Tick.svg";
 import UncheckedTick from "/svgs/unchecked-Tick.svg";
+import { newPassword } from '../../redux/features/adminSlice';
+import { useDispatch } from 'react-redux';
+import {sweetNotification} from "../../components/common/SweetAlert";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const NewPassword = () => {
+   const location = useLocation();
+     const dispatch = useDispatch();
+        const navigate = useNavigate();
+  const [password, setPassword] = useState('')
+  const [conformPassword, setConformPassword] = useState('')
 
     const validateList = ["Password must be between 8 to 32 character.", "Must contain a uppercase character.", "Must contain a number.", "Must contain one special character."]
+
+     const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(location?.state?.email)
+       const data={
+        email:location?.state?.email,
+        password:password
+       }
+       if(password === conformPassword){
+        dispatch(newPassword(data)).then(response => {
+          if (response && !response.payload.hasError) {
+            navigate('/sucessfulpassword');
+            sweetNotification(false, response.payload.msg);
+          } 
+          else{
+            sweetNotification(true, response.payload.msg);
+          }
+        })
+        .catch(error => {
+          sweetNotification(true, 'Something went wrong');
+          console.error('Dispatch failed:', error);
+        });
+       }
+        else{
+          sweetNotification(true, 'Both Password must same');
+
+        }
+      };
+
 
   return (
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
@@ -60,6 +98,7 @@ const NewPassword = () => {
         className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
         placeholder="Enter new password"
         required
+        onChange={(e)=>setPassword(e.target.value)}
       />
       </div>
      
@@ -82,6 +121,7 @@ const NewPassword = () => {
         className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
         placeholder="Enter again password"
         required
+        onChange={(e)=>setConformPassword(e.target.value)}
       />
       </div>
      
@@ -92,7 +132,7 @@ const NewPassword = () => {
   ))}
 
     <button
-      type="submit"
+        onClick={handleSubmit}
       className="w-full bg-backgroundPrimary text-white font-semibold h-11 mt-6 sm:mt-12 md:mt-24 text-base rounded-lg hover:bg-backgroundPrimaryHover transition"
     >
       Continue

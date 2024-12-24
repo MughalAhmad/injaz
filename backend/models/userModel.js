@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    sixDigitCode:{
+        type: Number,
+        default:null
+    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -25,7 +25,28 @@ export const userLogout = createAsyncThunk(
         return response.data;
     }
 );
+export const forgot = createAsyncThunk(
+    'forgot',
+    async (data) => {
+        const response = await adminService.forgot(data);
+        return response.data;
+    }
+);
+export const checkCode = createAsyncThunk(
+    'checkCode',
+    async (data) => {
+        const response = await adminService.checkCode(data);
+        return response.data;
+    }
+);
 
+export const newPassword = createAsyncThunk(
+    'newPassword',
+    async (data) => {
+        const response = await adminService.newPassword(data);
+        return response.data;
+    }
+);
 
 export const resetPassword = createAsyncThunk(
     'resetPassword',

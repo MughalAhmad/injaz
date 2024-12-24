@@ -29,16 +29,15 @@ function App() {
     <Routes>
       {/* Public Route */}
       <Route path="/login" element={<Login />} />
-
+      <Route path="/forgot" element={<ForgotPassword />} />
+      <Route path="/digit6" element={<Digit6Verify />} />
+      <Route path="/newpassword" element={<NewPassword />} />
+      <Route path="/sucessfulpassword" element={<SucessfulPassword />} />
       {/* Protected Routes */}
       {/* <Route element={<UserProtectedRoutes />}> */}
          <Route path="/" element={<Layout/>}>
          <Route index element={<Dashboard />} />
           {user?.role === "admin" && isAuthenticated && <Route path="form" element={<TestForm />} />}
-          {isAuthenticated && user?.role === "admin" && <Route path="forgot" element={<ForgotPassword />} />}
-          {isAuthenticated && user?.role === "admin" && <Route path="digit6" element={<Digit6Verify />} />}
-          {isAuthenticated && user?.role === "admin" && <Route path="newpassword" element={<NewPassword />} />}
-          {isAuthenticated && user?.role === "admin" && <Route path="sucessfulpassword" element={<SucessfulPassword />} />}
           {isAuthenticated && user?.role === "admin" && <Route path="team" element={<Team />}/> }
           {isAuthenticated && user?.role === "admin" && <Route path="team/:tid" element={<TeamForm />} />} 
           {isAuthenticated && user?.role === "admin" && <Route path="team/create" element={<TeamForm />} />} 

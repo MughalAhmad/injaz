@@ -52,6 +52,14 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
+export const sendEmailAndPassword = createAsyncThunk(
+    'sendEmailAndPassword',
+    async (data) => {
+        const response = await generalService.sendEmailAndPassword(data);
+        return response.data;
+    }
+);
+
 // References
 
 export const createRef = createAsyncThunk(
