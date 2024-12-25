@@ -132,6 +132,25 @@ const generalSlice = createSlice({
                 state.isLoading = false;
                 state.showLoader = false;
             })
+            .addCase(deleteUser.pending, (state) => {
+                state.status = 'loading';
+                state.isLoading = true;
+                state.showLoader = true;
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.showLoader = false;
+                if (!action.payload.hasError) {
+                    state.users.users = action.payload.data;
+                    state.isLoading = false;
+                }
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = true;
+                state.isLoading = false;
+                state.showLoader = false;
+            })
              .addCase(getAllRefs.pending, (state) => {
                 state.status = 'loading';
                 state.isLoading = true;
@@ -146,6 +165,25 @@ const generalSlice = createSlice({
                 }
             })
             .addCase(getAllRefs.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = true;
+                state.isLoading = false;
+                state.showLoader = false;
+            })
+            .addCase(deleteRef.pending, (state) => {
+                state.status = 'loading';
+                state.isLoading = true;
+                state.showLoader = true;
+            })
+            .addCase(deleteRef.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.showLoader = false;
+                if (!action.payload.hasError) {
+                    state.refs.refs = action.payload.data;
+                    state.isLoading = false;
+                }
+            })
+            .addCase(deleteRef.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = true;
                 state.isLoading = false;

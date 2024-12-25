@@ -136,10 +136,10 @@ useEffect(() => {
             <p>Quotations</p>
           </span>
 
-          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/form')}>
+          {/* {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/form" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/form')}>
            <img src={`/svgs/${location === "/form" ? "quotationWhite":"formGray"}.svg`} alt="dashboard-icon" className={`${location === "/form" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
             <p>Create Quotations</p>
-          </span>}
+          </span>} */}
 
           {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/team')}>
            <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
@@ -229,9 +229,9 @@ useEffect(() => {
           <p onClick={()=>handleMenu('/quotation')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Quotations
           </p>
-          {user?.role === "admin" && <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
+          {/* {user?.role === "admin" && <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
           Create Quotations
-          </p>}
+          </p>} */}
           {user?.role === "admin" && <p onClick={()=>handleMenu('/team')} className="block py-2 px-4 rounded hover:bg-gray-700">
           Team
           </p>}

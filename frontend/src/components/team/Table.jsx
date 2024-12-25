@@ -2,12 +2,7 @@ import React, {useState} from 'react';
 import Row from './Row';
 import { useSelector } from 'react-redux';
 const Table = () => {
-
-  
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [dropdownId, setDropdownId] = useState("");
     const { users } = useSelector(state => state.generalStore);
-    console.log("user", users)
   return (
       <div className="w-full ">
         <table className="min-w-full">
@@ -25,10 +20,7 @@ const Table = () => {
           </thead>
           <tbody>
             {users?.users?.map((row, index) => (
-                <Row row={row} index={index} key={index}
-                dropdownVisible={dropdownVisible} setDropdownVisible={setDropdownVisible}
-                dropdownId={dropdownId} setDropdownId={setDropdownId}
-                />
+                <Row row={row} index={index} key={index}/>
             ))}
           </tbody>
         </table>

@@ -16,9 +16,7 @@ import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreu
 
 const Navbar = () => {
       const dispatch = useDispatch();
-  
-  const [languageDropdown, setLanguageDropdown] = useState(false);
-  const {user, userImg} = useSelector(state => state.adminStore);
+    const {user, userImg} = useSelector(state => state.adminStore);
   const { companyName } = useSelector(state => state.brandingStore);
   
       const [visible, setVisible] = useState(false)
@@ -77,9 +75,9 @@ const Navbar = () => {
 
   return (
     <>
-    <nav className="bg-white shadow-md px-4 py-3 flex flex-col-reverse gap-5 md:gap-0 md:flex-row md:items-center md:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
+    <nav className="bg-white shadow-md py-3 flex flex-col-reverse gap-4 sm:gap-1 lg:flex-row lg:items-center lg:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
       {/* Left Section: Search Bar */}
-      <div className="flex items-center h-14 w-full md:w-96 rounded-2xl bg-backgroundGray50">
+      <div className="flex items-center h-14 w-full lg:ml-4 lg:w-96 rounded-2xl bg-backgroundGray50">
       <img src={localStorage.getItem("companyName") === "Conqueror" ? SearchRed : Search } alt="Search" className="m-4"/>
         <input
           type="text"
@@ -89,14 +87,12 @@ const Navbar = () => {
       </div>
 
       {/* Right Section: Icons and Dropdowns */}
-      <div className="flex justify-end items-center space-x-6">
+      <div className="flex justify-end items-center">
         {/* Language Selector Dropdown */}
-        <div className="relative mr-3">
-          <button
-            className="flex items-center space-x-1 text-sm font-medium text-gray-700"
-            onClick={() => setLanguageDropdown(!languageDropdown)}
-          >
-            <span>Language</span>
+      
+          <CDropdown>
+              <CDropdownToggle className="flex gap-3 items-center">
+              <span>Language</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -111,38 +107,23 @@ const Navbar = () => {
                 d="M19 9l-7 7-7-7"
               />
             </svg>
-          </button>
-          {languageDropdown && (
-            <div className="absolute left-0 md:right-0 mt-2 w-64 bg-white border rounded-2xl shadow-lg z-10">
-              <p className="text-base py-3.5 pl-5">Select Language </p>
-              <hr/>
-              <button className="flex items-center gap-5 px-4 py-4 text-sm hover:bg-gray-100">
-              <img src={English} alt="English" className="w-11 h-auto" />
-                English
-              < img src={Checked} alt="Checked" className="ml-20"/>
-              </button>
-              <button className="flex items-center gap-5 px-4 py-4 text-sm hover:bg-gray-100">
-              <img src={Spanish} alt="Spanish" className="w-11 h-auto"/>
-                Spanish
-              < img src={Checked} alt="Checked" className="ml-20"/>
-              </button>
-              <button className="flex items-center gap-5 px-4 py-4 text-sm hover:bg-gray-100 hover:rounded-bl-2xl hover:rounded-br-2xl">
-              <img src={French} alt="French" className="w-11 h-auto"/>
-                French
-              < img src={Checked} alt="Checked" className="ml-20"/>
-              </button>
-            </div>
-          )}
-        </div>
+              </CDropdownToggle>
+              <CDropdownMenu className="w-52 ">
+                <CDropdownItem className="cursor-pointer flex items-center gap-2 mb-2"> <img src={English} alt="English" className="w-11 h-auto" />English< img src={Checked} alt="Checked" className="ml-11"/></CDropdownItem>
+                <CDropdownItem className="cursor-pointer flex items-center gap-2 mb-2"><img src={Spanish} alt="Spanish" className="w-11 h-auto"/>Spanish< img src={Checked} alt="Checked" className="ml-10"/></CDropdownItem>
+                <CDropdownItem className="cursor-pointer flex items-center gap-2"><img src={French} alt="French" className="w-11 h-auto"/>French< img src={Checked} alt="Checked" className="ml-12"/></CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
+
 
         {/* Notification Icon */}
         <button onClick={()=>setVisible(!visible)} className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
-         <img src={Notification} alt="Notification" className="" />
+         <img src={Notification} alt="Notification" className="w-5 h-auto" />
           <div className="absolute top-1 right-1 text-white w-5 h-5 bg-red-500 rounded-full flex justify-center items-center">{notifications.length}</div>
         </button>
 
         {/* Profile Icon with Dropdown */}
-          <div className=" flex  items-center md:pr-5">
+          <div className="flex items-center md:pr-5">
             <img
               src={userImg}
               alt="Profile"
@@ -176,6 +157,8 @@ const Navbar = () => {
             </CDropdown>
           </div>
       </div>
+
+
     </nav>
     {visible && <NotifyModel visible={visible} setVisible={setVisible} notifications={notifications} getPdfData={getPdfData}/>}
     </>

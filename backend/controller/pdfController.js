@@ -4,16 +4,22 @@ const {sendMail} = require("../integrations/sendMail");
   module.exports = {
     createPdf: async (req, res, next) => {
       try {
+        const companyName = req.body.selectCompany;
+        console.log('selectCompany',companyName)
          const pdf = await pdfModel.create(req.body)
         if (!pdf) throw new Error("Error in Creating pdf");
 
+
         let message = {
-          from: process.env.MAIL_EMAIL_CONQUEROR,
+          from: companyName === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
           to: pdf.clientEmail,
+          cc: companyName === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: 'Quotaion Info',
           html:  `
           <div style="text-align: center">
-          <h3>Hello [Client Name XYZ]</h3>
+          <h3>Hello ${pdf.clientName}</h3>
+          <h3>Company ${pdf.companyName}</h3>
+
           </br>
             <p>This is a quotation regarding your visa. Could you please review the details we have provided in this email?</p>
             </br>
@@ -45,7 +51,7 @@ const {sendMail} = require("../integrations/sendMail");
         `, 
         };
   
-        const { error } =  await sendMail(message);
+        const { error } =  await sendMail(message, companyName);
   
         if (error) throw new Error('User Email Send Process Failed!');
   

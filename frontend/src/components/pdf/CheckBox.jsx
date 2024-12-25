@@ -6,7 +6,7 @@ const CheckBox = ({ data, values, handleChange, handlePackage = ()=>{} }) => {
       {data.map((item) => (
         <div
           key={item.id} // Ensure each item has a unique key if it has an id field
-          className="w-full md:w-1/2 p-2 mb-2 flex justify-between items-center rounded-lg"
+          className="w-full lg:w-1/2 mb-2 flex justify-between items-center rounded-lg"
         >
             <input
             className="w-16 h-16 mr-2 md:w-5 md:h-5"
@@ -18,8 +18,8 @@ const CheckBox = ({ data, values, handleChange, handlePackage = ()=>{} }) => {
           {item.filed ?
           <label className="text-sm w-96 text-center md:text-left">{item.value}</label>
           :
-          <div className="w-96">
-          <input type="number" placeholder="Enter" onChange={(e)=>handlePackage(e,item.id)} className="w-20 h-8 border rounded-lg px-2 outline-none"/>
+          <div className="w-96 flex justify-center">
+          <input type="number" placeholder="Enter" onChange={(e)=>handlePackage(e,item.id)} className="w-20 h-8 border rounded-lg text-center outline-none"/>
           </div>
           }
           <label className="text-sm w-96">{item.status === "0" ? "NOT INCLUDED" : "INCLUDED"}</label>

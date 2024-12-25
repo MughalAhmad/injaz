@@ -1,13 +1,13 @@
 const nodemailer = require("nodemailer");
 
 module.exports = {
-  sendMail: async (emailData) => {
+  sendMail: async (emailData, companyName) => {
     try {
       let config = {
         service: "gmail",
         auth: {
-          user: process.env.MAIL_EMAIL_CONQUEROR,
-          pass: process.env.MAIL_PASSWORD,
+          user: companyName === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ ,
+          pass: companyName === "Conqueror" ? process.env.CONQUEROR_PASSWORD : process.env.INJAZ_PASSWORD,
         },
       };
 

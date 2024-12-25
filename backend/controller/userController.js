@@ -6,7 +6,7 @@ module.exports = {
     try {
       const { uid } = req.params;
       const findUser = await UserModel.findOne({ _id: uid });
-      if (!findUser) throw new Error("User Not Found");
+      if (!findUser) throw new Error("User not found");
 
       const upadatedUser = await UserModel.findByIdAndUpdate(
         { _id: uid },
@@ -61,10 +61,13 @@ module.exports = {
       );
       if (!upadatedUser) throw new Error("User update process failed");
 
+          const users = await UserModel.find();
+      
+
       return res.status(200).json({
         hasError: false,
         msg: "User Deleted!",
-        data: null,
+        data: users,
       });
     } catch (error) {
       return res.status(200).json({
@@ -102,7 +105,7 @@ module.exports = {
 
       let message = {
         from: process.env.MAIL_EMAIL_CONQUEROR,
-        to: upadatedUser.email,
+        to: user.email,
         subject: 'User Info Updated',
         html:  `
         <div style="text-align: center">

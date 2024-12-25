@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllPdf } from '../../redux/features/pdfSlice';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import AssigmModel from './AssigmModel';
-
+import QuotationTableRow from './QuotationTableRow';
 const Table = ({currentPage}) => {
 
     const dispatch = useDispatch();
@@ -56,24 +56,25 @@ const Table = ({currentPage}) => {
           </thead>
           <tbody>
             {pdfData?.list?.map((row, index) => (
-              <tr
-                key={row.id}
-                className={`${index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'} py-10`}
-              >
-                <td className="px-4 py-2 font-semibold text-sm">{index+1}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientName}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientEmail}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientPhone}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.reference}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.selectCompany}</td>
-                <td className="px-4 py-2 font-semibold text-sm text-center">{row.stateValue}</td>
-               {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
-                <td className="px-4 py-2 flex justify-evenly">
-                     {user?.role === "admin" && <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`} onClick={() => handleRowData(row)}>assign</button>}
-                     <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Status</button>
-                    <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Send</button>
-                </td>
-              </tr>
+              <QuotationTableRow row={row} index={index} key={index} handleRowData={handleRowData}/>
+              // <tr
+              //   key={row.id}
+              //   className={`${index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'} py-10`}
+              // >
+              //   <td className="px-4 py-2 font-semibold text-sm">{index+1}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientName}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientEmail}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.clientPhone}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.reference}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.selectCompany}</td>
+              //   <td className="px-4 py-2 font-semibold text-sm text-center">{row.stateValue}</td>
+              //  {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
+              //   <td className="px-4 py-2 flex justify-evenly">
+              //        {user?.role === "admin" && <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`} onClick={() => handleRowData(row)}>assign</button>}
+              //        <button className={` px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Status</button>
+              //       <button className={`px-6 py-1 border rounded-md ${localStorage.getItem("companyName") === "Injaz" ? "bg-textPrimary" : "bg-backgroundSecondary" } text-white text-xs font-semibold`}>Send</button>
+              //   </td>
+              // </tr>
             ))}
           </tbody>
         </table>

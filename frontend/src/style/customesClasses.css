@@ -4,3 +4,6 @@
 .dropdown-menu{
   --cui-dropdown-link-active-bg:none
 }
+.btn {
+  border-color: transparent !important;
+}

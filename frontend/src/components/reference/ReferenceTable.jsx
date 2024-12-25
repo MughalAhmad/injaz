@@ -2,17 +2,13 @@ import React, {useState} from 'react';
 import ReferenceRow from './ReferenceRow';
 import { useSelector } from 'react-redux';
 const ReferenceTable = () => {
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [dropdownId, setDropdownId] = useState("");
     const { refs } = useSelector(state => state.generalStore);
-    console.log("refs", refs)
     
-
-
-
   return (
 
-      // <div className="my-8 bg-white overflow-auto rounded-3xl border border-gray-200">
+
+
+
       <div className="w-full">
         <table className="min-w-full">
           <thead className="bg-gray-100">
@@ -32,20 +28,16 @@ const ReferenceTable = () => {
           </thead>
           <tbody>
             {refs?.refs?.map((row, index) => (
-                <ReferenceRow row={row} index={index} key={index}
-                dropdownVisible={dropdownVisible} setDropdownVisible={setDropdownVisible}
-                dropdownId={dropdownId} setDropdownId={setDropdownId}
-                />
+                <ReferenceRow row={row} index={index} key={index}/>
             ))}
           </tbody>
         </table>
       </div>
-    //   <div className="py-5 px-5">
-    //     <p className="text-textPrimary font-normal text-sm">
-    //   Showing 1 to 10 of 100 entries
-    //     </p>
-    //   </div>
-    //  </div>
+
+
+
+
+
   );
 };
 

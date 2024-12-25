@@ -910,9 +910,9 @@ useEffect(() => {
   return (
 <div className='p-5 md:p-10'>
 
-  <div className='flex flex-col items-center w-full h-auto md:m-auto'>
-  {companyName === "Injaz" ? <img src="/Injaz/page3Logo.png" alt='Company Logo' className='sm:w-96' /> : <img src="/page3Logo.png" alt='Company Logo' className='sm:w-96' />}
-  <p className={`text-3xl text-center md:text-main font-extrabold ml-24 ${companyName === "Injaz" ? 'text-[#222A59]' : 'text-[#BA141A]' }`}>Quotation Form</p>
+  <div className='flex justify-center w-full h-auto md:m-auto'>
+  {companyName === "Injaz" ? <img src="/Injaz/page3Logo.png" alt='Company Logo' className='w-72' /> : <img src="/page3Logo.png" alt='Company Logo' className='w-72' />}
+  {/* <p className={`text-3xl text-center md:text-main font-extrabold ml-24 ${companyName === "Injaz" ? 'text-[#222A59]' : 'text-[#BA141A]' }`}>Quotation Form</p> */}
   </div>
 
 
@@ -951,7 +951,7 @@ useEffect(() => {
 
 {/* state */}
 <div className='my-8 flex gap-5 flex-col md:flex-row'>
-<Title title='State' titleType='subtitle'/> 
+<Title title='State' titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 <div className='flex flex-wrap gap-3 md:gap-5 '>
   <SimpleDropdown value={data.stateValue} list={stateData} name='stateValue' placeHolder='Select' onChange={handleChange} label='State'/>
   <SelectAndInput value={data.packageIncludingVisa} list={selectVisa} name='packageIncludingVisa' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='License Package Including *'/>
@@ -1100,7 +1100,7 @@ useEffect(() => {
  {/* CheckBox firlds */}
  <div className='mt-10'>
  <Title title='Full Package Inclusive:' titleType='title' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/>
- <div className='mt-8'>
+ <div className='mt-8 flex flex-wrap'>
 <CheckBox data={checkBoxData} handleChange={handleCheckboxChange} handlePackage={handlePackageChange}/>
 </div>
  </div>

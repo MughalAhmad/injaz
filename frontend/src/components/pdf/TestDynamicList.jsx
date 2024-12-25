@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Title from '../pdf/Title';
 import Button from '../pdf/Button'
+import { useSelector } from 'react-redux';
 
 const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => {
 
    const [rows, setRows] = useState([fields]);
+   const { companyName } = useSelector(state => state.brandingStore);
 
   // Function to handle input change
   const handleInputChange = (rowIndex, field, value) => {
@@ -55,7 +57,7 @@ const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => 
   return (
     <div className='bg-red'>
     <div className=' flex flex-col md:flex-row'>
-    <Title title={title} titleType='subtitle'/> 
+    <Title title={title} titleType='subtitle' style={{ color: companyName === "Conqueror" ? '#BA141A' : "#222A59" }}/> 
 
 <div className='mb-5 mt-5 md:mt-0'>
 

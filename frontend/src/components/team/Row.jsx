@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteUser, getAllUsers, sendEmailAndPassword } from '../../redux/features/generalSlice';
-import ThreeDot from '/svgs/three-dot.svg';
+import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 
-const Row = ({row, index, dropdownVisible, setDropdownVisible, dropdownId, setDropdownId}) => {
+const Row = ({row, index}) => {
     
 const navigate = useNavigate();
 const dispatch = useDispatch();
@@ -14,39 +14,18 @@ const [isHovered, setIsHovered] = useState(false);
 const handleMouseEnter = () => setIsHovered(true);
 const handleMouseLeave = () => setIsHovered(false);
 
-
-  const toggleDropdown = (index) => {
-    if(index !== dropdownId){
-    setDropdownVisible(false);
-    setDropdownId("");
-    setDropdownVisible(true);
-    setDropdownId(index)
-    }
-    else{
-        setDropdownVisible(false);
-        setDropdownId(""); 
-    }
-  };
-
   const handleEdit = () => {
-    // alert(`Edit action for ${row.FirstName}`);
-    setDropdownVisible(false);
     navigate(`/team/${row.userId}`)
     };
 
   const handleDelete = () => {
-    // alert(`Delete action for ${row.FirstName}`);
-    setDropdownVisible(false);
     dispatch(deleteUser(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
-        dispatch(getAllUsers())
       }
     })
   };
 
   const handleMail = () => {
-    // alert(`Delete action for ${row.FirstName}`);
-    setDropdownVisible(false);
     dispatch(sendEmailAndPassword(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
         dispatch(getAllUsers())
@@ -69,9 +48,11 @@ const handleMouseLeave = () => setIsHovered(false);
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.userId}</td>
       <td className="px-4 py-2 font-semibold text-sm text-center">{row.password}</td>
       <td className="px-4 py-2 flex justify-center relative">
-        <span
+    
+<CDropdown>
+              <CDropdownToggle>
+              <span
           className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${localStorage.getItem("companyName") === "Conqueror" ? "hover:bg-red-300  " : "hover:bg-blue-200" } flex justify-center items-center`}
-          onClick={()=>toggleDropdown(index)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -84,30 +65,14 @@ const handleMouseLeave = () => setIsHovered(false);
             : "/svgs/three-dot.svg"}
           className='h-4 w-auto' alt="three-dot" />
         </span>
-        {dropdownVisible && dropdownId === index && (
-          <div className={`absolute top-0 -left-16 bg-white border shadow-md rounded-lg py-2 w-28 z-10`}>
-            <p
-              className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-              onClick={handleEdit}
-            >
-              Edit
-            </p>
-            <p
-              className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-              onClick={handleDelete}
-            >
+              </CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem className="cursor-pointer" onClick={handleEdit}> Edit</CDropdownItem>
+                <CDropdownItem className="cursor-pointer" onClick={handleDelete}> Delete</CDropdownItem>
+                <CDropdownItem className="cursor-pointer" onClick={handleMail}> Send</CDropdownItem>
 
-              Delete
-            </p>
-            <p
-              className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-              onClick={handleMail}
-            >
-
-              send
-            </p>
-          </div>
-        )}
+              </CDropdownMenu>
+            </CDropdown>
       </td>
     </tr>
     </>
