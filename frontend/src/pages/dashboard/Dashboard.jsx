@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {getDashboardData} from "../../redux/features/pdfSlice";
 
 const Dashboard = () => {
+
+
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1)
     const [sort, setSort] = useState("");
@@ -56,6 +58,9 @@ const Dashboard = () => {
       }
 
    useEffect(() => {
+    if(!localStorage.getItem("companyName")){
+      localStorage.setItem("companyName","Injaz")
+    }
     getAllDashboardData()
     }, [localStorage.getItem("companyName"), currentPage, sort])
 

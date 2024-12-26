@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { deleteRef, getAllRefs } from '../../redux/features/generalSlice';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 
@@ -8,6 +8,7 @@ const ReferenceRow = ({row, index}) => {
     
 const navigate = useNavigate();
 const dispatch = useDispatch();
+const { refsOptions } = useSelector(state => state.generalStore);
 
 const [isHovered, setIsHovered] = useState(false);
 
@@ -22,6 +23,8 @@ const handleMouseLeave = () => setIsHovered(false);
   const handleDelete = () => {
     dispatch(deleteRef(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
+      let queryParams = `?currentPage=${refsOptions.currentPage}&&filter=${refsOptions.query}&&sortValue=${refsOptions.sort}`;
+       dispatch(getAllRefs({queryParams}));
       }
     })
   };

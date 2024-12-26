@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getAllRefs } from '../../redux/features/generalSlice';
+import {updateShowBackDropLoader, updateShowLoader } from "../../redux/features/adminSlice";
+import { getAllRefs , updateRefOptions} from '../../redux/features/generalSlice';
 import ReferencePaginate from '../../components/reference/ReferencePagination';
+import {sweetNotification} from "../../components/common/SweetAlert";
 
 
 const Refrence = () => {
@@ -17,7 +19,20 @@ const Refrence = () => {
 
   const getAllRefsList = () =>{
     let queryParams = `?currentPage=${currentPage}&&filter=${query}&&sortValue=${sort}`;
-    dispatch(getAllRefs({queryParams}));
+    dispatch(updateShowBackDropLoader(true));
+    dispatch(getAllRefs({queryParams})).then((resp)=>{
+      dispatch(updateShowBackDropLoader(false));
+      if (resp && !resp.payload.hasError) {
+        sweetNotification(false, resp.payload.msg);
+      }
+      else{
+        sweetNotification(true, resp.payload.msg);
+      }
+    }).catch((error) => {
+      console.log(error);
+      dispatch(updateShowBackDropLoader(false));
+      sweetNotification(true, "Something went wrong");
+  });
   }
 
   const handleNavigation = (link) =>{
@@ -26,11 +41,26 @@ const Refrence = () => {
   }
 
   const handleChangeQuery = (e) =>{
+     let data1 = {
+          field:"currentPage",
+          value:1
+        }
+        dispatch(updateRefOptions(data1))
    setCurrentPage(1);
+      let data = {
+       field:"query",
+       value:e.target.value
+     }
+     dispatch(updateRefOptions(data))
    setQuery(e.target.value)
   }
 
   const handleSort = (e) =>{
+     let data = {
+          field:"sort",
+          value:e.target.value
+        }
+        dispatch(updateRefOptions(data))
   setSort(e.target.value);
   }
 

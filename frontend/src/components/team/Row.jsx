@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { deleteUser, getAllUsers, sendEmailAndPassword } from '../../redux/features/generalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUser, getAllUsers, sendEmailAndPassword, updateUserOptions } from '../../redux/features/generalSlice';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
 
 const Row = ({row, index}) => {
     
 const navigate = useNavigate();
 const dispatch = useDispatch();
+const { usersOptions } = useSelector(state => state.generalStore);
 
 const [isHovered, setIsHovered] = useState(false);
 
@@ -19,8 +20,11 @@ const handleMouseLeave = () => setIsHovered(false);
     };
 
   const handleDelete = () => {
+    console.log("test",usersOptions)
     dispatch(deleteUser(row._id)).then((resp)=>{
       if (resp && !resp.payload.hasError) {
+        let queryParams = `?currentPage=${usersOptions.currentPage}&&filter=${usersOptions.query}&&sortValue=${usersOptions.sort}`;
+            dispatch(getAllUsers({queryParams}));
       }
     })
   };

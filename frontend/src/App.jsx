@@ -1,4 +1,7 @@
 // import Form from "./Form";
+import React, {Suspense} from "react";
+import { Loader, BackDropLoader, FallbackLoader } from './components/common/Loader';
+
 import TestForm from "./PDF/TestForm";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "font-awesome/css/font-awesome.min.css";
@@ -21,11 +24,14 @@ import { useSelector } from 'react-redux';
 import "sweetalert2/dist/sweetalert2.min.css";
 
 function App() {
-  const {user, isAuthenticated} = useSelector(state => state.adminStore);
+  const {user, isAuthenticated, showLoader, showBackDropLoader} = useSelector(state => state.adminStore);
 
   return (
-
+    <>
+    {showLoader && <Loader show={showLoader} />}
+      {showBackDropLoader && <BackDropLoader show={showBackDropLoader} />}
     <Router>
+      <Suspense fallback={<FallbackLoader />}>
     <Routes>
       {/* Public Route */}
       <Route path="/login" element={<Login />} />
@@ -50,7 +56,9 @@ function App() {
         </Route>
       {/* </Route> */}
     </Routes>
+  </Suspense>
   </Router>
+  </>
   );
 }
 

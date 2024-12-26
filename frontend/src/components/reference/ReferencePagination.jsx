@@ -1,16 +1,23 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Paginate.css";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReferenceTable from "./ReferenceTable";
 import { current } from '@reduxjs/toolkit';
+import { updateRefOptions } from '../../redux/features/generalSlice';
 
 const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
+  const dispatch = useDispatch();
 
   const { refs } = useSelector(state => state.generalStore);
 
   const handlePageClick = (data) => {
     // localStorage.setItem("currentPage",data.selected+1)
+     let data1 = {
+              field:"currentPage",
+              value:data.selected+1
+            }
+            dispatch(updateRefOptions(data1))
     setCurrentPage(data.selected+1);
   };
 

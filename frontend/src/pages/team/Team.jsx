@@ -3,8 +3,7 @@ import Table from '../../components/team/Table'
 import TeamPaginate from '../../components/team/TeamPaginate'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getAllUsers } from '../../redux/features/generalSlice';
-
+import { getAllUsers, updateUserOptions } from '../../redux/features/generalSlice';
 
 
 const Team = () => {
@@ -31,11 +30,26 @@ const Team = () => {
   }
 
   const handleChangeQuery = (e) =>{
+    let data1 = {
+      field:"currentPage",
+      value:1
+    }
+    dispatch(updateUserOptions(data1))
    setCurrentPage(1);
+   let data = {
+    field:"query",
+    value:e.target.value
+  }
+  dispatch(updateUserOptions(data))
    setQuery(e.target.value)
   }
 
   const handleSort = (e) =>{
+    let data = {
+      field:"sort",
+      value:e.target.value
+    }
+    dispatch(updateUserOptions(data))
   setSort(e.target.value);
   }
   

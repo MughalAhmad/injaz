@@ -1,16 +1,25 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Paginate.css";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Table from "./Table";
+import { updateUserOptions } from '../../redux/features/generalSlice';
 
 const TeamPaginate = ({ setCurrentPage, currentPage }) => {
+  const dispatch = useDispatch();
 
   const { users } = useSelector(state => state.generalStore);
 
   const handlePageClick = (data) => {
     // localStorage.setItem("currentPage",data.selected+1)
-    setCurrentPage(data.selected+1);
+        let data1 = {
+          field:"currentPage",
+          value:data.selected+1
+        }
+        dispatch(updateUserOptions(data1))
+          setCurrentPage(data.selected+1);
+        
+    
   };
 
     const renderItems = () => {

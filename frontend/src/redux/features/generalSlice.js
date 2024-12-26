@@ -100,7 +100,9 @@ export const deleteRef = createAsyncThunk(
 
 const initialstate = {
     users: {},
+    usersOptions:{currentPage:1, query:'', sort:'' },
     refs:{},
+    refsOptions:{currentPage:1, query:'', sort:'' },
     status: 'idle',
     error: null,
     isLoading: true,
@@ -110,7 +112,31 @@ const initialstate = {
 const generalSlice = createSlice({
     name: "geaneral",
     initialState: initialstate,
-    reducers: {},
+    reducers: { 
+
+        updateUserOptions(state, action) {
+            if(action.payload.field === 'currentPage'){
+                state.usersOptions.currentPage = action.payload.value;
+            }
+            if(action.payload.field === 'query'){
+                state.usersOptions.query = action.payload.value;
+            }
+            if(action.payload.field === 'sort'){
+                state.usersOptions.sort = action.payload.value;
+            }
+         },
+         updateRefOptions(state, action) {
+            if(action.payload.field === 'currentPage'){
+                state.refsOptions.currentPage = action.payload.value;
+            }
+            if(action.payload.field === 'query'){
+                state.refsOptions.query = action.payload.value;
+            }
+            if(action.payload.field === 'sort'){
+                state.refsOptions.sort = action.payload.value;
+            }
+         }
+},
     extraReducers: (builder) => {
         builder
             .addCase(getAllUsers.pending, (state) => {
@@ -127,25 +153,6 @@ const generalSlice = createSlice({
                 }
             })
             .addCase(getAllUsers.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = true;
-                state.isLoading = false;
-                state.showLoader = false;
-            })
-            .addCase(deleteUser.pending, (state) => {
-                state.status = 'loading';
-                state.isLoading = true;
-                state.showLoader = true;
-            })
-            .addCase(deleteUser.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.showLoader = false;
-                if (!action.payload.hasError) {
-                    state.users.users = action.payload.data;
-                    state.isLoading = false;
-                }
-            })
-            .addCase(deleteUser.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = true;
                 state.isLoading = false;
@@ -170,27 +177,8 @@ const generalSlice = createSlice({
                 state.isLoading = false;
                 state.showLoader = false;
             })
-            .addCase(deleteRef.pending, (state) => {
-                state.status = 'loading';
-                state.isLoading = true;
-                state.showLoader = true;
-            })
-            .addCase(deleteRef.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.showLoader = false;
-                if (!action.payload.hasError) {
-                    state.refs.refs = action.payload.data;
-                    state.isLoading = false;
-                }
-            })
-            .addCase(deleteRef.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = true;
-                state.isLoading = false;
-                state.showLoader = false;
-            })
     }
 });
 
-export const {} = generalSlice.actions;
+export const {updateUserOptions,updateRefOptions} = generalSlice.actions;
 export default generalSlice;
