@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, getAllUsers, sendEmailAndPassword, updateUserOptions } from '../../redux/features/generalSlice';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
+import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
 
 const Row = ({row, index}) => {
     
@@ -20,21 +22,40 @@ const handleMouseLeave = () => setIsHovered(false);
     };
 
   const handleDelete = () => {
-    console.log("test",usersOptions)
+        dispatch(updateShowBackDropLoader(true));
     dispatch(deleteUser(row._id)).then((resp)=>{
+          dispatch(updateShowBackDropLoader(false));
       if (resp && !resp.payload.hasError) {
+          sweetNotification(false, resp.payload.msg);
         let queryParams = `?currentPage=${usersOptions.currentPage}&&filter=${usersOptions.query}&&sortValue=${usersOptions.sort}`;
             dispatch(getAllUsers({queryParams}));
       }
-    })
+       else{
+             sweetNotification(true, resp.payload.msg);
+               }
+    }).catch(error => {
+         dispatch(updateShowBackDropLoader(false));
+         sweetNotification(true, 'Something went wrong');
+         console.log(error);
+         })
   };
 
   const handleMail = () => {
+    dispatch(updateShowBackDropLoader(true));
     dispatch(sendEmailAndPassword(row._id)).then((resp)=>{
+      dispatch(updateShowBackDropLoader(false));
       if (resp && !resp.payload.hasError) {
+        sweetNotification(false, resp.payload.msg);
         dispatch(getAllUsers())
       }
-    })
+      else{
+             sweetNotification(true, resp.payload.msg);
+      }
+    }).catch(error => {
+         dispatch(updateShowBackDropLoader(false));
+         sweetNotification(true, 'Something went wrong');
+         console.log(error);
+         })
   };
   return (
     <>

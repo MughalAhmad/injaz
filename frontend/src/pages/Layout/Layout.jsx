@@ -62,7 +62,7 @@ const Layout = () => {
 
   // //////////////////////////////////////////////////////
 
-  const AUTO_LOGOUT_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
+  const AUTO_LOGOUT_TIME = 5 * 60 * 1000; // 10 minutes in milliseconds
   let lastActivityTime = Date.now();
  // Function to reset the inactivity timer
  const resetTimer = () => {

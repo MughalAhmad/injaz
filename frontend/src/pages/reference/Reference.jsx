@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {updateShowBackDropLoader, updateShowLoader } from "../../redux/features/adminSlice";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
 import { getAllRefs , updateRefOptions} from '../../redux/features/generalSlice';
 import ReferencePaginate from '../../components/reference/ReferencePagination';
 import {sweetNotification} from "../../components/common/SweetAlert";

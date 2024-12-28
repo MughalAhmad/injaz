@@ -15,10 +15,12 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import MyDocument from './GeneratePDF';
 import MyDocumentInjaz from './GeneratePDFCompany2';
 import { useSelector, useDispatch } from 'react-redux';
-import { createPdf } from '../redux/features/pdfSlice';
+import { createPdf, allRefs } from '../redux/features/pdfSlice';
 import {sweetNotification} from "../components/common/SweetAlert"
 import {useNavigate} from "react-router-dom"
 import DateDropDown from '../components/pdf/DateDropDown';
+import {updateShowBackDropLoader } from "../redux/features/adminSlice";
+
 const TestForm = () => {
   const toWords = new ToWords();
   const dispatch = useDispatch();
@@ -78,7 +80,7 @@ const { user } = useSelector(state => state.adminStore);
    step2Remark:"Government Fees Renewable every year",
    step2EstablishmentTimeline:"2-3 Working Days After License" ,
    step3RenewableEmployment:"Government Fees Renewable every year ",
-   step3StatusChange:"AED 1650 – If You Are In UAE",
+   step3StatusChange:"If You Are In UAE",
    step2Establishment:'',
    step2EstablishmentIN:'',
    step2ImmigrationFee:'',
@@ -113,14 +115,13 @@ const { user } = useSelector(state => state.adminStore);
    emiratesIdIN:"",
    emiratesIdTimeline:"3-5 Working Days After Apply",
 
-   quotationDate:'',
+   quotationDate:moment(new Date()).format("YYYY-MM-DD"),
 
    pdfLenght:'',
    isEmail:""
   });
 
     console.log("TESSSSSSSSSSSSSSSST",data.clientPhone.split('-').pop())
-
   const ActivitiesHeads =['Code', 'Activity Description', 'Approval', 'Authority'];
   const ActivitiesFields ={ code: "", description: "", approval: "", authority: "" };
 
@@ -137,57 +138,6 @@ const { user } = useSelector(state => state.adminStore);
       name:'Injaz Group',
       color:'#222A59'
     }
-  ];
-
-  const selectReference =[
-    {
-      id:'Facebook',
-      name:'Facebook',
-    },
-    {
-      id:'Instagram',
-      name:'Instagram',
-    },
-    {
-      id:'Whatsapp',
-      name:'Whatsapp',
-    },
-    {
-      id:'Sehrish Tahira',
-      name:'Sehrish Tahira',
-    },
-    {
-      id:'Hania Asif',
-      name:'Hania Asif',
-    },
-    {
-      id:'Haseeb Malik',
-      name:'Haseeb Malik',
-    },
-    {
-      id:'Adiba Jabbar',
-      name:'Adiba Jabbar',
-    },
-    {
-      id:'Mariyam',
-      name:'Mariyam',
-    },
-    {
-      id:'Mujahid Noman',
-      name:'Mujahid Noman',
-    },
-    {
-      id:'Zahid Sultan',
-      name:'Zahid Sultan',
-    },
-    {
-      id:'Abdullah Zubair',
-      name:'Abdullah Zubair',
-    },
-    {
-      id:0,
-      name:'Enter Reference',
-    },
   ];
 
   const selectVisa =[
@@ -606,8 +556,10 @@ const { user } = useSelector(state => state.adminStore);
   };
 
 const saveDataIntoDB = () =>{
+  dispatch(updateShowBackDropLoader(true));
   dispatch(createPdf(data))
     .then(response => {
+      dispatch(updateShowBackDropLoader(false));
       if (response && !response.payload.hasError) {
        console.log("responseresponseresponse",response)
        navigate("/quotation")
@@ -618,6 +570,7 @@ const saveDataIntoDB = () =>{
       }
     })
     .catch(error => {
+      dispatch(updateShowBackDropLoader(false));
       sweetNotification(true, 'Something went wrong');
       console.error('Dispatch failed:', error);
     });
@@ -660,7 +613,7 @@ const saveDataIntoDB = () =>{
 
   const handleAmount = () => {
     console.log("AMOUNT CALL")
-    let totalAmount = [data.step1value, Number(data.step2ApprovalFee),   Number(data.step2EstablishmentIN),         data.step2value1IN,  data.step2value2aIN, data.step2value2IN, Number(data.discount), Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
+    let totalAmount = [data.step1value,   Number(data.step2EstablishmentIN), data.step2value1IN,  data.step2value2aIN, data.step2value2IN, Number(data.discount), Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
 
       (total, item) => total + Number(item), 
       0
@@ -668,7 +621,7 @@ const saveDataIntoDB = () =>{
     
     let calculateGrandTotal = updateTheGTValue(totalAmount);
 
-    // calculateGrandTotal = calculateGrandTotal + Number(data.medicalIN) + Number(data.emiratesIdIN)
+    calculateGrandTotal = calculateGrandTotal + Number(data.step2ApprovalFee)
 
     const roundedNumber = parseFloat(calculateGrandTotal.toFixed(1));
     let words = toWords.convert(roundedNumber);
@@ -684,7 +637,7 @@ const saveDataIntoDB = () =>{
 
   const handleCheckboxChange = (changedItem) => {
     const updatedData = checkBoxData.map((item) =>
-      item.title === changedItem.title ? { ...item, status: changedItem.status=='0' ? "1" : '0' } : item
+      item.title === changedItem.title ? { ...item, status: changedItem.status === "1" ? "0" : "1" } : item
     );
     setCheckBoxData(updatedData);
     console.log("hHELLLLLOOOOOO")
@@ -868,17 +821,72 @@ useEffect(() => {
 
 
          const auth = () =>{
-          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1IN && data.step2value1 && data.step2Establishment && data.step2EstablishmentIN && data.step2value2a && data.step2value2aIN && data.step2value2 && data.step2value2IN && data.step2value3 && data.step2value3IN && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && stateArray[0]?.authority && data.isEmail && data.packageIncludingVisa && data.medical && data.medicalIN && data.emiratesId && data.emiratesIdIN){
+          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1IN && data.step2value1 && data.step2Establishment && data.step2EstablishmentIN && data.step2value2a && data.step2value2aIN && data.step2value2 && data.step2value2IN && data.step2value3 && data.step2value3IN && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && data.isEmail && data.packageIncludingVisa && data.medical && data.medicalIN && data.emiratesId && data.emiratesIdIN){
             return true
           }
           else return false;
          }
+
+
+
+        //  let selectReferenceFH =[
+        //   {
+        //     id:'Facebook',
+        //     name:'Facebook',
+        //   },
+        //   {
+        //     id:'Instagram',
+        //     name:'Instagram',
+        //   },
+        //   {
+        //     id:'Whatsapp',
+        //     name:'Whatsapp',
+        //   }
+        // ];
+
+
+        // let selectReference; 
+
+        //  const getAllRefs = () =>{
+        //   dispatch(allRefs()).then((resp)=>{
+        //     if(resp && !resp.payload.hasError){
+        //       console.log("check refs",resp.payload.data.refs )
+
+        //       selectReference =[...selectReferenceFH , ...resp.payload.data.refs ]
+        //       //  selectReference.concat(resp.payload.data.refs);
+        //     }
+        //   })
+        //  }
+
+
+ // Initialize state for dropdown options
+  const [selectReference, setSelectReference] = useState([
+    { id: 'Facebook', name: 'Facebook' },
+    { id: 'Instagram', name: 'Instagram' },
+    { id: 'Whatsapp', name: 'Whatsapp' },
+  ]);
+
+  const getAllRefs = async () => {
+    try {
+      const response = await dispatch(allRefs());
+      if (response && !response.payload.hasError) {
+        console.log("check refs", response.payload.data.refs);
+        setSelectReference((prev) => [
+          ...prev,
+          ...response.payload.data.refs,
+        ]);
+      }
+    } catch (error) {
+      console.error("Failed to fetch references:", error);
+    }
+  };
 
   
 
   useEffect(() => {
     handleImageAndColor();
     handleAmount();
+    getAllRefs()
 
     // setCheckBoxData(prevData => 
     //   prevData.map(item => 
@@ -904,7 +912,7 @@ useEffect(() => {
     //   )
     // );
     
-  }, [stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
+  }, [checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
   
 
   return (
@@ -935,7 +943,9 @@ useEffect(() => {
     />
     {data.isEmail === false &&<span style={{paddingLeft:'7px', paddingTop:"5px", fontSize:'15px', color:"red"}}>Enter Valid Email*</span>}
       </div>
-      <DateDropDown label="Date" onDateChange={handleQuotationDate}/>
+      <Input label="Date" value={moment(data.quotationDate).format("YYYY-MM-DD")} name='quotationDate' type='date' handleChange={handleChange}  />
+
+      {/* <DateDropDown label="Date" onDateChange={handleQuotationDate}/> */}
 </div>
 
 {/* client phone and Refrence */}
@@ -1040,8 +1050,8 @@ useEffect(() => {
 
 
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
- <SelectAndInput value={data.step2value3} list={selectStatusChange} name='step2value3' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa Status Change'/>
- <SelectAndInput value={data.step2value3IN} list={selectStatusChange} name='step2value3IN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Visa Status Change (include)'/>
+ <SelectAndInput value={data.step2value3} list={selectStatusChange} name='step2value3' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change'/>
+ <SelectAndInput value={data.step2value3IN} list={selectStatusChange} name='step2value3IN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change (include)'/>
 
  <Input label="Remarks" disabled='disabled' value={data.step3StatusChange} name='step3StatusChange'/>
   <Input label="Timeline" disabled='disabled' value={data.step3TimelineStatusChange} name='step3TimelineStatusChange'/>

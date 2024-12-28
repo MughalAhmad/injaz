@@ -20,7 +20,9 @@ class PdfService extends Service {
     async getDashboardData(data) {
         return await this.ApiClient.get(`/pdf/dashboard?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}&&sortValue=${data.sortValue}`);
     }
-
+    async allRefs() {
+        return await this.ApiClient.get(`/pdf/allRefs`);
+    }
 }
 
 export default PdfService;

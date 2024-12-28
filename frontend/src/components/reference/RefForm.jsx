@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createRef, getRef, updateRef } from '../../redux/features/generalSlice';
 import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
 
 const refCreateSchema = Yup.object({
     fullName: Yup.string().required("Full Name Required"),
@@ -71,9 +72,12 @@ const RefForm = () => {
                 }
                 console.log(formState)
                 console.log(body)
+                dispatch(updateShowBackDropLoader(true));
 
                 dispatch( formState === 'update' ? updateRef(body) : createRef(body) )
                     .then(resp => {
+                          dispatch(updateShowBackDropLoader(false));
+                      
                         if (resp && !resp.payload.hasError) {
                             sweetNotification(false, resp.payload.msg);
                             navigate('/reference');
@@ -82,6 +86,8 @@ const RefForm = () => {
                         }
                     })
                     .catch(error => {
+                          dispatch(updateShowBackDropLoader(false));
+                      
                       sweetNotification(true, 'Something went wrong');
                         console.log(error);
                     })
@@ -89,13 +95,19 @@ const RefForm = () => {
         });
 
         const getRefData = () =>{
+              dispatch(updateShowBackDropLoader(true));
+          
           dispatch(getRef(params?.rid)) // Now this refers to the Redux action
           .then((resp) => {
+                dispatch(updateShowBackDropLoader(false));
+            
             if (resp && !resp.payload.hasError) {
                 setRefData(resp.payload.data.ref);
             }
           })
           .catch((error) => {
+            dispatch(updateShowBackDropLoader(false));
+
             console.error(error);
           });
         };

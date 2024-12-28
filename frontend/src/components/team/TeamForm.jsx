@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createUser, getUser, updateUser } from '../../redux/features/generalSlice';
 import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
+
 const teamCreateSchema = Yup.object({
     firstName: Yup.string().required("First Name Required"),
     lastName: Yup.string().required("Last Name Required"),
@@ -71,9 +73,12 @@ const TeamForm = () => {
                   body._id=useData._id
                 }
                 console.log(formState)
+                dispatch(updateShowBackDropLoader(true));
 
                 dispatch( formState === 'update' ? updateUser(body) : createUser(body) )
                     .then(resp => {
+                      dispatch(updateShowBackDropLoader(false));
+                      
                         if (resp && !resp.payload.hasError) {
                             sweetNotification(false, resp.payload.msg);
                             navigate('/team');
@@ -82,6 +87,7 @@ const TeamForm = () => {
                         }
                     })
                     .catch(error => {
+                      dispatch(updateShowBackDropLoader(false));
                       sweetNotification(true, 'Something went wrong');
                         console.log(error);
                     })

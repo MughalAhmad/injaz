@@ -4,6 +4,9 @@ import { getAllPdf } from '../../redux/features/pdfSlice';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import AssigmModel from './AssigmModel';
 import QuotationTableRow from './QuotationTableRow';
+import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
+
 const Table = ({currentPage}) => {
 
     const dispatch = useDispatch();
@@ -22,7 +25,20 @@ const Table = ({currentPage}) => {
           role: user?.role,
           currentPage:currentPage,
         }
-        dispatch(getAllPdf(data))
+        dispatch(updateShowBackDropLoader(true));
+        dispatch(getAllPdf(data)).then((resp)=>{
+              dispatch(updateShowBackDropLoader(false));
+              if (resp && !resp.payload.hasError) {
+                sweetNotification(false, resp.payload.msg);
+              }
+              else{
+                sweetNotification(true, resp.payload.msg);
+              }
+            }).catch((error) => {
+              console.log(error);
+              dispatch(updateShowBackDropLoader(false));
+              sweetNotification(true, "Something went wrong");
+          });
       }
     
     

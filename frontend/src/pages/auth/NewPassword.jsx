@@ -3,7 +3,7 @@ import ArrowLeft from "/svgs/arrow-left.svg";
 import Lock from "/svgs/lock.svg";
 import CheckedTick from "/svgs/checked-Tick.svg";
 import UncheckedTick from "/svgs/unchecked-Tick.svg";
-import { newPassword } from '../../redux/features/adminSlice';
+import { newPassword, updateShowBackDropLoader } from '../../redux/features/adminSlice';
 import { useDispatch } from 'react-redux';
 import {sweetNotification} from "../../components/common/SweetAlert";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -24,8 +24,12 @@ const NewPassword = () => {
         email:location?.state?.email,
         password:password
        }
+       
+       dispatch(updateShowBackDropLoader(true));
        if(password === conformPassword){
         dispatch(newPassword(data)).then(response => {
+              dispatch(updateShowBackDropLoader(false));
+          
           if (response && !response.payload.hasError) {
             navigate('/sucessfulpassword');
             sweetNotification(false, response.payload.msg);
@@ -35,11 +39,14 @@ const NewPassword = () => {
           }
         })
         .catch(error => {
+          dispatch(updateShowBackDropLoader(false));
           sweetNotification(true, 'Something went wrong');
           console.error('Dispatch failed:', error);
         });
        }
         else{
+              dispatch(updateShowBackDropLoader(false));
+          
           sweetNotification(true, 'Both Password must same');
 
         }

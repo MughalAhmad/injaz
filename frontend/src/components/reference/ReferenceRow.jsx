@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch,useSelector } from 'react-redux';
 import { deleteRef, getAllRefs } from '../../redux/features/generalSlice';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
+import {sweetNotification} from "../common/SweetAlert";
 
 const ReferenceRow = ({row, index}) => {
     
@@ -21,12 +23,23 @@ const handleMouseLeave = () => setIsHovered(false);
     };
 
   const handleDelete = () => {
+    dispatch(updateShowBackDropLoader(true));
     dispatch(deleteRef(row._id)).then((resp)=>{
+       dispatch(updateShowBackDropLoader(false));
       if (resp && !resp.payload.hasError) {
+        sweetNotification(false, resp.payload.msg);
+        
       let queryParams = `?currentPage=${refsOptions.currentPage}&&filter=${refsOptions.query}&&sortValue=${refsOptions.sort}`;
        dispatch(getAllRefs({queryParams}));
       }
-    })
+      else{
+       sweetNotification(true, resp.payload.msg);
+         }
+    }).catch(error => {
+     dispatch(updateShowBackDropLoader(false));
+     sweetNotification(true, 'Something went wrong');
+     console.log(error);
+     })
   };
   return (
     <>

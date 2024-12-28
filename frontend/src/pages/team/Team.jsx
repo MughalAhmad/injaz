@@ -4,6 +4,8 @@ import TeamPaginate from '../../components/team/TeamPaginate'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getAllUsers, updateUserOptions } from '../../redux/features/generalSlice';
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
+import {sweetNotification} from "../../components/common/SweetAlert";
 
 
 const Team = () => {
@@ -20,7 +22,20 @@ const Team = () => {
   
   const getAllUsersList = () =>{
     let queryParams = `?currentPage=${currentPage}&&filter=${query}&&sortValue=${sort}`;
-    dispatch(getAllUsers({queryParams}));
+    dispatch(updateShowBackDropLoader(true));
+    dispatch(getAllUsers({queryParams})).then((resp)=>{
+          dispatch(updateShowBackDropLoader(false));
+          if (resp && !resp.payload.hasError) {
+            sweetNotification(false, resp.payload.msg);
+          }
+          else{
+            sweetNotification(true, resp.payload.msg);
+          }
+        }).catch((error) => {
+          console.log(error);
+          dispatch(updateShowBackDropLoader(false));
+          sweetNotification(true, "Something went wrong");
+      });
   }
   
   

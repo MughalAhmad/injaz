@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState  } from "react";
 import ArrowLeft from "/svgs/arrow-left.svg";
 import {useLocation, useNavigate} from "react-router-dom";
-import { checkCode } from '../../redux/features/adminSlice';
+import { checkCode, updateShowBackDropLoader } from '../../redux/features/adminSlice';
 import { useDispatch } from 'react-redux';
 import {sweetNotification} from "../../components/common/SweetAlert";
 
@@ -70,7 +70,11 @@ const Digit6Verify = () => {
     email:location?.state?.email,
     code:code
    }
+    dispatch(updateShowBackDropLoader(true));
+   
     dispatch(checkCode(data)).then(response => {
+                      dispatch(updateShowBackDropLoader(false));
+      
                 if (response && !response.payload.hasError) {
                   navigate('/newpassword',{state:{email:location?.state?.email}});
                   sweetNotification(false, response.payload.msg);
@@ -80,6 +84,8 @@ const Digit6Verify = () => {
                 }
               })
               .catch(error => {
+                  dispatch(updateShowBackDropLoader(false));
+                
                 sweetNotification(true, 'Something went wrong');
                 console.error('Dispatch failed:', error);
               });

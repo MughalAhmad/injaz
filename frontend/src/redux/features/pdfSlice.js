@@ -40,6 +40,14 @@ export const getDashboardData = createAsyncThunk(
     }
 );
 
+export const allRefs = createAsyncThunk(
+    'allRefs',
+    async () => {
+        const response = await pdfService.allRefs();
+        return response.data;
+    }
+);
+
 const initialstate = {
     pdfData:{list:[], pages:1, cardData:{
         pending:30,
@@ -69,6 +77,9 @@ const pdfSlice = createSlice({
                 state.showLoader = false;
                 if (!action.payload.hasError) {
                     state.pdfData.list = action.payload.data.pdfs;
+                    state.pdfData.pages = action.payload.data.pages
+                    state.pdfData.cardData = action.payload.data.cardData;
+                    state.pdfData.total = action.payload.data.total;
                     state.isLoading = false;
                 }
             })

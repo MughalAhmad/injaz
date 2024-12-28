@@ -1,5 +1,8 @@
 const pdfModel = require("../models/pdfModel");
+const refModel = require("../models/referenceModel");
+
 const {sendMail} = require("../integrations/sendMail");
+const { all } = require("../routes/pdfRoute");
 
   module.exports = {
     createPdf: async (req, res, next) => {
@@ -15,40 +18,175 @@ const {sendMail} = require("../integrations/sendMail");
           to: pdf.clientEmail,
           cc: companyName === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: 'Quotaion Info',
-          html:  `
-          <div style="text-align: center">
-          <h3>Hello ${pdf.clientName}</h3>
-          <h3>Company ${pdf.companyName}</h3>
-
-          </br>
-            <p>This is a quotation regarding your visa. Could you please review the details we have provided in this email?</p>
-            </br>
-            <p>If everything looks good, kindly click the "Accept" button. If you decide not to proceed with us, please click the "Reject" button to update your records.</p>
-            </br>
-
-             <a href="#" style="
-                    display: inline-block;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    color: white;
-                    background-color: green;
-                    text-decoration: none;
-                    border-radius: 25px;
-                  ">Accept</a>
-            </br>
-
-               <a href="#" style="
-                    display: inline-block;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    color: white;
-                    background-color: red;
-                    text-decoration: none;
-                    border-radius: 25px;
-                  ">Reject</a>
-
+          html:  
+          companyName === "Conqueror" ?
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+            <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+              <!-- Header -->
+              <div style="text-align: center; margin-bottom: 20px;">
+                <img src="../assets/injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
+              </div>
+          
+              <!-- Title -->
+              <h3 style="font-size: 20px; color: #B11116; margin-bottom: 10px;">Business Setup in Dubai, Including 2 Visa</h3>
+              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${pdf.clientName},</p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                We trust you’re doing well.
+              </p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+              </p>
+          
+              <!-- Attachment -->
+              <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+                <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+                <div>
+                  <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                  <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+                </div>
+                <a href="#" style="margin-left: auto; background: #B11116; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+              </div>
+          
+              <!-- Call to Action -->
+              <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                  If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+                </p>
+                <div>
+                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+                </div>
+              </div>
+          
+              <!-- Footer -->
+              <p style="font-size: 14px; color: #555; margin: 20px 0;">
+                If you have any questions or need further clarification, please don’t hesitate to reach out.
+              </p>
+              <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+          
+              <div style="text-align: center; margin: 30px 0;">
+                <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+                <div>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+                </div>
+              </div>
+          
+              <p style="font-size: 12px; color: #999; text-align: center;">
+                Injaz Group Fzc<br>
+                City Pharmacy Bid, Port Saeed, Dubai
+              </p>
+            </div>
+          </div>`
+          :
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 20px;">
+              <img src="../assets/injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
+            </div>
+        
+            <!-- Title -->
+            <h3 style="font-size: 20px; color: #0A144E; margin-bottom: 10px;">Business Setup in Dubai, Including 2 Visa</h3>
+            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${pdf.clientName},</p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              We trust you’re doing well.
+            </p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+            </p>
+        
+            <!-- Attachment -->
+            <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+              <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+              <div>
+                <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+              </div>
+              <a href="#" style="margin-left: auto; background: #0A144E; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+            </div>
+        
+            <!-- Call to Action -->
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+              <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+              </p>
+              <div>
+                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+              </div>
+            </div>
+        
+            <!-- Footer -->
+            <p style="font-size: 14px; color: #555; margin: 20px 0;">
+              If you have any questions or need further clarification, please don’t hesitate to reach out.
+            </p>
+            <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+        
+            <div style="text-align: center; margin: 30px 0;">
+              <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+              <div>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+              </div>
+            </div>
+        
+            <p style="font-size: 12px; color: #999; text-align: center;">
+              Injaz Group Fzc<br>
+              City Pharmacy Bid, Port Saeed, Dubai
+            </p>
           </div>
-        `, 
+        </div>`
+
+
+
+
+
+        //   `
+        //   <div style="text-align: center">
+        //   <h3>Hello ${pdf.clientName}</h3>
+        //   <h3>Company ${pdf.companyName}</h3>
+
+        //   </br>
+        //     <p>This is a quotation regarding your visa. Could you please review the details we have provided in this email?</p>
+        //     </br>
+        //     <p>If everything looks good, kindly click the "Accept" button. If you decide not to proceed with us, please click the "Reject" button to update your records.</p>
+        //     </br>
+
+        //      <a href="#" style="
+        //             display: inline-block;
+        //             padding: 10px 20px;
+        //             font-size: 16px;
+        //             color: white;
+        //             background-color: green;
+        //             text-decoration: none;
+        //             border-radius: 25px;
+        //           ">Accept</a>
+        //     </br>
+
+        //        <a href="#" style="
+        //             display: inline-block;
+        //             padding: 10px 20px;
+        //             font-size: 16px;
+        //             color: white;
+        //             background-color: red;
+        //             text-decoration: none;
+        //             border-radius: 25px;
+        //           ">Reject</a>
+
+        //   </div>
+        // `
+        , 
         };
   
         const { error } =  await sendMail(message, companyName);
@@ -331,6 +469,42 @@ return res.status(200).json({
           hasError: true,
           msg: error.message,
           data: { notificationData: null },
+        });
+      }
+    },
+    allRefs: async (req, res, next) => {
+      try {
+       
+        const allRefs = await refModel.aggregate([
+          {$project:{
+                _id:1,
+                fullName:1,
+                refCode:1
+          }}
+        ]);
+        if (!allRefs) throw new Error("References not found");
+
+        let modifyRefs = [];
+
+        allRefs.map((item)=>{
+          modifyRefs.push({
+            id:item.fullName,
+            name:item.fullName,
+          })
+        })
+
+return res.status(200).json({
+  hasError: false,
+  msg: "Reference successfully find",
+  data: { refs: modifyRefs, },
+});
+
+
+      } catch (error) {
+        return res.status(200).json({
+          hasError: true,
+          msg: error.message,
+          data: { refs: null },
         });
       }
     },

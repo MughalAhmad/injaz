@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import ArrowLeft from "/svgs/arrow-left.svg";
 import Message from "/svgs/message.svg";
 import { useNavigate } from 'react-router-dom';
-import { forgot } from '../../redux/features/adminSlice';
+import { forgot, updateShowBackDropLoader } from '../../redux/features/adminSlice';
 import { useDispatch } from 'react-redux';
 import {sweetNotification} from "../../components/common/SweetAlert";
 
@@ -17,8 +17,11 @@ const ForgotPassword = () => {
       const data={
         email:email
       }        
+          dispatch(updateShowBackDropLoader(true));
            dispatch(forgot(data))
            .then(response => {
+                dispatch(updateShowBackDropLoader(false));
+            
              if (response && !response.payload.hasError) {
                navigate('/digit6',{state:{email:email}});
                sweetNotification(false, response.payload.msg);
@@ -28,6 +31,7 @@ const ForgotPassword = () => {
              }
            })
            .catch(error => {
+            dispatch(updateShowBackDropLoader(false));
              sweetNotification(true, 'Something went wrong');
              console.error('Dispatch failed:', error);
            });

@@ -130,7 +130,9 @@ const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => 
         onChange={(e) =>
           handleInputChange(rowIndex, 'authority', e.target.value)
         }
-         className='w-64 h-11 rounded-lg border border-[#D0D5DD] outline-none text-base placeholder-[#D0D5DD] text-black px-3'/>
+         className='w-64 h-11 rounded-lg border border-[#D0D5DD] outline-none text-base placeholder-[#D0D5DD] text-black px-3'
+         disabled={row.approval === 'N/A'} // Disable Authority if Approval is N/A
+         />
 
     </div>
 
