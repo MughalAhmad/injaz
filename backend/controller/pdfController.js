@@ -1275,9 +1275,14 @@ const compressPDF = async (pdfBuffer) => {
   module.exports = {
     createPdf: async (req, res, next) => {
       try {
-        const companyName = req.body.selectCompany;
-        console.log('selectCompany',companyName)
-         const pdf = await pdfModel.create(req.body)
+        const modifyBody = {
+          ...req.body.data,
+          checkBoxData:req.body.checkBoxData,
+          stateArray:req.body.stateArray
+        }
+
+        console.log(modifyBody)
+         const pdf = await pdfModel.create(modifyBody);
         if (!pdf) throw new Error("Error in Creating pdf");
   
         return res.status(200).json({
@@ -1678,15 +1683,13 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
               <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
               <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
           
-              <div style="text-align: center; margin: 30px 0;">
+              <div style="text-align: center; margin: 5px 0;">
                 <p style="font-size: 14px; color: #C40014;">CONNECT WITH</p>
                 <div>
-                  <a href="#" style="margin: 0 5px;"><img src="https://images.search.yahoo.com/search/images;_ylt=AwrjZf2Ng3NnPpAueUuJzbkF;_ylu=c2VjA3NlYXJjaARzbGsDYnV0dG9u;_ylc=X1MDOTYwNjI4NTcEX3IDMgRmcgNtY2FmZWUEZnIyA3A6cyx2OmksbTpzYi10b3AEZ3ByaWQDT1E5WU11UG5RaGk2UXpZdDR3X1l5QQRuX3JzbHQDMARuX3N1Z2cDMARvcmlnaW4DaW1hZ2VzLnNlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMwBHFzdHJsAzM4BHF1ZXJ5A2xpdmUlMjBzb2NpYWwlMjBtZWRpYSUyMGljb25zJTIwbGlua3MlMjBmYWNlYm9vawR0X3N0bXADMTczNTYyMzU4Mw--?p=live+social+media+icons+links+facebook&fr=mcafee&fr2=p%3As%2Cv%3Ai%2Cm%3Asb-top&ei=UTF-8&x=wrt&type=E210US91215G0#id=156&iurl=https%3A%2F%2Fclimatejusticealliance.org%2Fwp-content%2Fuploads%2F2018%2F04%2Fsocial-media-icons-facebook-orange-1024x1024.png&action=click" alt="Facebook"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
+                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
                 </div>
               </div>
           
@@ -1706,7 +1709,7 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
             </div>
         
             <!-- Title -->
-            <h3 style="font-size: 20px; color: #0A144E; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
+            <h3 style="font-size: 20px; color: #1E2957; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
             <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
             <p style="font-size: 14px; color: #555; line-height: 1.5;">
               We trust you’re doing well.
@@ -1743,15 +1746,223 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
             <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
             <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
         
-            <div style="text-align: center; margin: 30px 0;">
-              <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+            <div style="text-align: center; margin: 5px 0;">
+              <p style="font-size: 14px; color: #1E2957;">CONNECT WITH</p>
               <div>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
+                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+              </div>
+            </div>
+        
+            <p style="font-size: 12px; color: #999; text-align: center;">
+              Injaz Group Fzc<br>
+              City Pharmacy Bid, Port Saeed, Dubai
+            </p>
+          </div>
+        </div>`
+        
+        
+        };
+  
+        const { error } =  await sendMail(message, data.selectCompany);
+  
+        if (error) throw new Error('User Email Send Process Failed!');
+  
+
+
+
+
+
+
+
+
+
+
+
+      //   let message = {
+      //     from:  process.env.MAIL_EMAIL_CONQUEROR,
+      //     to: "Studiorapiddesign@gmail.com",
+      //     // to:'ahmadkhurshed311@gmail.com',
+      //     subject: 'Generated PDF',
+      // text: 'Please find the generated PDF attached.',
+      // attachments: [
+      //   {
+      //     filename: 'multi-page-report.pdf',
+      //     // content: compressedPdfBuffer,
+      //   },
+      // ],
+      //   }
+
+
+
+
+
+
+        // const { error } =  await sendMail(message, 'Conqueror');
+  
+        // if (error) throw new Error(error);
+         res.send("ok")
+
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
+    },
+    directSendPDF : async (req, res, next) => {
+      try {
+         const {data, checkBoxData, stateArray} = req.body;
+      const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
+
+// Compress the PDF
+const compressedPdfBuffer = await compressPDF(pdfBuffer);
+
+
+
+let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
+let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
+
+
+
+        let message = {
+          from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
+          to: data.clientEmail,
+          cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
+          subject: 'Quotaion Info',
+          attachments: [
+            {
+              filename: 'multi-page-report.pdf',
+              content: compressedPdfBuffer,
+            },
+            data.selectCompany === "Injaz" ?
+            {
+              filename: 'page3Logo.png',
+              path: url+'page3Logo.png',
+              cid: 'I_page3Logo' // same CID as referenced in the email
+          }:
+          {
+            filename: 'page3Logo.png',
+            path: Curl+'page3Logo.png',
+            cid: 'C_page3Logo' // same CID as referenced in the email
+        },
+          ], 
+          html:  
+          data.selectCompany === "Conqueror" ?
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+            <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+              <!-- Header -->
+              <div style="text-align: center; margin-bottom: 20px;">
+                <img src="cid:C_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+              </div>
+          
+              <!-- Title -->
+            <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
+              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                We trust you’re doing well.
+              </p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+              </p>
+          
+              <!-- Attachment
+              <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+                <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+                <div>
+                  <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                  <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+                </div>
+                <a href="#" style="margin-left: auto; background: #B11116; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+              </div> -->
+          
+              <!-- Call to Action -->
+              <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                  If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+                </p>
+                <div>
+                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+                </div>
+              </div>
+          
+              <!-- Footer -->
+              <p style="font-size: 14px; color: #555; margin: 20px 0;">
+                If you have any questions or need further clarification, please don’t hesitate to reach out.
+              </p>
+              <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+          
+              <div style="text-align: center; margin: 5px 0;">
+                <p style="font-size: 14px; color: #C40014;">CONNECT WITH</p>
+                <div>
+                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
+                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                </div>
+              </div>
+          
+              <p style="font-size: 12px; color: #999; text-align: center;">
+                Conqueror Aspiration L.L.C<br>
+                City Pharmacy Bid, Port Saeed, Dubai
+              </p>
+            </div>
+          </div>`
+          :
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 20px;">
+              <img src="cid:I_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+
+            </div>
+        
+            <!-- Title -->
+            <h3 style="font-size: 20px; color: #1E2957; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
+            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              We trust you’re doing well.
+            </p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+            </p>
+        
+            <!-- Attachment 
+            <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+              <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+              <div>
+                <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+              </div>
+              <a href="#" style="margin-left: auto; background: #0A144E; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+            </div>-->
+        
+            <!-- Call to Action -->
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+              <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+              </p>
+              <div>
+                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+              </div>
+            </div>
+        
+            <!-- Footer -->
+            <p style="font-size: 14px; color: #555; margin: 20px 0;">
+              If you have any questions or need further clarification, please don’t hesitate to reach out.
+            </p>
+            <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+        
+            <div style="text-align: center; margin: 5px 0;">
+              <p style="font-size: 14px; color: #1E2957;">CONNECT WITH</p>
+              <div>
+                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
+                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
               </div>
             </div>
         

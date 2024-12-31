@@ -70,7 +70,7 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
             <CDropdownMenu>
               <CDropdownItem className="cursor-pointer"> View</CDropdownItem>
               {user?.role === "admin" && <CDropdownItem className="cursor-pointer" onClick={() => handleRowData(row)}> Assign</CDropdownItem>}
-              <CDropdownItem className="cursor-pointer"> Send</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={()=>console.log(row)}> Send</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </td>

@@ -88,8 +88,6 @@ const { user } = useSelector(state => state.adminStore);
    step2value2aIN:"",
 
 
-   step3ImmigrationUID:'Immigration Required UID',
-   step3TimelineUID:'2-3 Working Days ',
    step3Renewable:'Renewable Every 2 Years',
    step3Timeline:'4-7 Working Days',
    step2value2:'',
@@ -556,8 +554,13 @@ const { user } = useSelector(state => state.adminStore);
   };
 
 const saveDataIntoDB = () =>{
+  const fullData = {
+    data:data,
+    checkBoxData:checkBoxData,
+    stateArray:stateArray
+  }
   dispatch(updateShowBackDropLoader(true));
-  dispatch(createPdf(data))
+  dispatch(createPdf(fullData))
     .then(response => {
       dispatch(updateShowBackDropLoader(false));
       if (response && !response.payload.hasError) {
@@ -908,7 +911,6 @@ useEffect(() => {
   };
 
   const hanldeSave =()=>{
-    console.log("hello")
     const fullData={
       data:data,
       checkBoxData:checkBoxData,
@@ -933,10 +935,18 @@ useEffect(() => {
   }
   
 
+  const updateCompanyName = () => {
+      setData(prevData => ({
+        ...prevData,
+        selectCompany: localStorage.getItem("companyName")
+      }));
+  };
+
   useEffect(() => {
     handleImageAndColor();
     handleAmount();
-    getAllRefs()
+    getAllRefs();
+    updateCompanyName();
 
     // setCheckBoxData(prevData => 
     //   prevData.map(item => 
@@ -956,13 +966,13 @@ useEffect(() => {
     //   )
     // );
 
-    // setCheckBoxData(prevData => 
+    // setCheckBoxData(prevData =>
     //   prevData.map(item => 
     //     item.id === '16' ? { ...item, value: `${data.letterHeadPad} Pcs ` } : item
     //   )
     // );
     
-  }, [checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
+  }, [localStorage.getItem("companyName"), checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
   
 
   return (
