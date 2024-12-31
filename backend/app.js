@@ -14,7 +14,10 @@ const referenceRouter = require ("./routes/referenceRoute");
 const mailRoute = require ("./routes/mailRoute");  
 
 
-
+// Serve static files (like images) from the 'public' folder
+app.use('/conqueror', express.static(path.join(__dirname, 'public')));
+app.use('/injaz', express.static(path.join(__dirname, 'public/Injaz')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 const allowedOrigins = [
@@ -37,7 +40,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/', express.static(path.join(__dirname, '..', 'frontend', 'dist')));
+// app.use('/', express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
@@ -51,9 +54,9 @@ app.get("/", (req, res) => {
 
 
 
-app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
-});
+// app.use('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+// });
 
 
 app.listen(process.env.PORT, async () => {

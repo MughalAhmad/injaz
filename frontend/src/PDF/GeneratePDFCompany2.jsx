@@ -534,7 +534,7 @@ const MyDocument = ({
       {/* <Text style={{ fontSize: "8px", width: '25%' }}></Text> */}
             <Text style={{ color: companyColor, fontSize: "8px", fontFamily: 'CustomFont', width:'25%'}}>Total Step (1, 2, 3):</Text>
       
-      <Text style={{ color:companyColor , fontSize: "8px", fontFamily: 'CustomFont', width: '25%', textAlign:"right", marginRight:5 }}>AED {(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + Number(data?.discount) + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } </Text>
+      <Text style={{ color:companyColor , fontSize: "8px", fontFamily: 'CustomFont', width: '25%', textAlign:"right", marginRight:5 }}>AED {(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } </Text>
 
 
 

@@ -23,6 +23,9 @@ class PdfService extends Service {
     async allRefs() {
         return await this.ApiClient.get(`/pdf/allRefs`);
     }
+    async sendPDF(data) {
+        return await this.ApiClient.post(`/pdf/sendPDF`,data);
+    }
 }
 
 export default PdfService;

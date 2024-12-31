@@ -1,8 +1,1276 @@
 const pdfModel = require("../models/pdfModel");
 const refModel = require("../models/referenceModel");
-
 const {sendMail} = require("../integrations/sendMail");
-const { all } = require("../routes/pdfRoute");
+// const { all } = require("../routes/pdfRoute");
+const puppeteer = require('puppeteer');
+const path = require("node:path");
+const { PDFDocument } = require('pdf-lib');
+const moment = require("moment");
+
+const Fs = require('fs');
+const Util = require('util');
+const ReadFile = Util.promisify(Fs.readFile);
+
+// Generate PDF
+
+const injazHtml = async (data, checkBox, state) =>{
+  let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
+  let mainUrl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+
+  const setImg = (name)=>{
+    if (name === 'Ajman') {
+      return url+'pngA.png';
+    } else if (name === 'Sharjah') {
+      return url+'pngS.png';
+    } else if (name === 'Dubai') {
+      return url+'pngD.png';
+    }else if (name === 'Fujairah') {
+      return url+'pngF.png';
+    }else if (name === 'RAK') {
+      return url+'pngR.png';
+    }else if (name === 'Hamriya') {
+      return url+'pngH.png';
+    }else if (name === 'Saif Zone') {
+      return url+'pngSZ.png';
+    }else{
+      return url+'pngJ.png';
+    }
+  }
+
+  const formatDate = (date) => {
+    const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+    const dateParts = new Intl.DateTimeFormat('en-GB', options).formatToParts(date);
+  
+    const formattedDate = `${dateParts.find(p => p.type === 'weekday').value}, ` +
+                          `${dateParts.find(p => p.type === 'day').value} ` +
+                          `${dateParts.find(p => p.type === 'month').value} ` +
+                          `${dateParts.find(p => p.type === 'year').value}`;
+  
+    return formattedDate;
+  };
+
+  const currentYear = new Date().getFullYear();
+
+  const getLastDigits = (number) =>{
+    return (number % 1000000).toString().padStart(6, '0');
+  }
+
+  
+
+  const checkBoxHTML = checkBox
+    .map(
+      (item, index) => `
+       <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px;">
+                <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+'check.png'} />
+                <span style="width:58%; font-size: 25px;">${checkBox[index]?.title}</span>
+                <span style=" width:20%;font-size: 25px;">${ checkBox[index]?.value }</span>
+                <span style=" font-size: 25px; color:#1E2957">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
+            </div>
+      `
+    )
+    .join(''); // Combine the array of strings into a single HTML string
+
+  const html =`
+  <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { margin: 0;}
+        body { margin: 0; font-family: Arial, sans-serif;}
+        .first-page { height: 99.9vh;}
+        .logo {width: '25px'; height: '20px'; margin-top: 20px;}
+        .img {width: 100%; height: 100%;}
+        .footer {display: flex; flex-direction: row; justify-content: space-between; padding-left: 20px; padding-right: 20px; position: absolute; bottom: 0; left: 0; right: 0; background-color: #1E2957; color: white; padding-top: 15px; padding-bottom: 15px}
+    </style>
+</head>
+<body>
+    <!-- First Page -->
+    <div class="first-page">
+        <img src=${setImg(data?.stateValue.split(" ")[0] || url+"pngJ.png")} alt="Image Injaz" />
+    </div>
+
+    <div class="first-page" style="position: relative;">
+        <div>
+            <img src=${url+"header.png"} />
+        </div>
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+            <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center">
+                <img class="logo" src=${url+"page3Logo.png"} />
+                <span style="font-size:20px; font-weight: bold; color:black; margin-top:20px">${formatDate(new Date(data.quotationDate))}</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; justify-content:left; align-items:center; margin-top:25px;">
+                <span style="font-size:20px; font-weight: bold; color:black">${`Proposal:    IGF/${currentYear}/${getLastDigits(data.clientPhone.split('-')[1])}`}</span>
+
+                <div style="display:flex; flex-direction:row; position:absolute; justify-content:center; width:88vw">
+                    <span style="font-size:20px; font-weight: bold; text-align:center; padding-top:2px">${data?.country || "empty"}</span>
+                    <img style="width:50px; height:30px; margin-left:10px" src=${mainUrl+`/flags/${data?.flag.toLowerCase()}.png`} alt"flag"/>
+                </div>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center; margin-top:25px;">
+
+                <div style="width:10%; height:100%">
+                    <p style="font-size:25px; height:50%; width:100%">Name:</p>
+                    <p style="font-size:25px; height:50%; width:100%">Ref:</p>
+                </div>
+
+                <div style="width:40%; height:100%">
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#1E2957">${data?.clientName || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#1E2957">${data?.reference || "empty"}</p>
+                </div>
+
+                <div style="width:10%; height:100%;">
+                    <p style="font-size:25px; height:50%; width:100%">Email:</p>
+                    <p style="font-size:25px; height:50%; width:100%">Contact:</p>
+                </div>
+
+                <div style="width:40%; height:100%">
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#1E2957">${data.clientEmail || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#1E2957">${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</p>
+                </div>
+            </div>
+
+
+            <div
+                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 25px;">
+                <span style="padding-left:5px;  font-size:35px; font-weight: bold; color:#1E2957">(${data?.stateValue.split(" ")[0] || 'empty'})</span>
+                <span style="padding-left:5px; font-size:35px; font-weight: bold;">License Package including ${data?.packageIncludingVisa || 0} Visa</span>
+            </div>
+
+            <div
+                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    Activity Code
+                </span>
+            </div>
+
+            <div style="min-height:170px; display:flex; flex-direction:row; gap:35px; justify-content: center;">
+                <div style="width:47%; height:100px">
+
+                    ${state.length >= 1 ? `<div
+                        style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                        <span style="width:25%; font-size: 20px; font-weight: 600;">${state[0]?.code}</span>
+                        <span style="width:55%; font-size: 20px; font-weight: 600;">${state[0]?.description}</span>
+                        <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[0]?.approval}</span>
+                    </div>`:""}
+
+                    ${state.length >= 2 ? `<div
+                      style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                      <span style="width:25%; font-size: 20px; font-weight: 600;">${state[1]?.code}</span>
+                      <span style="width:55%; font-size: 20px; font-weight: 600;">${state[1]?.description}</span>
+                      <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[1]?.approval}</span>
+                  </div>`: ""}
+
+                  ${state.length >= 3 ? `<div
+                    style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                    <span style="width:25%; font-size: 20px; font-weight: 600;">${state[2]?.code}</span>
+                    <span style="width:55%; font-size: 20px; font-weight: 600;">${state[2]?.description}</span>
+                    <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[2]?.approval}</span>
+                </div>`: ""}
+
+                ${state.length >= 4 ? `<div
+                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[3]?.code}</span>
+                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[3]?.description}</span>
+                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[3]?.approval}</span>
+              </div>`:""}
+
+                </div>
+
+                <div style="width:47%; height:100px;">
+
+                ${state.length >= 5 ? `<div
+                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[4]?.code}</span>
+                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[4]?.description}</span>
+                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[4]?.approval}</span>
+              </div>`:""}
+
+              ${state.length >= 6 ? `<div
+                style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                <span style="width:25%; font-size: 20px; font-weight: 600;">${state[5]?.code}</span>
+                <span style="width:55%; font-size: 20px; font-weight: 600;">${state[5]?.description}</span>
+                <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[5]?.approval}</span>
+            </div>`:""}
+
+            ${state.length >= 7 ? `<div
+              style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+              <span style="width:25%; font-size: 20px; font-weight: 600;">${state[6]?.code}</span>
+              <span style="width:55%; font-size: 20px; font-weight: 600;">${state[6]?.description}</span>
+              <span style="width:15%; font-size: 20px; font-weight: 600; color:#1E2957">${state[6]?.approval}</span>
+          </div>`:""}
+
+                </div>
+
+            </div>
+
+            <!-- {/* step No 1 */} -->
+
+            <div style="margin-top: 25px; padding-top: 2px; border-top:5px solid black">
+                <p style="font-size: 25px; font-weight: bold;  color: #1E2957; margin-left: 15px; margin-top: 10px">Step
+                    1: License</p>
+            </div>
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Injaz Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">License Fee</span>
+                <span style="font-size: 20px; width: 25%">AED ${data?.step1value.toLocaleString() || "0.00"}</span>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step1Remarks}</span>
+                <span style="font-size: 20px; width: 25%">${data?.step1Timeline}</span>
+            </div>
+            <!-- {/* step No 2 */} -->
+            <div style=" padding-top: 2px;">
+                <p style="font-size: 25px; font-weight: bold;  color: #1E2957; margin-left: 15px; margin-top: 10px">Step
+                    2: Immigration Card</p>
+            </div>
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Injaz Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Pre-Approval Fee</span>
+                <span style="font-size: 20px; width: 25%">AED ${Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</span>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">One-Time</span>
+                <span style="font-size: 20px; width: 25%">5-10 days</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Establishment Card</span>
+                 <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2Establishment?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step2EstablishmentRemark}</span>
+                <span style="font-size: 20px; width: 25%">${data?.step2EstablishmentTimeline}</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">E-Channel Card</span>
+                 <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2value1?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2value1IN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <!-- {/* step No 3 */} -->
+            <div style=" padding-top: 2px;">
+                <p style="font-size: 25px; font-weight: bold;  color: #1E2957; margin-left: 15px; margin-top: 10px">Step
+                    3: Entry VISA</p>
+            </div>
+
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Injaz Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Investor</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2value2a?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2value2aIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step3Renewable}</span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Employment</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                    AED ${data?.step2value2?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                    AED ${data?.step2value2IN?.toLocaleString() || "0.00"}
+
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Status Change</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                      AED ${data?.step2value3?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                      AED ${data?.step2value3IN?.toLocaleString() || "0.00"}
+
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step3StatusChange}</span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Medical Test (Per visa)</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                         AED ${data?.medical?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.medicalIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%">${data?.medicalTimeline}</span>
+            </div>
+
+            <!-- {/* //////////////// */} -->
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Emirates ID (Per Visa)</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                     AED ${data?.emiratesId?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.emiratesIdIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%">${data?.emiratesIdTimeline}</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">PRO Fees</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED 2500
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.discount.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row;">
+                <span style="color: #1E2957; font-size: 18px; font-weight: bold; width:25%">Total Step (1, 2, 3):</span>
+
+                <span
+                    style="color:#1E2957; font-size: 20px; font-weight: bold; width: 25%; text-align:right; padding-right:15px">AED ${(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } </span>
+                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <!-- {/* Total  */} -->
+
+            <div
+                style="margin-top:1px; background-color: #D9D9D9AB; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; font-weight:500; color: #1E2957">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: 400;">Discount</span>
+                <span style="font-size: 20px; width: 75%; font-weight: 400;">AED ${2500 - Number(data?.discount)}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: bold;">Grand Total</span>
+                <span style="font-size: 20px; width: 75%; font-weight: bold;">AED ${data?.gtAmount.toLocaleString() || "0.00"}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: 400;">In Word:</span>
+                <span style="font-size: 20px; width: 75%; font-weight: 400;"> ${data?.word || "empty"}</span>
+            </div>
+
+        </div>
+
+        <div class="footer">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${mainUrl+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- page 3 -->
+    <div>
+        <img src=${url+"header.png"} alt="Header" />
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+            <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
+            <div
+                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 5px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    Full Package Inclusive
+                </span>
+            </div>
+
+
+            <!-- Checkboxes -->
+             ${checkBoxHTML}
+        
+            <!-- Images -->
+            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 15px;">
+
+                <img src=${url+"pngLs1.png"} alt="Image 1" />
+
+                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top: 15px;" />
+
+                <img src=${url+"pngLs4.png"} alt="Image 4"
+                    style="margin-top: 15px; margin-bottom: 10px;" />
+
+            </div>
+        </div>
+        <!-- Footer -->
+        <div style="margin-top: 10px;display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding-left:20px;
+    padding-right:20px;
+    background-color: #1E2957;
+    color:white;
+    padding-top:15px;
+    padding-bottom:15px">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${mainUrl+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                     <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- page 4 -->
+    <div class="first-page" style="position: relative;">
+
+        <!-- Header -->
+        <img src=${url+"header.png"} alt="Header" />
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+
+            <!-- Logo -->
+            <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
+
+            <!-- Images -->
+            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 20px;">
+
+                <img src=${url+"pngLs3.png"} alt="Image 3" />
+
+            </div>
+
+            <!-- Full Package Inclusive -->
+            <div
+                style="margin-top:20px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    *If the Security / Pre-Approval is rejected from immigration, only the pre-approval fee will be
+                    deducted & the balance amount will be refunded.
+                </span>
+            </div>
+
+            <div
+                style="width: 90vw ; display:flex; flex-direction:row; position:absolute; bottom: 120px; justify-content: space-between; align-items: center;">
+                <span style="font-size:27px;">CLIENT: _________________________</span>
+                <span style="font-size:27px"> SIGNATURE: _________________________</span>
+
+            </div>
+
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${mainUrl+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+<div class="first-page"><img src=${url+"png1.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png2.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png3.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png4.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png5.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png6.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png7.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png8.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png9.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png10.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png11.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png12.png"} class="img" alt="Image Injaz" /></div>
+
+
+    </body>
+    </html>
+  `
+  return html;
+}
+
+const conquerorHtml = async (data, checkBox, state) =>{
+
+  let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+
+  const setImg = (name)=>{
+    if (name === 'Ajman') {
+      return url+'pngA.png';
+    } else if (name === 'Sharjah') {
+      return url+'pngS.png';
+    } else if (name === 'Dubai') {
+      return url+'pngD.png';
+    }else if (name === 'Fujairah') {
+      return url+'pngF.png';
+    }else if (name === 'RAK') {
+      return url+'pngR.png';
+    }else if (name === 'Hamriya') {
+      return url+'pngH.png';
+    }else if (name === 'Saif Zone') {
+      return url+'pngSZ.png';
+    }else{
+      return url+'pngJ.png';
+    }
+  }
+
+  const formatDate = (date) => {
+    const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+    const dateParts = new Intl.DateTimeFormat('en-GB', options).formatToParts(date);
+  
+    const formattedDate = `${dateParts.find(p => p.type === 'weekday').value}, ` +
+                          `${dateParts.find(p => p.type === 'day').value} ` +
+                          `${dateParts.find(p => p.type === 'month').value} ` +
+                          `${dateParts.find(p => p.type === 'year').value}`;
+  
+    return formattedDate;
+  };
+
+  const currentYear = new Date().getFullYear();
+
+  const getLastDigits = (number) =>{
+    return (number % 1000000).toString().padStart(6, '0');
+  }
+
+  const checkBoxHTML = checkBox
+    .map(
+      (item, index) => `
+       <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px;">
+                <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+'check.png'} />
+                <span style="width:58%; font-size: 25px;">${checkBox[index]?.title}</span>
+                <span style=" width:20%;font-size: 25px;">${ checkBox[index]?.value }</span>
+                <span style=" font-size: 25px; color:#C40014">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
+            </div>
+      `
+    )
+    .join(''); // Combine the array of strings into a single HTML string
+
+  const html =`
+  <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { margin: 0;}
+        body { margin: 0; font-family: Arial, sans-serif;}
+        .first-page { height: 99.9vh;}
+        .logo {width: 200px; height: 70px; margin-top: 20px;}
+        .img {width: 100%; height: 100%;}
+        .footer {display: flex; flex-direction: row; justify-content: space-between; padding-left: 20px; padding-right: 20px; position: absolute; bottom: 0; left: 0; right: 0; background-color: #C40014; color: white; padding-top: 15px; padding-bottom: 15px}
+    </style>
+</head>
+<body>
+    <!-- First Page -->
+    <div class="first-page">
+        <img src=${setImg(data?.stateValue.split(" ")[0] || url+"pngJ.png")} alt="Image Injaz" />
+    </div>
+
+    <div class="first-page" style="position: relative;">
+        <div>
+            <img src=${url+"header.png"} />
+        </div>
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+            <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center">
+                <img class="logo" src=${url+"page3Logo.png"} />
+                <span style="font-size:20px; font-weight: bold; color:black; margin-top:20px">${formatDate(new Date(data.quotationDate))}</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; justify-content:left; align-items:center; margin-top:25px;">
+                <span style="font-size:20px; font-weight: bold; color:black">${`Proposal:    IGF/${currentYear}/${getLastDigits(data.clientPhone.split('-')[1])}`}</span>
+
+                <div style="display:flex; flex-direction:row; position:absolute; justify-content:center; width:88vw">
+                    <span style="font-size:20px; font-weight: bold; text-align:center; padding-top:2px">${data?.country || "empty"}</span>
+                    <img style="width:50px; height:30px; margin-left:10px" src=${url+`/flags/${data?.flag.toLowerCase()}.png`} alt"flag"/>
+                </div>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center; margin-top:25px;">
+
+                <div style="width:10%; height:100%">
+                    <p style="font-size:25px; height:50%; width:100%">Name:</p>
+                    <p style="font-size:25px; height:50%; width:100%">Ref:</p>
+                </div>
+
+                <div style="width:40%; height:100%">
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data?.clientName || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data?.reference || "empty"}</p>
+                </div>
+
+                <div style="width:10%; height:100%;">
+                    <p style="font-size:25px; height:50%; width:100%">Email:</p>
+                    <p style="font-size:25px; height:50%; width:100%">Contact:</p>
+                </div>
+
+                <div style="width:40%; height:100%">
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data.clientEmail || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</p>
+                </div>
+            </div>
+
+
+            <div
+                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 25px;">
+                <span style="padding-left:5px;  font-size:35px; font-weight: bold; color:#C40014">(${data?.stateValue.split(" ")[0] || 'empty'})</span>
+                <span style="padding-left:5px; font-size:35px; font-weight: bold;">License Package including ${data?.packageIncludingVisa || 0} Visa</span>
+            </div>
+
+            <div
+                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    Activity Code
+                </span>
+            </div>
+
+            <div style="min-height:170px; display:flex; flex-direction:row; gap:35px; justify-content: center;">
+                <div style="width:47%; height:100px">
+
+                    ${state.length >= 1 ? `<div
+                        style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                        <span style="width:25%; font-size: 20px; font-weight: 600;">${state[0]?.code}</span>
+                        <span style="width:55%; font-size: 20px; font-weight: 600;">${state[0]?.description}</span>
+                        <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[0]?.approval}</span>
+                    </div>`:""}
+
+                    ${state.length >= 2 ? `<div
+                      style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                      <span style="width:25%; font-size: 20px; font-weight: 600;">${state[1]?.code}</span>
+                      <span style="width:55%; font-size: 20px; font-weight: 600;">${state[1]?.description}</span>
+                      <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[1]?.approval}</span>
+                  </div>`: ""}
+
+                  ${state.length >= 3 ? `<div
+                    style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                    <span style="width:25%; font-size: 20px; font-weight: 600;">${state[2]?.code}</span>
+                    <span style="width:55%; font-size: 20px; font-weight: 600;">${state[2]?.description}</span>
+                    <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[2]?.approval}</span>
+                </div>`: ""}
+
+                ${state.length >= 4 ? `<div
+                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[3]?.code}</span>
+                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[3]?.description}</span>
+                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[3]?.approval}</span>
+              </div>`:""}
+
+                </div>
+
+                <div style="width:47%; height:100px;">
+
+                ${state.length >= 5 ? `<div
+                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[4]?.code}</span>
+                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[4]?.description}</span>
+                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[4]?.approval}</span>
+              </div>`:""}
+
+              ${state.length >= 6 ? `<div
+                style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+                <span style="width:25%; font-size: 20px; font-weight: 600;">${state[5]?.code}</span>
+                <span style="width:55%; font-size: 20px; font-weight: 600;">${state[5]?.description}</span>
+                <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[5]?.approval}</span>
+            </div>`:""}
+
+            ${state.length >= 7 ? `<div
+              style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
+                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+              <span style="width:25%; font-size: 20px; font-weight: 600;">${state[6]?.code}</span>
+              <span style="width:55%; font-size: 20px; font-weight: 600;">${state[6]?.description}</span>
+              <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[6]?.approval}</span>
+          </div>`:""}
+
+                </div>
+
+            </div>
+
+            <!-- {/* step No 1 */} -->
+
+            <div style="margin-top: 25px; padding-top: 2px; border-top:5px solid black">
+                <p style="font-size: 25px; font-weight: bold;  color: #C40014; margin-left: 15px; margin-top: 10px">Step
+                    1: License</p>
+            </div>
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Conqueror Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">License Fee</span>
+                <span style="font-size: 20px; width: 25%">AED ${data?.step1value.toLocaleString() || "0.00"}</span>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step1Remarks}</span>
+                <span style="font-size: 20px; width: 25%">${data?.step1Timeline}</span>
+            </div>
+            <!-- {/* step No 2 */} -->
+            <div style=" padding-top: 2px;">
+                <p style="font-size: 25px; font-weight: bold;  color: #C40014; margin-left: 15px; margin-top: 10px">Step
+                    2: Immigration Card</p>
+            </div>
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Conqueror Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Pre-Approval Fee</span>
+                <span style="font-size: 20px; width: 25%">AED ${Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</span>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">One-Time</span>
+                <span style="font-size: 20px; width: 25%">5-10 days</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Establishment Card</span>
+                 <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2Establishment?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step2EstablishmentRemark}</span>
+                <span style="font-size: 20px; width: 25%">${data?.step2EstablishmentTimeline}</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">E-Channel Card</span>
+                 <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2value1?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2value1IN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <!-- {/* step No 3 */} -->
+            <div style=" padding-top: 2px;">
+                <p style="font-size: 25px; font-weight: bold;  color: #C40014; margin-left: 15px; margin-top: 10px">Step
+                    3: Entry VISA</p>
+            </div>
+
+            <div
+                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 25px; padding-bottom: 25px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Description</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Conqueror Price</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Remarks</span>
+                <span style="font-size: 25px; width: 25%; font-weight: 500;"> Timeline</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Investor</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED ${data?.step2value2a?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.step2value2aIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step3Renewable}</span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Employment</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                    AED ${data?.step2value2?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                    AED ${data?.step2value2IN?.toLocaleString() || "0.00"}
+
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Status Change</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                      AED ${data?.step2value3?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                      AED ${data?.step2value3IN?.toLocaleString() || "0.00"}
+
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step3StatusChange}</span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Medical Test (Per visa)</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                         AED ${data?.medical?.toLocaleString() || "0.00"}
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.medicalIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%">${data?.medicalTimeline}</span>
+            </div>
+
+            <!-- {/* //////////////// */} -->
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">Emirates ID (Per Visa)</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                     AED ${data?.emiratesId?.toLocaleString() || "0.00"}
+
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.emiratesIdIN?.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%">${data?.emiratesIdTimeline}</span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%">PRO Fees</span>
+                <div
+                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    <span>
+                        AED 2500
+                    </span>
+                    <span style=" margin-right:15px">
+                        AED ${data?.discount.toLocaleString() || "0.00"}
+                    </span>
+
+                </div>
+                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row;">
+                <span style="color: #C40014; font-size: 18px; font-weight: bold; width:25%">Total Step (1, 2, 3):</span>
+
+                <span
+                    style="color:#C40014; font-size: 20px; font-weight: bold; width: 25%; text-align:right; padding-right:15px">AED ${(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } </span>
+                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 20px; width: 25%"></span>
+            </div>
+
+            <!-- {/* Total  */} -->
+
+            <div
+                style="margin-top:1px; background-color: #D9D9D9AB; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 25px; font-weight:500; color: #C40014">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: 400;">Discount</span>
+                <span style="font-size: 20px; width: 75%; font-weight: 400;">AED ${2500 - Number(data?.discount)}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: bold;">Grand Total</span>
+                <span style="font-size: 20px; width: 75%; font-weight: bold;">AED ${data?.gtAmount.toLocaleString() || "0.00"}</span>
+            </div>
+
+            <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
+                <span style="font-size: 20px; width: 25%; font-weight: 400;">In Word:</span>
+                <span style="font-size: 20px; width: 75%; font-weight: 400;"> ${data?.word || "empty"}</span>
+            </div>
+
+        </div>
+
+        <div class="footer">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- page 3 -->
+    <div>
+        <img src=${url+"header.png"} alt="Header" />
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+            <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
+            <div
+                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 5px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    Full Package Inclusive
+                </span>
+            </div>
+
+
+            <!-- Checkboxes -->
+             ${checkBoxHTML}
+        
+            <!-- Images -->
+            <div style="display: flex; flex-direction: column; justify-content: center">
+
+                <img src=${url+"pngLs1.png"} alt="Image 1" />
+
+                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top:-20px" />
+
+            </div>
+        </div>
+        <!-- Footer -->
+        <div style="margin-top: 10px;display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding-left:20px;
+    padding-right:20px;
+    background-color: #C40014;
+    color:white;
+    padding-top:15px;
+    padding-bottom:15px">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                     <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- page 4 -->
+    <div class="first-page" style="position: relative;">
+
+        <!-- Header -->
+        <img src=${url+"header.png"} alt="Header" />
+
+        <div style="margin-left: 50px; margin-right: 50px;">
+
+            <!-- Logo -->
+            <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
+
+            <!-- Images -->
+            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 20px;">
+
+                <img src=${url+"pngLs3.png"} alt="Image 3" />
+
+            </div>
+
+            <!-- Full Package Inclusive -->
+            <div
+                style="margin-top:20px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px;">
+                <span style="font-size: 25px; font-weight: 600;">
+                    *If the Security / Pre-Approval is rejected from immigration, only the pre-approval fee will be
+                    deducted & the balance amount will be refunded.
+                </span>
+            </div>
+
+            <div
+                style="width: 90vw ; display:flex; flex-direction:row; position:absolute; bottom: 120px; justify-content: space-between; align-items: center;">
+                <span style="font-size:27px;">CLIENT: _________________________</span>
+                <span style="font-size:27px"> SIGNATURE: _________________________</span>
+
+            </div>
+
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"mail.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">info@conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:20px" src=${url+"web.png"} />
+                </div>
+                <span
+                    style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">www.conqueror.ae</span>
+            </div>
+
+            <div style="display:flex; flex-direction:row; align-items:center">
+                <div
+                    style="width:35px; height:35px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+                    <img style="width:20px; height:30px" src=${url+"location.png"} />
+                </div>
+                <span style="padding-left:5px; padding-top:10px; padding-bottom:10px; font-size:22px">City Pharmacy
+                    Building, M02, Port Saeed, Dubai</span>
+            </div>
+        </div>
+    </div>
+
+
+<div class="first-page"><img src=${url+"png1.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png2.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png3.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png4.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png5.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png6.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png7.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png8.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png9.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png10.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png11.png"} class="img" alt="Image Injaz" /></div>
+<div class="first-page"><img src=${url+"png12.png"} class="img" alt="Image Injaz" /></div>
+
+
+    </body>
+    </html>
+  `
+  return html;
+}
+
+const generatePDF = async (data, checkBoxData, stateArray) => {
+
+
+ const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
+    const browser = await puppeteer.launch({headless:true});
+    const page = await browser.newPage();
+
+    await page.setContent(data, { waitUntil: 'networkidle0' });
+
+     const testPDF = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+    });
+
+
+    console.log('PDF generated successfully: multi-page-report.pdf');
+    await browser.close();
+    return testPDF;
+  });
+   return pdfData;      
+
+};
+
+const compressPDF = async (pdfBuffer) => {
+  // Load the Puppeteer-generated PDF
+  const pdfDoc = await PDFDocument.load(pdfBuffer);
+
+  // Save the compressed PDF
+  const compressedPdfBuffer = await pdfDoc.save({
+    useObjectStreams: true, // Optimize PDF structure
+  });
+
+  console.log('PDF compressed successfully');
+  return compressedPdfBuffer;
+};
 
   module.exports = {
     createPdf: async (req, res, next) => {
@@ -11,188 +1279,6 @@ const { all } = require("../routes/pdfRoute");
         console.log('selectCompany',companyName)
          const pdf = await pdfModel.create(req.body)
         if (!pdf) throw new Error("Error in Creating pdf");
-
-
-        let message = {
-          from: companyName === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
-          to: pdf.clientEmail,
-          cc: companyName === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
-          subject: 'Quotaion Info',
-          html:  
-          companyName === "Conqueror" ?
-          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
-            <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-              <!-- Header -->
-              <div style="text-align: center; margin-bottom: 20px;">
-                <img src="../assets/injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-              </div>
-          
-              <!-- Title -->
-              <h3 style="font-size: 20px; color: #B11116; margin-bottom: 10px;">Business Setup in Dubai, Including 2 Visa</h3>
-              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${pdf.clientName},</p>
-              <p style="font-size: 14px; color: #555; line-height: 1.5;">
-                We trust you’re doing well.
-              </p>
-              <p style="font-size: 14px; color: #555; line-height: 1.5;">
-                Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
-              </p>
-          
-              <!-- Attachment -->
-              <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
-                <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
-                <div>
-                  <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
-                  <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
-                </div>
-                <a href="#" style="margin-left: auto; background: #B11116; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
-              </div>
-          
-              <!-- Call to Action -->
-              <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
-                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
-                  If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
-                </p>
-                <div>
-                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
-                </div>
-              </div>
-          
-              <!-- Footer -->
-              <p style="font-size: 14px; color: #555; margin: 20px 0;">
-                If you have any questions or need further clarification, please don’t hesitate to reach out.
-              </p>
-              <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
-          
-              <div style="text-align: center; margin: 30px 0;">
-                <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-                <div>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
-                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
-                </div>
-              </div>
-          
-              <p style="font-size: 12px; color: #999; text-align: center;">
-                Injaz Group Fzc<br>
-                City Pharmacy Bid, Port Saeed, Dubai
-              </p>
-            </div>
-          </div>`
-          :
-          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
-          <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-            <!-- Header -->
-            <div style="text-align: center; margin-bottom: 20px;">
-              <img src="../assets/injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-            </div>
-        
-            <!-- Title -->
-            <h3 style="font-size: 20px; color: #0A144E; margin-bottom: 10px;">Business Setup in Dubai, Including 2 Visa</h3>
-            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${pdf.clientName},</p>
-            <p style="font-size: 14px; color: #555; line-height: 1.5;">
-              We trust you’re doing well.
-            </p>
-            <p style="font-size: 14px; color: #555; line-height: 1.5;">
-              Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
-            </p>
-        
-            <!-- Attachment -->
-            <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
-              <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
-              <div>
-                <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
-                <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
-              </div>
-              <a href="#" style="margin-left: auto; background: #0A144E; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
-            </div>
-        
-            <!-- Call to Action -->
-            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
-              <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
-                If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
-              </p>
-              <div>
-                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
-              </div>
-            </div>
-        
-            <!-- Footer -->
-            <p style="font-size: 14px; color: #555; margin: 20px 0;">
-              If you have any questions or need further clarification, please don’t hesitate to reach out.
-            </p>
-            <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
-        
-            <div style="text-align: center; margin: 30px 0;">
-              <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-              <div>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
-                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
-              </div>
-            </div>
-        
-            <p style="font-size: 12px; color: #999; text-align: center;">
-              Injaz Group Fzc<br>
-              City Pharmacy Bid, Port Saeed, Dubai
-            </p>
-          </div>
-        </div>`
-
-
-
-
-
-        //   `
-        //   <div style="text-align: center">
-        //   <h3>Hello ${pdf.clientName}</h3>
-        //   <h3>Company ${pdf.companyName}</h3>
-
-        //   </br>
-        //     <p>This is a quotation regarding your visa. Could you please review the details we have provided in this email?</p>
-        //     </br>
-        //     <p>If everything looks good, kindly click the "Accept" button. If you decide not to proceed with us, please click the "Reject" button to update your records.</p>
-        //     </br>
-
-        //      <a href="#" style="
-        //             display: inline-block;
-        //             padding: 10px 20px;
-        //             font-size: 16px;
-        //             color: white;
-        //             background-color: green;
-        //             text-decoration: none;
-        //             border-radius: 25px;
-        //           ">Accept</a>
-        //     </br>
-
-        //        <a href="#" style="
-        //             display: inline-block;
-        //             padding: 10px 20px;
-        //             font-size: 16px;
-        //             color: white;
-        //             background-color: red;
-        //             text-decoration: none;
-        //             border-radius: 25px;
-        //           ">Reject</a>
-
-        //   </div>
-        // `
-        , 
-        };
-  
-        const { error } =  await sendMail(message, companyName);
-  
-        if (error) throw new Error('User Email Send Process Failed!');
-  
   
         return res.status(200).json({
           hasError: false,
@@ -508,5 +1594,219 @@ return res.status(200).json({
         });
       }
     },
+    sendPDF : async (req, res, next) => {
+      try {
+         const {data, checkBoxData, stateArray} = req.body;
+      const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
+
+// Compress the PDF
+const compressedPdfBuffer = await compressPDF(pdfBuffer);
+
+
+
+let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
+let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
+
+
+
+        let message = {
+          from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
+          to: data.clientEmail,
+          cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
+          subject: 'Quotaion Info',
+          attachments: [
+            {
+              filename: 'multi-page-report.pdf',
+              content: compressedPdfBuffer,
+            },
+            data.selectCompany === "Injaz" ?
+            {
+              filename: 'page3Logo.png',
+              path: url+'page3Logo.png',
+              cid: 'I_page3Logo' // same CID as referenced in the email
+          }:
+          {
+            filename: 'page3Logo.png',
+            path: Curl+'page3Logo.png',
+            cid: 'C_page3Logo' // same CID as referenced in the email
+        },
+          ], 
+          html:  
+          data.selectCompany === "Conqueror" ?
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+            <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+              <!-- Header -->
+              <div style="text-align: center; margin-bottom: 20px;">
+                <img src="cid:C_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+              </div>
+          
+              <!-- Title -->
+            <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
+              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                We trust you’re doing well.
+              </p>
+              <p style="font-size: 14px; color: #555; line-height: 1.5;">
+                Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+              </p>
+          
+              <!-- Attachment
+              <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+                <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+                <div>
+                  <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                  <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+                </div>
+                <a href="#" style="margin-left: auto; background: #B11116; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+              </div> -->
+          
+              <!-- Call to Action -->
+              <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                  If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+                </p>
+                <div>
+                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+                </div>
+              </div>
+          
+              <!-- Footer -->
+              <p style="font-size: 14px; color: #555; margin: 20px 0;">
+                If you have any questions or need further clarification, please don’t hesitate to reach out.
+              </p>
+              <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+          
+              <div style="text-align: center; margin: 30px 0;">
+                <p style="font-size: 14px; color: #C40014;">CONNECT WITH</p>
+                <div>
+                  <a href="#" style="margin: 0 5px;"><img src="https://images.search.yahoo.com/search/images;_ylt=AwrjZf2Ng3NnPpAueUuJzbkF;_ylu=c2VjA3NlYXJjaARzbGsDYnV0dG9u;_ylc=X1MDOTYwNjI4NTcEX3IDMgRmcgNtY2FmZWUEZnIyA3A6cyx2OmksbTpzYi10b3AEZ3ByaWQDT1E5WU11UG5RaGk2UXpZdDR3X1l5QQRuX3JzbHQDMARuX3N1Z2cDMARvcmlnaW4DaW1hZ2VzLnNlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMwBHFzdHJsAzM4BHF1ZXJ5A2xpdmUlMjBzb2NpYWwlMjBtZWRpYSUyMGljb25zJTIwbGlua3MlMjBmYWNlYm9vawR0X3N0bXADMTczNTYyMzU4Mw--?p=live+social+media+icons+links+facebook&fr=mcafee&fr2=p%3As%2Cv%3Ai%2Cm%3Asb-top&ei=UTF-8&x=wrt&type=E210US91215G0#id=156&iurl=https%3A%2F%2Fclimatejusticealliance.org%2Fwp-content%2Fuploads%2F2018%2F04%2Fsocial-media-icons-facebook-orange-1024x1024.png&action=click" alt="Facebook"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
+                  <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+                </div>
+              </div>
+          
+              <p style="font-size: 12px; color: #999; text-align: center;">
+                Conqueror Aspiration L.L.C<br>
+                City Pharmacy Bid, Port Saeed, Dubai
+              </p>
+            </div>
+          </div>`
+          :
+          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 20px;">
+              <img src="cid:I_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+
+            </div>
+        
+            <!-- Title -->
+            <h3 style="font-size: 20px; color: #0A144E; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
+            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              We trust you’re doing well.
+            </p>
+            <p style="font-size: 14px; color: #555; line-height: 1.5;">
+              Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
+            </p>
+        
+            <!-- Attachment 
+            <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+              <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
+              <div>
+                <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
+                <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
+              </div>
+              <a href="#" style="margin-left: auto; background: #0A144E; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
+            </div>-->
+        
+            <!-- Call to Action -->
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
+              <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
+              </p>
+              <div>
+                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+              </div>
+            </div>
+        
+            <!-- Footer -->
+            <p style="font-size: 14px; color: #555; margin: 20px 0;">
+              If you have any questions or need further clarification, please don’t hesitate to reach out.
+            </p>
+            <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+        
+            <div style="text-align: center; margin: 30px 0;">
+              <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+              <div>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
+                <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
+              </div>
+            </div>
+        
+            <p style="font-size: 12px; color: #999; text-align: center;">
+              Injaz Group Fzc<br>
+              City Pharmacy Bid, Port Saeed, Dubai
+            </p>
+          </div>
+        </div>`
+        
+        
+        };
+  
+        const { error } =  await sendMail(message, data.selectCompany);
+  
+        if (error) throw new Error('User Email Send Process Failed!');
+  
+
+
+
+
+
+
+
+
+
+
+
+      //   let message = {
+      //     from:  process.env.MAIL_EMAIL_CONQUEROR,
+      //     to: "Studiorapiddesign@gmail.com",
+      //     // to:'ahmadkhurshed311@gmail.com',
+      //     subject: 'Generated PDF',
+      // text: 'Please find the generated PDF attached.',
+      // attachments: [
+      //   {
+      //     filename: 'multi-page-report.pdf',
+      //     // content: compressedPdfBuffer,
+      //   },
+      // ],
+      //   }
+
+
+
+
+
+
+        // const { error } =  await sendMail(message, 'Conqueror');
+  
+        // if (error) throw new Error(error);
+         res.send("ok")
+
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
+    }
   };
   

@@ -13,6 +13,7 @@ module.exports = {
 
       const transporter = nodemailer.createTransport(config);
 
+      
       const data = await transporter
         .sendMail(emailData);
         return {error: null};

@@ -15,7 +15,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import MyDocument from './GeneratePDF';
 import MyDocumentInjaz from './GeneratePDFCompany2';
 import { useSelector, useDispatch } from 'react-redux';
-import { createPdf, allRefs } from '../redux/features/pdfSlice';
+import { createPdf, allRefs, sendPDF } from '../redux/features/pdfSlice';
 import {sweetNotification} from "../components/common/SweetAlert"
 import {useNavigate} from "react-router-dom"
 import DateDropDown from '../components/pdf/DateDropDown';
@@ -613,7 +613,7 @@ const saveDataIntoDB = () =>{
 
   const handleAmount = () => {
     console.log("AMOUNT CALL")
-    let totalAmount = [data.step1value,   Number(data.step2EstablishmentIN), data.step2value1IN,  data.step2value2aIN, data.step2value2IN, Number(data.discount), Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
+    let totalAmount = [data.step1value,   Number(data.step2EstablishmentIN), data.step2value1IN,  data.step2value2aIN, data.step2value2IN, 2500 , Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
 
       (total, item) => total + Number(item), 
       0
@@ -621,7 +621,10 @@ const saveDataIntoDB = () =>{
     
     let calculateGrandTotal = updateTheGTValue(totalAmount);
 
-    calculateGrandTotal = calculateGrandTotal + Number(data.step2ApprovalFee)
+    calculateGrandTotal = calculateGrandTotal - 2500;
+
+
+    calculateGrandTotal = calculateGrandTotal + Number(data.step2ApprovalFee) + Number(data.discount)
 
     const roundedNumber = parseFloat(calculateGrandTotal.toFixed(1));
     let words = toWords.convert(roundedNumber);
@@ -866,21 +869,68 @@ useEffect(() => {
     { id: 'Whatsapp', name: 'Whatsapp' },
   ]);
 
+  // const getAllRefs = async () => {
+  //   try {
+  //     const response = await dispatch(allRefs());
+  //     if (response && !response.payload.hasError) {
+  //       console.log("check refs", response.payload.data.refs);
+  //       setSelectReference((prev) => [
+  //         ...prev,
+  //         ...response.payload.data.refs,
+  //       ]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to fetch references:", error);
+  //   }
+  // };
+  let isRefsFetched = false;
+
   const getAllRefs = async () => {
+    if (isRefsFetched) return;
+    isRefsFetched = true;
+  
     try {
       const response = await dispatch(allRefs());
       if (response && !response.payload.hasError) {
         console.log("check refs", response.payload.data.refs);
-        setSelectReference((prev) => [
-          ...prev,
-          ...response.payload.data.refs,
-        ]);
+  
+        setSelectReference((prev) => {
+          const existingIds = new Set(prev.map((item) => item.id));
+          const newRefs = response.payload.data.refs.filter(
+            (ref) => !existingIds.has(ref.id)
+          );
+          return [...prev, ...newRefs];
+        });
       }
     } catch (error) {
       console.error("Failed to fetch references:", error);
     }
   };
 
+  const hanldeSave =()=>{
+    console.log("hello")
+    const fullData={
+      data:data,
+      checkBoxData:checkBoxData,
+      stateArray:stateArray
+    }
+    dispatch(updateShowBackDropLoader(true));
+    dispatch(sendPDF(fullData))
+      .then(response => {
+        dispatch(updateShowBackDropLoader(false));
+        if (response && !response.payload.hasError) {
+         sweetNotification(false, response.payload.msg)
+        }
+        else{
+          sweetNotification(true, response.payload.msg)
+        }
+      })
+      .catch(error => {
+        dispatch(updateShowBackDropLoader(false));
+        sweetNotification(true, 'Something went wrong');
+        console.error('Dispatch failed:', error);
+      });
+  }
   
 
   useEffect(() => {
@@ -1150,7 +1200,7 @@ useEffect(() => {
    
        }
     <Button title='Clear' click={clear} btnColor='bg-[#EF3826]' hoverBtn='hover:bg-[#d99b95]' />
-    <Button title='Share PDF' btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
+    <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
    </div>
 }
 
@@ -1187,7 +1237,7 @@ useEffect(() => {
    
        }
     <Button title='Clear' click={clear} btnColor='bg-[#EF3826]' hoverBtn='hover:bg-[#d99b95]' />
-    <Button title='Share PDF' btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
+    <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
    </div>
 }
 

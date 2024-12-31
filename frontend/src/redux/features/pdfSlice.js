@@ -47,6 +47,13 @@ export const allRefs = createAsyncThunk(
         return response.data;
     }
 );
+export const sendPDF = createAsyncThunk(
+    'sendPDF',
+    async (data) => {
+        const response = await pdfService.sendPDF(data);
+        return response.data;
+    }
+);
 
 const initialstate = {
     pdfData:{list:[], pages:1, cardData:{
