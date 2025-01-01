@@ -1162,7 +1162,12 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
 
 
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
-    const browser = await puppeteer.launch({headless:true,args: ['--no-sandbox', '--disable-setuid-sandbox'], dumpio: true,});
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        env: { DISPLAY: null }, // Suppress GUI-related logs
+        dumpio: true
+     });
     const page = await browser.newPage();
 
     await page.setContent(data, { waitUntil: 'networkidle0' });
