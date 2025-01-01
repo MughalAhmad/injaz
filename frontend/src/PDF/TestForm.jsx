@@ -602,6 +602,12 @@ const saveDataIntoDB = () =>{
     }
   };
 
+  const addDaysToDate = (date, days) => {
+    const result = new Date(date); // Create a new date based on the input
+    result.setDate(result.getDate() + days); // Add the specified number of days
+    return result;
+  };
+
   const addDays = (days) => {
     const result = new Date();
     result.setDate(result.getDate() + days);
@@ -637,7 +643,7 @@ const saveDataIntoDB = () =>{
       tAmount: totalAmount,
       gtAmount: roundedNumber,
       word:words,
-      date:addDays(10)
+      date:addDaysToDate(new Date(data.quotationDate),10)
     }));
   };
 
@@ -972,7 +978,7 @@ useEffect(() => {
     //   )
     // );
     
-  }, [localStorage.getItem("companyName"), checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN])
+  }, [localStorage.getItem("companyName"), checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN, data.quotationDate])
   
 
   return (
