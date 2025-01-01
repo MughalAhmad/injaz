@@ -1164,6 +1164,7 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
     const browser = await puppeteer.launch({
         headless: true,
+        executablePath: '/usr/bin/chromium-browser',
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         env: { DISPLAY: null }, // Suppress GUI-related logs
         dumpio: true
