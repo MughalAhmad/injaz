@@ -1162,7 +1162,7 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
 
 
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
-    const browser = await puppeteer.launch({headless:true,args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const browser = await puppeteer.launch({headless:true,args: ['--no-sandbox', '--disable-setuid-sandbox'], dumpio: true,});
     const page = await browser.newPage();
 
     await page.setContent(data, { waitUntil: 'networkidle0' });
@@ -1563,10 +1563,10 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
           attachments: [
-            // {
-            //   filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
-            //   content: compressedPdfBuffer,
-            // },
+            {
+              filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
+              content: compressedPdfBuffer,
+            },
             data.selectCompany === "Injaz" ?
             {
               filename: 'page3Logo.png',
