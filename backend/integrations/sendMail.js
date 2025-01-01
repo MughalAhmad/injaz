@@ -16,6 +16,7 @@ module.exports = {
       
       const data = await transporter
         .sendMail(emailData);
+        console.log("TEST",data)
         return {error: null};
     } catch (error) {
         return {error: error};
