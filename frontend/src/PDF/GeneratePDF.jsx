@@ -146,7 +146,7 @@ const MyDocument = ({
       </View>
       <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center'}}>
         <Image style={styles.logo} src="/page3Logo.png" />
-        <Text style={{fontSize:'8px' ,fontFamily: 'CustomFont', color:'black',marginRight:"40px", marginTop:"20px"}}>{formatDate(new Date(data.quotationDate))}</Text>
+        <Text style={{fontSize:'8px' ,fontFamily: 'CustomFont',marginRight:"40px", marginTop:"20px", color:'#1e3b4f'}}>{formatDate(new Date(data.quotationDate))}</Text>
       </View>
 
         <View style={{display:'flex', flexDirection:'row', justifyContent:"left", alignItems:'center', marginTop:"10px", marginHorizontal: 35,}}>
@@ -167,10 +167,10 @@ const MyDocument = ({
 
         <View style={{width:"40%", height:'100%'}}>
         <View style={{ height:'50%', width:"100%"}}>
-        <Text style={{fontSize:"10px",marginTop:'2px', fontFamily: 'CustomFont', color:'#C40014', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data?.clientName || "empty"}</Text>
+        <Text style={{fontSize:"10px",marginTop:'2px', fontFamily: 'CustomFont', color:'#4c733a', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data?.clientName || "empty"}</Text>
         </View>
         <View style={{ height:'50%', width:"100%"}}>
-        <Text style={{fontSize:"10px",marginTop:'2px', fontFamily: 'CustomFont', color:'#C40014', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data.reference || "empty"}</Text>
+        <Text style={{fontSize:"10px",marginTop:'2px', fontFamily: 'CustomFont', color:'#733463', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data.reference || "empty"}</Text>
         </View>
         </View>
 
@@ -181,79 +181,41 @@ const MyDocument = ({
 
         <View style={{ width:"40%", height:'100%'}}>
           <View style={{ height:'50%', width:"100%"}}>
-        <Text style={{fontSize:"10px", marginTop:'2px', fontFamily: 'CustomFont', color:'#C40014', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data.clientEmail || "empty"}</Text>
+        <Text style={{fontSize:"10px", marginTop:'2px', fontFamily: 'CustomFont', color:'#296d98', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data.clientEmail || "empty"}</Text>
         </View>
-        <Text style={{fontSize:"10px", marginTop:'2px', height:'50%', width:"100%", fontFamily: 'CustomFont', color:'#C40014'}}>{`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</Text>
+        <Text style={{fontSize:"10px", marginTop:'2px', height:'50%', width:"100%", fontFamily: 'CustomFont', color:'#4c733a'}}>{`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</Text>
         </View>
 </View>
 
-      <View style={{display:'flex', flexDirection:'row', marginTop:'5px', alignItems:'center', justifyContent:'center', marginHorizontal: 35}}>
+      <View style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'center', marginHorizontal: 35}}>
       <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:"16px", fontFamily: 'CustomFont', color:'#C40014'}}>({data?.stateValue.split(" ")[0] || 'empty'})</Text>
       <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:"16px", fontFamily: 'CustomFont'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
       </View>
 
-      <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px', paddingHorizontal:'10px' }}>
-      <Text style={{ fontSize: "12px",fontFamily: 'CustomFont500' }}>
-      Activity Code
-      </Text>
+      <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px', paddingHorizontal:'10px',display:"flex",flexDirection:'row' }}>
+
+      <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', paddingLeft:5, width:'15%' }}>Activity Code</Text>
+        <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'55%' ,marginLeft:"10px"}}>Description</Text>
+        <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'15%' }}>Approval</Text>
+        <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'12%'}}>Authority</Text>
+
+
+
       </View>
        
-       <View style={{width:"100vw", minHeight:'100px', marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5,}}>  
-       <View style={{width:'43.6%', maxHeight:'100px'}}>
+       <View style={{width:"100vw", marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5,}}>  
+       <View style={{width:'90%'}}>
 
-       {state.length >= 1 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
+        {state.map((item)=>(
+          <View style={{display:'flex', flexDirection:'row',marginTop:5, paddingLeft:10}}>
         <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[0]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[0]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%', color:'#C40014' }}>{state[0]?.approval}</Text>
-        </View>)}
-
-        {state.length >= 2 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-          <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-          <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[1]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[1]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%', color:'#C40014' }}>{state[1]?.approval}</Text>
-        </View>)}
-
-        {state.length >= 3 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-          <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-          <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[2]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[2]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%', color:'#C40014' }}>{state[2]?.approval}</Text>
-        </View>)}
-
-        {state.length >= 4 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-          <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-          <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[3]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[3]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%', color:'#C40014' }}>{state[3]?.approval}</Text>
-        </View>)}
-    
-      </View>
-
-      <View style={{width:'43.6%', maxHeight:'100px'}}>
-
-       {state.length >= 5 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-        <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[4]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[4]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%',  color:'#C40014' }}>{state[4]?.approval}</Text>
-        </View>)}
-
-        {state.length >= 6 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-          <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-          <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[5]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[5]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%',  color:'#C40014' }}>{state[5]?.approval}</Text>
-        </View>)}
-
-        {state.length >= 7 && (<View style={{display:'flex', flexDirection:'row',marginTop:10, paddingLeft:10}}>
-          <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-          <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', paddingLeft:5, width:'25%' }}>{state[6]?.code}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'65%' }}>{state[6]?.description}</Text>
-        <Text style={{ fontSize: "8px", fontFamily:'CustomFont600', width:'15%',  color:'#C40014' }}>{state[6]?.approval}</Text>
-        </View>)}
-    
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', paddingLeft:5, width:'15%' }}>{item.code}</Text>
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'55%', color:'#208edb' }}>{item.description}</Text>
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'15%', color:'#C40014' }}>{item.approval}</Text>
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'12%', color:'#ed9b1b' }}>{item.authority}</Text>
+        </View>
+        ))}
+     
       </View>
 
       </View>
@@ -261,39 +223,39 @@ const MyDocument = ({
 {/* step No 1 */}
       
       <View style={{ marginTop: 4,marginHorizontal: 35, paddingTop: 2, borderTop:"5px solid black"}}>
-      <Text style={{ fontSize: "12px", fontFamily: 'CustomFont',  color: '#228c22', marginLeft: 15, marginTop: 10, }}>Step 1: License</Text>
+      <Text style={{ fontSize: "10px", fontFamily: 'CustomFont',  color: '#4c733a', marginLeft: 10, marginTop: 10, }}>Step 1: License</Text>
       </View>
 
 
-      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 10, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "12px", width: '25%',color:'#296d98', fontFamily: 'CustomFont500'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 7, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%',color:'#296d98', fontFamily: 'CustomFont500'}}> Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%' }}>License Fee</Text>
-      <Text style={{ fontSize: "8px", width: '25%', backgroundColor:'#fbbf77',color:'#C40014' }}>AED {data?.step1value.toLocaleString() || "0.00"}</Text>
-      <Text style={{ fontSize: "8px", width: '25%' ,paddingRight:'3px', color:'#C40014'}}>{data?.step1Remarks}</Text>
+      <Text style={{ fontSize: "8px", width: '25%',color:'#C40014', fontFamily:'CustomFont500',backgroundColor:'#f8c6ab'}}>AED {data?.step1value.toLocaleString() || "0.00"}</Text>
+      <Text style={{ fontSize: "8px", width: '25%' ,paddingRight:'3px', color:'#C40014', fontFamily:'CustomFont500'}}>{data?.step1Remarks}</Text>
       <Text style={{ fontSize: "8px", width: '25%'}}>{data?.step1Timeline}</Text>
       </View>
 
 
 {/* step No 2 */}
 
-<Text style={{ color: '#7851a9', marginLeft: 50, marginTop: 3, fontSize: "12px", fontFamily: 'CustomFont',}}>Step 2: Immigration Card</Text>
+<Text style={{ color: '#733463', marginLeft: 45, marginTop: 3, fontSize: "10px", fontFamily: 'CustomFont',}}>Step 2: Immigration Card</Text>
       
-      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#a3d5ff', paddingVertical: 10, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500',color:'#296d98',backgroundColor:'#f5f5f5'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#cfe8ff', paddingVertical: 7, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color:'#296d98'}}> Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%' }}>Pre-Approval Fee</Text>
-      <Text style={{ fontSize: "8px", width: '25%',color:'#296d98',}}>AED {Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</Text>
+      <Text style={{ fontSize: "8px", width: '25%',color:'#337cd6',}}>AED {Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</Text>
       <Text style={{ fontSize: "8px", width: '25%' }}>One-Time</Text>
       <Text style={{ fontSize: "8px", width: '25%'}}>5-10 days</Text>
       </View>
@@ -301,14 +263,14 @@ const MyDocument = ({
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%' }}>Establishment Card</Text>
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
-      <Text style={{ fontSize: 8 ,color:'#296d98',}}>
+      <Text style={{ fontSize: 8 ,color:'#337cd6',}}>
         AED {data?.step2Establishment?.toLocaleString() || "0.00"}
       </Text>
       <Text style={{ fontSize: 8, marginRight:4, color: '#c40014'}}>
         AED {data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
       </Text>
       </View>
-      <Text style={{ fontSize: "8px", width: '25%' ,paddingRight:'3px',color: '#c40014'}}>{data?.step2EstablishmentRemark}</Text>
+      <Text style={{ fontSize: "8px", width: '25%' ,paddingRight:'3px', fontFamily:'CustomFont500', color: '#c40014'}}>{data?.step2EstablishmentRemark}</Text>
       <Text style={{ fontSize: "8px", width: '25%'}}>{data?.step2EstablishmentTimeline}</Text>
       </View>
       
@@ -316,7 +278,7 @@ const MyDocument = ({
       <Text style={{ fontSize: "8px", width: '25%' }}>E-Channel Card</Text>
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
         {/* AED {Number(data?.step2value1).toLocaleString() || "0.00"}  */}
-      <Text style={{ fontSize: 8 ,color:'#296d98',}}>
+      <Text style={{ fontSize: 8 ,color:'#337cd6',}}>
         AED {data?.step2value1?.toLocaleString() || "0.00"}
       </Text>
       <Text style={{ fontSize: 8, marginRight:4, color: '#c40014'}}>
@@ -331,13 +293,13 @@ const MyDocument = ({
 
 {/* step No 3 */}
 
-<Text style={{color:'#296d98', marginLeft: 50, marginTop:2, fontSize: "12px", fontFamily: 'CustomFont',}}>Step 3: Entry VISA</Text>
+<Text style={{color:'#337cd6', marginLeft: 45, marginTop:2, fontSize: "10px", fontFamily: 'CustomFont',}}>Step 3: Entry VISA</Text>
       
-      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 10, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500',color: '#c40014'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "12px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <View style={{ marginTop: 4, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 7, paddingHorizontal:6, display:'flex', flexDirection:'row' }}>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color: '#c40014'}}> Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
@@ -364,7 +326,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8 }}>
         AED {data?.step2value2?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#8dbbcc'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
         AED {data?.step2value2IN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -375,10 +337,10 @@ const MyDocument = ({
 
 
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "8px", width: '25%'  ,backgroundColor:'#fbbf77',}}>Status Change</Text>
+      <Text style={{ fontSize: "8px", width: '25%'  ,backgroundColor:'#f8c6ab',}}>Status Change</Text>
       {/* <Text style={{ fontSize: "8px", width: '25%' }}>{`AED ${data?.step2value3.toLocaleString()}` || "Conditional"}</Text> */}
-      <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' , backgroundColor:'#fbbf77',}}>
-      <Text style={{ fontSize: 8,color:'#8dbbcc' }}>
+      <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' , backgroundColor:'#f8c6ab',}}>
+      <Text style={{ fontSize: 8,color:'#337cd6' }}>
         AED {data?.step2value3?.toLocaleString() || "0.00"}
       </Text>
       <Text style={{ fontSize: 8, marginRight:4, color: '#c40014',}}>
@@ -394,10 +356,10 @@ const MyDocument = ({
       <Text style={{ fontSize: "8px", width: '25%' }}>Medical Test (Per visa)</Text>
       {/* <Text style={{ fontSize: "8px", width: '25%' }}>{`AED ${data?.step2value3.toLocaleString()}` || "Conditional"}</Text> */}
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
-      <Text style={{ fontSize: 8, color:'#8dbbcc' }}>
+      <Text style={{ fontSize: 8, color:'#337cd6' }}>
         AED {data?.medical?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#8dbbcc'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
         AED {data?.medicalIN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -412,10 +374,10 @@ const MyDocument = ({
       <Text style={{ fontSize: "8px", width: '25%' }}>Emirates ID (Per Visa)</Text>
       {/* <Text style={{ fontSize: "8px", width: '25%' }}>{`AED ${data?.step2value3.toLocaleString()}` || "Conditional"}</Text> */}
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
-      <Text style={{ fontSize: 8, color:'#8dbbcc' }}>
+      <Text style={{ fontSize: 8, color:'#337cd6' }}>
         AED {data?.emiratesId?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#8dbbcc'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
         AED {data?.emiratesIdIN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -430,7 +392,7 @@ const MyDocument = ({
 
 
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
-      <Text style={{ fontSize: 8 }}>
+      <Text style={{ fontSize: 8, color:'#4c733a' }}>
         AED 2500
       </Text>
       <Text style={{ fontSize: 8, marginRight:4, color:'#2b472b'}}>
@@ -446,7 +408,7 @@ const MyDocument = ({
       <View style={{ marginTop: 4, marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", fontFamily: 'CustomFont', width:'25%'}}>Total Step (1, 2, 3):</Text>
 
-      <Text style={{ color:'#296d98', fontSize: "8px", fontFamily: 'CustomFont', width: '25%', textAlign:"right", marginRight:5,backgroundColor: '#a3d5ff', }}>AED {(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() }</Text>
+      <Text style={{ color:'#337cd6', fontSize: "8px", fontFamily: 'CustomFont', width: '25%', textAlign:"right", marginRight:5, }}><Text style={{backgroundColor: '#cfe8ff'}}>AED {(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() }</Text></Text>
       <Text style={{ fontSize: "8px", width: '25%' }}></Text>
       <Text style={{ fontSize: "8px", width: '25%'}}></Text>
       </View>
@@ -455,17 +417,17 @@ const MyDocument = ({
 
       
       <View style={{ marginTop:"1px", marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px', paddingHorizontal:'10px', display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "12px", fontWeight: 'CustomFont500', color: '#c40014', }}> PRO Fees {((2500 - Number(data?.discount)) / 2500) * 100}% AED {2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within {moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</Text>
+      <Text style={{ fontSize: "9px", fontWeight: 'CustomFont500', color: '#c40014', }}> PRO Fees {((2500 - Number(data?.discount)) / 2500) * 100}% AED {2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within {moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</Text>
       </View>
 
 
       <View style={{ marginTop: "1px", marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "8px", width: '25%' , fontFamily:'CustomFont400',backgroundColor:'#fbbf77', }}>Discount</Text>
+      <Text style={{ fontSize: "8px", width: '25%' , fontFamily:'CustomFont400', }}><Text style={{backgroundColor:'#f8c6ab',}}>Discount</Text></Text>
       <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont400' }}>AED {2500 - Number(data?.discount)}</Text>
       </View>
       <View style={{ marginTop: "5px", marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont' ,backgroundColor: '#a3d5ff'}}>Grand Total</Text>
-      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont',color:'#296d98' }}>AED {data?.gtAmount.toLocaleString() || "0.00"}</Text>
+      <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont' ,}}><Text style={{backgroundColor: '#cfe8ff'}}>Grand Total </Text></Text>
+      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont',color:'#337cd6' }}>AED {data?.gtAmount.toLocaleString() || "0.00"}</Text>
       </View>
       <View style={{ marginTop: '5px', marginHorizontal: 35, paddingHorizontal: 10, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont400' }}>In Word:</Text>

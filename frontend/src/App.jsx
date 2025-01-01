@@ -22,6 +22,7 @@ import RefForm from "./components/reference/RefForm";
 import Page404 from "./pages/404/Page404";
 import { useSelector } from 'react-redux';
 import "sweetalert2/dist/sweetalert2.min.css";
+import ViewQuotation from "./components/quotation/ViewQuotation";
 
 function App() {
   const {user, isAuthenticated, showLoader, showBackDropLoader} = useSelector(state => state.adminStore);
@@ -50,6 +51,7 @@ function App() {
           {isAuthenticated && user?.role === "admin" && <Route path="reference" element={<Reference />} />}
           {isAuthenticated && user?.role === "admin" && <Route path="reference/:rid" element={<RefForm />} />} 
           {isAuthenticated && user?.role === "admin" && <Route path="reference/create" element={<RefForm />} />}           
+          {isAuthenticated && <Route path="view/:id" element={<ViewQuotation />} />}
           {isAuthenticated && <Route path="quotation" element={<Quotation />} />}
           {isAuthenticated && <Route path="profile" element={<Profile />} />}
         {/* <Route path="*" element={<Page404/>}/> */}

@@ -11,6 +11,9 @@ class PdfService extends Service {
     async getAllPdf(data) {
         return await this.ApiClient.get(`/pdf/getAllPdf?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}`);
     }
+    async getQuotation(data) {
+        return await this.ApiClient.get(`/pdf/getQuotation?id=${data}`);
+    }
     async getNoficationData(data) {
         return await this.ApiClient.get(`/pdf/getNoficationData?company=${data.companyName}&&userId=${data.userId}`);
     }

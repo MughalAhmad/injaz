@@ -5,15 +5,47 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from "@coreui/react";
-import { useSelector } from 'react-redux';
-
-
+import { useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from 'react-redux';
+import {updateShowBackDropLoader} from "../../redux/features/adminSlice";
+import { sendPDF } from '../../redux/features/pdfSlice';
+import {sweetNotification} from "../common/SweetAlert";
 const QuotationTableRow = ({ row, index, handleRowData }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
   const { user } = useSelector(state => state.adminStore);
+
+  const handleMail = () =>{
+    const modifyData={
+      data:row,
+    checkBoxData:row.checkBoxData,
+    stateArray:row.stateArray
+    }
+    dispatch(updateShowBackDropLoader(true));
+        dispatch(sendPDF(modifyData))
+          .then(response => {
+            dispatch(updateShowBackDropLoader(false));
+            if (response && !response.payload.hasError) {
+             sweetNotification(false, response.payload.msg)
+            }
+            else{
+              sweetNotification(true, response.payload.msg)
+            }
+          })
+          .catch(error => {
+            dispatch(updateShowBackDropLoader(false));
+            sweetNotification(true, 'Something went wrong');
+            console.error('Dispatch failed:', error);
+          });
+  }
+
+  const handleViewQuotation = () =>{
+    navigate(`/view/${row._id}`)
+  }
 
   return (
     <>
@@ -68,9 +100,9 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
               </span>
             </CDropdownToggle>
             <CDropdownMenu>
-              <CDropdownItem className="cursor-pointer"> View</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={handleViewQuotation}> View</CDropdownItem>
               {user?.role === "admin" && <CDropdownItem className="cursor-pointer" onClick={() => handleRowData(row)}> Assign</CDropdownItem>}
-              <CDropdownItem className="cursor-pointer" onClick={()=>console.log(row)}> Send</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={handleMail}> Send</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </td>

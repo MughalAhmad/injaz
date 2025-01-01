@@ -18,6 +18,15 @@ export const getAllPdf = createAsyncThunk(
         return response.data;
     }
 );
+
+export const getQuotation = createAsyncThunk(
+    'getQuotation',
+    async (data) => {
+        const response = await pdfService.getQuotation(data);
+        return response.data;
+    }
+);
+
 export const getNoficationData = createAsyncThunk(
     'getNoficationData',
     async (data) => {

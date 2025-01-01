@@ -1119,7 +1119,7 @@ useEffect(() => {
 
 
 <div className='my-8 flex flex-wrap gap-6 md:gap-5 justify-between'>
-  <div className='flex gap-6'>
+  <div className='flex gap-6 flex-wrap '>
 <Input label="Medical Test (Per visa)" value={data.medical} name='medical'  placeholder='Enter Medical Test' type='number' handleChange={handleChange} />
 <Input label="Medical Test (Per visa) (include)" value={data.medicalIN} name='medicalIN'  placeholder='Enter Medical Test' type='number' handleChange={handleChange} />
   </div>
@@ -1128,7 +1128,7 @@ useEffect(() => {
 </div>
 
 <div className='my-8 flex flex-wrap gap-6 md:gap-5 justify-between'>
-  <div className='flex gap-6'>
+  <div className='flex gap-6 flex-wrap '>
 <Input label="Emirates ID (Per Visa)" value={data.emiratesId} name='emiratesId'  placeholder='Enter Emirates ID' type='number' handleChange={handleChange} />
 <Input label="Emirates ID (Per Visa) (include)" value={data.emiratesIdIN} name='emiratesIdIN'  placeholder='Enter Emirates ID' type='number' handleChange={handleChange} />
   </div>

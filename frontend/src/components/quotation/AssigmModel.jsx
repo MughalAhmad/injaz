@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton } from '@coreui/react';
 import {getAllUsersNameAndId, assignToUser} from "../../redux/features/generalSlice";
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '../common/Button';
+
 const AssigmModel = ({setVisible, visible, userData}) => {
     const dispatch = useDispatch();
     const [users, setUsers] = useState([])
@@ -40,13 +42,20 @@ useEffect(() => {
     <CModalBody className='flex flex-col gap-4'>
         {users?.map((user)=>(
 
-    <div className='flex justify-between items-center'><p>{user.firstName}{user.lastName}</p><button onClick={()=>assginHandler(user._id)}>Assign</button></div>
+    <div className='flex justify-between items-center'><p>{user.firstName}{user.lastName}</p>
+    
+    {/* <button onClick={()=>assginHandler(user._id)}>Assign</button> */}
+    <Button title="Assign" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => assginHandler(user._id)} />
+
+    </div>
         ))}
     </CModalBody>
     <CModalFooter>
-      <CButton color="secondary" onClick={() => setVisible(false)}>
+    <Button title="Close" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => setVisible(false)} />
+
+      {/* <CButton color="secondary" onClick={() => setVisible(false)}>
         Close
-      </CButton>
+      </CButton> */}
     </CModalFooter>
   </CModal>
   )

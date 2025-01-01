@@ -709,7 +709,7 @@ const conquerorHtml = async (data, checkBox, state) =>{
         <div style="margin-left: 50px; margin-right: 50px;">
             <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center">
                 <img class="logo" src=${url+"page3Logo.png"} />
-                <span style="font-size:20px; font-weight: bold; color:black; margin-top:20px">${formatDate(new Date(data.quotationDate))}</span>
+                <span style="font-size:20px; font-weight: bold; color:#1e3b4f; margin-top:20px">${formatDate(new Date(data.quotationDate))}</span>
             </div>
 
             <div style="display:flex; flex-direction:row; justify-content:left; align-items:center; margin-top:25px;">
@@ -729,8 +729,8 @@ const conquerorHtml = async (data, checkBox, state) =>{
                 </div>
 
                 <div style="width:40%; height:100%">
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data?.clientName || "empty"}</p>
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data?.reference || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#4c733a">${data?.clientName || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#733463">${data?.reference || "empty"}</p>
                 </div>
 
                 <div style="width:10%; height:100%;">
@@ -739,8 +739,8 @@ const conquerorHtml = async (data, checkBox, state) =>{
                 </div>
 
                 <div style="width:40%; height:100%">
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${data.clientEmail || "empty"}</p>
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#C40014">${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#296d98">${data.clientEmail || "empty"}</p>
+                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#4c733a">${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</p>
                 </div>
             </div>
 
@@ -752,83 +752,41 @@ const conquerorHtml = async (data, checkBox, state) =>{
             </div>
 
             <div
-                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px;">
-                <span style="font-size: 25px; font-weight: 600;">
+                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; display:flex; flex-direction:row;">
+                <span style="font-size: 25px; font-weight: 600; width:15%">
                     Activity Code
                 </span>
+                <span style="font-size: 25px; font-weight: 600; width:55%">
+                    Description
+                </span>
+                <span style="font-size: 25px; font-weight: 600; width:15%">
+                    Approval
+                </span>
+                <span style="font-size: 25px; font-weight: 600; width:12%">
+                    Authority
+                </span>
+
             </div>
 
-            <div style="min-height:170px; display:flex; flex-direction:row; gap:35px; justify-content: center;">
-                <div style="width:47%; height:100px">
+            <div style="display:flex; flex-direction:row; gap:35px; justify-content: center;">
+                <div style="width:90%">
 
-                    ${state.length >= 1 ? `<div
+    
+                    ${state.map((item)=>`<div
                         style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
                         <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                        <span style="width:25%; font-size: 20px; font-weight: 600;">${state[0]?.code}</span>
-                        <span style="width:55%; font-size: 20px; font-weight: 600;">${state[0]?.description}</span>
-                        <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[0]?.approval}</span>
-                    </div>`:""}
-
-                    ${state.length >= 2 ? `<div
-                      style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                      <span style="width:25%; font-size: 20px; font-weight: 600;">${state[1]?.code}</span>
-                      <span style="width:55%; font-size: 20px; font-weight: 600;">${state[1]?.description}</span>
-                      <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[1]?.approval}</span>
-                  </div>`: ""}
-
-                  ${state.length >= 3 ? `<div
-                    style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                    <span style="width:25%; font-size: 20px; font-weight: 600;">${state[2]?.code}</span>
-                    <span style="width:55%; font-size: 20px; font-weight: 600;">${state[2]?.description}</span>
-                    <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[2]?.approval}</span>
-                </div>`: ""}
-
-                ${state.length >= 4 ? `<div
-                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[3]?.code}</span>
-                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[3]?.description}</span>
-                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[3]?.approval}</span>
-              </div>`:""}
-
+                        <span style="width:15%; font-size: 20px; font-weight: 600;">${item.code}</span>
+                        <span style="width:55%; font-size: 20px; font-weight: 600;">${item.description}</span>
+                        <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${item.approval}</span>
+                        <span style="width:12%; font-size: 20px; font-weight: 600; color:#C40014">${item.authority}</span>
+                    </div>`)}
                 </div>
-
-                <div style="width:47%; height:100px;">
-
-                ${state.length >= 5 ? `<div
-                  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                  <span style="width:25%; font-size: 20px; font-weight: 600;">${state[4]?.code}</span>
-                  <span style="width:55%; font-size: 20px; font-weight: 600;">${state[4]?.description}</span>
-                  <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[4]?.approval}</span>
-              </div>`:""}
-
-              ${state.length >= 6 ? `<div
-                style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-                <span style="width:25%; font-size: 20px; font-weight: 600;">${state[5]?.code}</span>
-                <span style="width:55%; font-size: 20px; font-weight: 600;">${state[5]?.description}</span>
-                <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[5]?.approval}</span>
-            </div>`:""}
-
-            ${state.length >= 7 ? `<div
-              style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:10px;">
-                        <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-              <span style="width:25%; font-size: 20px; font-weight: 600;">${state[6]?.code}</span>
-              <span style="width:55%; font-size: 20px; font-weight: 600;">${state[6]?.description}</span>
-              <span style="width:15%; font-size: 20px; font-weight: 600; color:#C40014">${state[6]?.approval}</span>
-          </div>`:""}
-
-                </div>
-
             </div>
 
             <!-- {/* step No 1 */} -->
 
             <div style="margin-top: 25px; padding-top: 2px; border-top:5px solid black">
-                <p style="font-size: 25px; font-weight: bold;  color: #C40014; margin-left: 15px; margin-top: 10px">Step
+                <p style="font-size: 25px; font-weight: bold;  color: #4c733a; margin-left: 15px; margin-top: 10px">Step
                     1: License</p>
             </div>
             <div
@@ -1357,6 +1315,28 @@ return res.status(200).json({
         });
       }
     },
+    getQuotation: async (req, res, next) => {
+      try {
+        const {id} = req.query; 
+       
+        const quotation = await pdfModel.findOne({_id:id});
+        if (!quotation) throw new Error("Quotation not found");
+
+return res.status(200).json({
+  hasError: false,
+  msg: "Quotation Successfully Finded",
+  data: { quotation: quotation }
+});
+
+
+      } catch (error) {
+        return res.status(200).json({
+          hasError: true,
+          msg: error.message,
+          data: { quotation: null },
+        });
+      }
+    },
     dashboardData: async (req, res, next) => {
       try {
             const {currentPage, sortValue, company,role, userId} = req.query; 
@@ -1618,10 +1598,10 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
           from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
           to: data.clientEmail,
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
-          subject: 'Quotaion Info',
+          subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
           attachments: [
             {
-              filename: 'multi-page-report.pdf',
+              filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
               content: compressedPdfBuffer,
             },
             data.selectCompany === "Injaz" ?
@@ -1681,15 +1661,14 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
                 If you have any questions or need further clarification, please don’t hesitate to reach out.
               </p>
               <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+              <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Sales Team</p>
           
               <div style="text-align: center; margin: 5px 0;">
-                <p style="font-size: 14px; color: #C40014;">CONNECT WITH</p>
+                <p style="font-size: 14px; color: #C40014; font-weight: 600;">CONNECT WITH</p>
                 <div>
-                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
-                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
-                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
-                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                 <a href="https://www.facebook.com/conquerorllc?mibextid=LQQJ4d&mibextid=LQQJ4d" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/uaeconqueror?igsh=a2xpMnZnOGRpcWw=" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://api.whatsapp.com/send/?phone=%2B97142837636&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
                 </div>
               </div>
           
@@ -1697,6 +1676,16 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
                 Conqueror Aspiration L.L.C<br>
                 City Pharmacy Bid, Port Saeed, Dubai
               </p>
+
+              <p style="font-size: 12px; color: #999; text-align: center;">
+                Conqueror Sales Department<br>
+                sales@conqueror.ae<br>
+                Conqueror Support Team<br>
+                support@conqueror.ae<br>
+                Conqueror Aspiration<br>
+                contact@conqueror.ae
+              </p>
+
             </div>
           </div>`
           :
@@ -1744,15 +1733,14 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
               If you have any questions or need further clarification, please don’t hesitate to reach out.
             </p>
             <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
+            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Fzc Sales Team</p>
         
             <div style="text-align: center; margin: 5px 0;">
-              <p style="font-size: 14px; color: #1E2957;">CONNECT WITH</p>
+              <p style="font-size: 14px; color: #1E2957; font-weight: 600;">CONNECT WITH</p>
               <div>
-                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
-                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
-                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
-                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                 <a href="https://www.facebook.com/iinjazgroup" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/iinjazgroup/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://api.whatsapp.com/send/?phone=%2B97165334085&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
               </div>
             </div>
         
@@ -1770,254 +1758,21 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
   
         if (error) throw new Error('User Email Send Process Failed!');
   
-
-
-
-
-
-
-
-
-
-
-
-      //   let message = {
-      //     from:  process.env.MAIL_EMAIL_CONQUEROR,
-      //     to: "Studiorapiddesign@gmail.com",
-      //     // to:'ahmadkhurshed311@gmail.com',
-      //     subject: 'Generated PDF',
-      // text: 'Please find the generated PDF attached.',
-      // attachments: [
-      //   {
-      //     filename: 'multi-page-report.pdf',
-      //     // content: compressedPdfBuffer,
-      //   },
-      // ],
-      //   }
-
-
-
-
-
-
-        // const { error } =  await sendMail(message, 'Conqueror');
-  
-        // if (error) throw new Error(error);
-         res.send("ok")
+         return res.status(200).json({
+          hasError: false,
+          msg: "Email Successfully send",
+          data: null,
+        });
 
       } catch (error) {
         console.error('Error generating PDF:', error);
+        return res.status(200).json({
+          hasError: true,
+          msg: error.message,
+          data: { refs: null },
+        });
       }
     },
-    directSendPDF : async (req, res, next) => {
-      try {
-         const {data, checkBoxData, stateArray} = req.body;
-      const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
-
-// Compress the PDF
-const compressedPdfBuffer = await compressPDF(pdfBuffer);
-
-
-
-let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
-let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
-
-
-
-        let message = {
-          from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
-          to: data.clientEmail,
-          cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
-          subject: 'Quotaion Info',
-          attachments: [
-            {
-              filename: 'multi-page-report.pdf',
-              content: compressedPdfBuffer,
-            },
-            data.selectCompany === "Injaz" ?
-            {
-              filename: 'page3Logo.png',
-              path: url+'page3Logo.png',
-              cid: 'I_page3Logo' // same CID as referenced in the email
-          }:
-          {
-            filename: 'page3Logo.png',
-            path: Curl+'page3Logo.png',
-            cid: 'C_page3Logo' // same CID as referenced in the email
-        },
-          ], 
-          html:  
-          data.selectCompany === "Conqueror" ?
-          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
-            <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-              <!-- Header -->
-              <div style="text-align: center; margin-bottom: 20px;">
-                <img src="cid:C_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
-              </div>
-          
-              <!-- Title -->
-            <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
-              <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
-              <p style="font-size: 14px; color: #555; line-height: 1.5;">
-                We trust you’re doing well.
-              </p>
-              <p style="font-size: 14px; color: #555; line-height: 1.5;">
-                Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
-              </p>
-          
-              <!-- Attachment
-              <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
-                <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
-                <div>
-                  <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
-                  <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
-                </div>
-                <a href="#" style="margin-left: auto; background: #B11116; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
-              </div> -->
-          
-              <!-- Call to Action -->
-              <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
-                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
-                  If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
-                </p>
-                <div>
-                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
-                </div>
-              </div>
-          
-              <!-- Footer -->
-              <p style="font-size: 14px; color: #555; margin: 20px 0;">
-                If you have any questions or need further clarification, please don’t hesitate to reach out.
-              </p>
-              <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-              <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
-          
-              <div style="text-align: center; margin: 5px 0;">
-                <p style="font-size: 14px; color: #C40014;">CONNECT WITH</p>
-                <div>
-                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
-                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
-                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
-                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
-                </div>
-              </div>
-          
-              <p style="font-size: 12px; color: #999; text-align: center;">
-                Conqueror Aspiration L.L.C<br>
-                City Pharmacy Bid, Port Saeed, Dubai
-              </p>
-            </div>
-          </div>`
-          :
-          `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
-          <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-            <!-- Header -->
-            <div style="text-align: center; margin-bottom: 20px;">
-              <img src="cid:I_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
-
-            </div>
-        
-            <!-- Title -->
-            <h3 style="font-size: 20px; color: #1E2957; margin-bottom: 10px;">Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa</h3>
-            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${data.clientName},</p>
-            <p style="font-size: 14px; color: #555; line-height: 1.5;">
-              We trust you’re doing well.
-            </p>
-            <p style="font-size: 14px; color: #555; line-height: 1.5;">
-              Please find the attached PDF containing the quotation for your Business Setup. We kindly ask you to review the details provided in this email.
-            </p>
-        
-            <!-- Attachment 
-            <div style="display: flex; align-items: center; background: #f5f7fa; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
-              <img src="https://via.placeholder.com/40" alt="PDF Icon" style="margin-right: 10px;">
-              <div>
-                <p style="margin: 0; font-size: 14px;">Asadmalik_ajman2visalicensePackge.pdf</p>
-                <p style="margin: 0; font-size: 12px; color: #888;">200KB</p>
-              </div>
-              <a href="#" style="margin-left: auto; background: #0A144E; color: #fff; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px;">Download</a>
-            </div>-->
-        
-            <!-- Call to Action -->
-            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f5f7fa; border-radius: 8px;">
-              <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
-                If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
-              </p>
-              <div>
-                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
-              </div>
-            </div>
-        
-            <!-- Footer -->
-            <p style="font-size: 14px; color: #555; margin: 20px 0;">
-              If you have any questions or need further clarification, please don’t hesitate to reach out.
-            </p>
-            <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
-            <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Sales Team</p>
-        
-            <div style="text-align: center; margin: 5px 0;">
-              <p style="font-size: 14px; color: #1E2957;">CONNECT WITH</p>
-              <div>
-                 <a href="https://www.facebook.com" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
-                <a href="https://www.instagram.com/" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
-                <a href="https://www.linkedIn.com/" style="background: #0A66C2; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">LinkedIn</a>
-                <a href="https://www.whatsapp.com/" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
-              </div>
-            </div>
-        
-            <p style="font-size: 12px; color: #999; text-align: center;">
-              Injaz Group Fzc<br>
-              City Pharmacy Bid, Port Saeed, Dubai
-            </p>
-          </div>
-        </div>`
-        
-        
-        };
-  
-        const { error } =  await sendMail(message, data.selectCompany);
-  
-        if (error) throw new Error('User Email Send Process Failed!');
-  
-
-
-
-
-
-
-
-
-
-
-
-      //   let message = {
-      //     from:  process.env.MAIL_EMAIL_CONQUEROR,
-      //     to: "Studiorapiddesign@gmail.com",
-      //     // to:'ahmadkhurshed311@gmail.com',
-      //     subject: 'Generated PDF',
-      // text: 'Please find the generated PDF attached.',
-      // attachments: [
-      //   {
-      //     filename: 'multi-page-report.pdf',
-      //     // content: compressedPdfBuffer,
-      //   },
-      // ],
-      //   }
-
-
-
-
-
-
-        // const { error } =  await sendMail(message, 'Conqueror');
-  
-        // if (error) throw new Error(error);
-         res.send("ok")
-
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-      }
-    }
+    
   };
   
