@@ -1719,7 +1719,7 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
   
         const { error } =  await sendMail(message, data.selectCompany);
   
-        if (error) throw new Error('User Email Send Process Failed!');
+        if (error) throw new Error('User Email Send Process Failed! -- '+ error);
   
          return res.status(200).json({
           hasError: false,
