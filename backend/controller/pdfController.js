@@ -1556,8 +1556,6 @@ const compressedPdfBuffer = await compressPDF(pdfBuffer);
 let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
 let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
 
-const resetToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-
 
         let message = {
           from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
