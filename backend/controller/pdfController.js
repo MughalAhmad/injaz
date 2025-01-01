@@ -1562,23 +1562,23 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
           to: data.clientEmail,
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
-          attachments: [
-            // {
-            //   filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
-            //   content: compressedPdfBuffer,
-            // },
-            data.selectCompany === "Injaz" ?
-            {
-              filename: 'page3Logo.png',
-              path: url+'page3Logo.png',
-              cid: 'I_page3Logo' // same CID as referenced in the email
-          }:
-          {
-            filename: 'page3Logo.png',
-            path: Curl+'page3Logo.png',
-            cid: 'C_page3Logo' // same CID as referenced in the email
-        },
-          ], 
+        //   attachments: [
+        //     {
+        //       filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
+        //       content: compressedPdfBuffer,
+        //     },
+        //     data.selectCompany === "Injaz" ?
+        //     {
+        //       filename: 'page3Logo.png',
+        //       path: url+'page3Logo.png',
+        //       cid: 'I_page3Logo' // same CID as referenced in the email
+        //   }:
+        //   {
+        //     filename: 'page3Logo.png',
+        //     path: Curl+'page3Logo.png',
+        //     cid: 'C_page3Logo' // same CID as referenced in the email
+        // },
+        //   ], 
           html:  
           data.selectCompany === "Conqueror" ?
           `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
