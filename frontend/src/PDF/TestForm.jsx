@@ -585,7 +585,7 @@ const saveDataIntoDB = () =>{
       setBtnStatus(true)
     }, 2000);
     // GeneratePDF(data);
-    // saveDataIntoDB()
+    saveDataIntoDB()
     
   };
 
