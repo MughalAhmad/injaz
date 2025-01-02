@@ -71,11 +71,11 @@ const NewPassword = () => {
 
 
 <div className="flex items-center justify-between ">
-  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center'>
+  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center cursor-pointer' onClick={()=>navigate("/forgot")}>
   <img src={ArrowLeft} alt='arrow-left' className='w-1.5 h-auto'/>
     Back
     </span>
-  <span className='font-normal text-xs text-neutral400 cursor-pointer'>Forgot Password?</span>
+  <span className='font-normal text-xs text-neutral400 '>Forgot Password?</span>
   </div>
 
 

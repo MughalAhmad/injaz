@@ -66,9 +66,9 @@ export const sendPDF = createAsyncThunk(
 
 const initialstate = {
     pdfData:{list:[], pages:1, cardData:{
-        pending:30,
-        approved:34,
-        rejected:346, 
+        pending:0,
+        approved:0,
+        rejected:0, 
       },total:0 },
     quatationOptions:{currentPage:1, query:'', sort:'' },
     status: 'idle',

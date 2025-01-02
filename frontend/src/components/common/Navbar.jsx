@@ -26,7 +26,8 @@ const Navbar = () => {
 
   const handleLogout = () =>{
     Cookies.remove('auth-token');
-    sweetNotification(false, "Logout successfully ")
+    sweetNotification(false, "Logout successfully ");
+    navigate("/login");
     window.location.reload();
   }
   
@@ -62,6 +63,7 @@ const Navbar = () => {
                   }
                   dispatch(getDashboardData(data))
                 }
+              
 
   useEffect(() => {
     getPdfData()

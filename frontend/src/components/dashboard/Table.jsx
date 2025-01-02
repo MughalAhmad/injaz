@@ -1,10 +1,15 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
 import DashboardTableRow from "./DashboardTableRow";
+import '@coreui/coreui/dist/css/coreui.min.css'
+import AssigmModel from '../quotation/AssigmModel';
+
 const Table = () => {
     
   const { pdfData } = useSelector(state => state.pdfStore);
- 
+     const { user } = useSelector(state => state.adminStore);
+ const [visible, setVisible] = useState(false)
+     const [row, setRow] = useState({})
 
       const calculateState = (value) =>{
         if(value === "Approved"){
@@ -16,6 +21,10 @@ const Table = () => {
         else{
              return "bg-yellow-500 text-yellow-500"
         }
+      }
+      const handleRowData = (row) =>{
+        setRow(row)
+      setVisible(!visible)
       }
   return (
     <div className="w-full">
@@ -29,15 +38,18 @@ const Table = () => {
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Reference</th>
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Company</th>
             <th className="px-4 py-2 font-bold text-sm text-black text-center">State</th>
+            {user.role === 'admin' && <th className="px-4 py-2 font-bold text-sm text-black text-center">Assign</th>}
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           {pdfData?.list?.map((row, index) => (
-            <DashboardTableRow row={row} index={index} key={index}/>
+            <DashboardTableRow row={row} index={index} key={index} handleRowData={handleRowData}/>
           ))}
         </tbody>
       </table>
+      {visible && <AssigmModel visible={visible} setVisible={setVisible} userData={row}/>}
+
     </div>
   );
 };

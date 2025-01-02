@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState  } from "react";
 import ArrowLeft from "/svgs/arrow-left.svg";
 import {useLocation, useNavigate} from "react-router-dom";
-import { checkCode, updateShowBackDropLoader } from '../../redux/features/adminSlice';
+import { checkCode, updateShowBackDropLoader, forgot } from '../../redux/features/adminSlice';
 import { useDispatch } from 'react-redux';
 import {sweetNotification} from "../../components/common/SweetAlert";
 
@@ -90,6 +90,33 @@ const Digit6Verify = () => {
                 console.error('Dispatch failed:', error);
               });
   };
+
+
+
+
+  const againGetCode = () =>{ 
+        const data={
+          email:location?.state?.email
+        }        
+            dispatch(updateShowBackDropLoader(true));
+             dispatch(forgot(data))
+             .then(response => {
+                  dispatch(updateShowBackDropLoader(false));
+              
+               if (response && !response.payload.hasError) {
+                 sweetNotification(false, "Code Send Successfully");
+               } 
+               else{
+                 sweetNotification(true, "Fail Code Sendding");
+               }
+             })
+             .catch(error => {
+              dispatch(updateShowBackDropLoader(false));
+               sweetNotification(true, 'Something went wrong');
+               console.error('Dispatch failed:', error);
+             });
+           
+      }
   return (
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
@@ -108,11 +135,11 @@ const Digit6Verify = () => {
 
 
 <div className="flex items-center justify-between ">
-  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center'>
+  <span className='font-normal text-xs text-neutral400 flex gap-1 justify-center cursor-pointer' onClick={()=>navigate("/forgot")}>
   <img src={ArrowLeft} alt='arrow-left' className='w-1.5 h-auto'/>
     Back
     </span>
-  <span className='font-normal text-xs text-neutral400 cursor-pointer'>Forgot Password?</span>
+  <span className='font-normal text-xs text-neutral400'>Forgot Password?</span>
   </div>
 
 
@@ -148,7 +175,7 @@ const Digit6Verify = () => {
     </button>
 
 
-  <div className="flex items-center justify-center mt-10 sm:mt-20 md:mt-44">
+  <div className="flex items-center justify-center mt-10 sm:mt-20 md:mt-44 cursor-pointer" onClick={()=>againGetCode()}>
   <span className='font-normal text-sm mr-1 text-stone300'>Didn’t Recieve code?</span>
   <span className='font-semibold text-sm text-textPrimary hover:text-texPrimaryHover cursor-pointer'>Resend Code</span>
   </div>

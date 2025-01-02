@@ -3,6 +3,8 @@ import Card from '../../components/dashboard/Card';
 import DashboardPaginate from '../../components/dashboard/dashboardPagination';
 import { useDispatch, useSelector } from 'react-redux';
 import {getDashboardData} from "../../redux/features/pdfSlice";
+import {sweetNotification} from "../../components/common/SweetAlert";
+import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
 
 const Dashboard = () => {
 
@@ -17,7 +19,7 @@ const Dashboard = () => {
 
   const cardData= [
     {
-      count:pdfData?.cardData?.pending + pdfData?.cardData?.approved + pdfData?.cardData?.rejected,
+      count:pdfData?.cardData?.pending + pdfData?.cardData?.approved + pdfData?.cardData?.rejected || 0,
       title:'Total Quotation',
       icon:'/svgs/dashboard.svg',
       bg:'bg-blue-500'
@@ -42,6 +44,8 @@ const Dashboard = () => {
     }
   ]
 
+  console.log("useruseruseruser",user)
+
     const getAllDashboardData = () =>{
       const data = {
         companyName: companyName,
@@ -50,7 +54,21 @@ const Dashboard = () => {
         currentPage:currentPage,
         sortValue:sort
       }
-      dispatch(getDashboardData(data))
+      dispatch(updateShowBackDropLoader(true));
+      
+      dispatch(getDashboardData(data)).then((resp)=>{
+            dispatch(updateShowBackDropLoader(false));
+            if (resp && !resp.payload.hasError) {
+              // sweetNotification(false, resp.payload.msg);
+            }
+            else{
+              sweetNotification(true, resp.payload.msg);
+            }
+          }).catch((error) => {
+            console.log(error);
+            dispatch(updateShowBackDropLoader(false));
+            sweetNotification(true, "Something went wrong");
+        });
     }
 
     const handleSort = (e) =>{

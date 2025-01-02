@@ -16,7 +16,26 @@ module.exports = {
       
       const data = await transporter
         .sendMail(emailData);
-        console.log("TEST",data)
+        return {error: null};
+    } catch (error) {
+        return {error: error};
+    }
+  },
+  forgotSendMail: async (emailData) => {
+    try {
+      let config = {
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL_EMAIL,
+          pass: process.env.NO_REPLY,
+        },
+      };
+
+      const transporter = nodemailer.createTransport(config);
+
+      
+      const data = await transporter
+        .sendMail(emailData);
         return {error: null};
     } catch (error) {
         return {error: error};

@@ -35,12 +35,6 @@ module.exports = {
 
   </div>
 
-  <div style="text-align: center; margin: 20px 0;">
-    <p style="font-size: 14px; color: #333;">Or click on the button below for Signin</p>
-    <a href="https://quotation.injazgroup.co.uk/" style="text-decoration: none;">
-      <button style="background: #0A144E; color: #ffffff; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">Login</button>
-    </a>
-  </div>
 
   <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
 

@@ -60,7 +60,7 @@ const ForgotPassword = () => {
   <img src={ArrowLeft} alt='arrow-left' className='w-1.5 h-auto'/>
     Back
     </span>
-  <span className='font-normal text-xs text-neutral400 cursor-pointer'>Forgot Password?</span>
+  <span className='font-normal text-xs text-neutral400'>Forgot Password?</span>
   </div>
 
 
@@ -104,10 +104,10 @@ const ForgotPassword = () => {
   </form>
 
 
-  <div className="flex items-center justify-center mt-4 sm:mt-20 md:mt-36">
+  {/* <div className="flex items-center justify-center mt-4 sm:mt-20 md:mt-36">
   <span className='font-normal text-sm mr-1 text-stone300'>Didn’t Recieve code?</span>
   <span className='font-semibold text-sm text-textPrimary hover:text-texPrimaryHover cursor-pointer'>Resend Code</span>
-  </div>
+  </div> */}
 
 
 </div>

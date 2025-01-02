@@ -5,12 +5,49 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from "@coreui/react";
+import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader} from "../../redux/features/adminSlice";
+import { sendPDF } from '../../redux/features/pdfSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
-const DashboardTableRow = ({ row, index }) => {
+const DashboardTableRow = ({ row, index, handleRowData }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector(state => state.adminStore);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
+
+  const handleMail = () =>{
+    console.log("helllllOOOOO")
+      const modifyData={
+        data:row,
+      checkBoxData:row.checkBoxData,
+      stateArray:row.stateArray
+      }
+      dispatch(updateShowBackDropLoader(true));
+          dispatch(sendPDF(modifyData))
+            .then(response => {
+              dispatch(updateShowBackDropLoader(false));
+              if (response && !response.payload.hasError) {
+               sweetNotification(false, response.payload.msg)
+              }
+              else{
+                sweetNotification(true, response.payload.msg)
+              }
+            })
+            .catch(error => {
+              dispatch(updateShowBackDropLoader(false));
+              sweetNotification(true, 'Something went wrong');
+              console.error('Dispatch failed:', error);
+            });
+    }
+
+    const handleViewQuotation = () =>{
+      navigate(`/view/${row._id}`)
+    }
 
   return (
     <>
@@ -37,6 +74,8 @@ const DashboardTableRow = ({ row, index }) => {
         <td className="px-4 py-2 font-semibold text-sm text-center">
           {row.stateValue}
         </td>
+        {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
+
         <td className="px-4 py-2 flex justify-center relative">
           <CDropdown>
             <CDropdownToggle>
@@ -64,9 +103,9 @@ const DashboardTableRow = ({ row, index }) => {
               </span>
             </CDropdownToggle>
             <CDropdownMenu>
-              <CDropdownItem className="cursor-pointer"> View</CDropdownItem>
-              <CDropdownItem className="cursor-pointer"> Assign</CDropdownItem>
-              <CDropdownItem className="cursor-pointer"> Send</CDropdownItem>
+              <CDropdownItem className="cursor-pointer"  onClick={handleViewQuotation}> View</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={()=>handleRowData(row)}> Assign</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={handleMail}> Send</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </td>
