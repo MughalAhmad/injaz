@@ -1562,10 +1562,10 @@ return res.status(200).json({
     sendPDF : async (req, res, next) => {
       try {
          const {data, checkBoxData, stateArray} = req.body;
-      const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
+      // const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
 
 // Compress the PDF
-const compressedPdfBuffer = await compressPDF(pdfBuffer);
+// const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
 
 
@@ -1579,10 +1579,10 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
           attachments: [
-            {
-              filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
-              content: compressedPdfBuffer,
-            },
+            // {
+            //   filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
+            //   content: compressedPdfBuffer,
+            // },
             data.selectCompany === "Injaz" ?
             {
               filename: 'page3Logo.png',
