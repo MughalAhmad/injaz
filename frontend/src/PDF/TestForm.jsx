@@ -76,7 +76,7 @@ const { user } = useSelector(state => state.adminStore);
    step2value1:'',
    step2value1IN:'',
    step2Timeline:'2-3 Working Days',
-   step2EstablishmentRemark:"Federel Immigration Fees Renewable every year",
+   step2EstablishmentRemark:"Federel Immigration Fees Renewable every two year",
    step2Remark:"Government Fees Renewable every year",
    step2EstablishmentTimeline:"2-3 Working Days After License" ,
    step3RenewableEmployment:"Government Fees Renewable every year ",
@@ -585,7 +585,7 @@ const saveDataIntoDB = () =>{
       setBtnStatus(true)
     }, 2000);
     // GeneratePDF(data);
-    saveDataIntoDB()
+    // saveDataIntoDB()
     
   };
 
@@ -730,6 +730,22 @@ useEffect(() => {
     return data.step2value3;
   };
 
+  const getStatusChange = () => {
+    if (data.stateValue === "Dubai") return `AED 1650 - If You Are In UAE `;
+    if (data.stateValue === "Sharjah") return `AED 750 - If You Are In UAE `;
+
+    if (data.stateValue !== "Dubai") return `If You Are In UAE `;
+    if (data.stateValue !== "Sharjah") return `If You Are In UAE `;
+    return data.step3StatusChange;
+  };
+
+  const getEstablishment = () => {
+    if (data.stateValue === "Dubai") return `Federel Immigration Fees Renewable every year`;
+
+    if (data.stateValue !== "Dubai") return `Federel Immigration Fees Renewable every two year`;
+    return data.step2EstablishmentRemark;
+  };
+
   setData((prevData) => ({
     ...prevData,
     step2value2a: getStep3ValueA(),
@@ -740,6 +756,10 @@ useEffect(() => {
 
     step2value3: getStep3ValueC(),
     step2value3IN: getStep3ValueC(),
+
+    step3StatusChange:getStatusChange(),
+
+    step2EstablishmentRemark:getEstablishment(),
 
   }));
 }, [data.stateValue]);

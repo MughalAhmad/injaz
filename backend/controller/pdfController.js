@@ -1228,7 +1228,9 @@ const compressPDF = async (pdfBuffer) => {
     },
     getAllPdf: async (req, res, next) => {
       try {
-        const {currentPage, company,role, userId} = req.query; 
+        const {currentPage, company,role, userId, filter, sortValue} = req.query;
+        const searchQuery = filter; 
+        const sortOrder = Number(sortValue) ;
         const page = currentPage || 1;
         const limit = 10;
         const skip = (page - 1) * limit;
@@ -1237,6 +1239,10 @@ const compressPDF = async (pdfBuffer) => {
           { $skip: skip }, // Pagination skip
           { $limit: limit },
         ];
+
+        if(sortOrder){
+          options.unshift({ $sort: { clientEmail: sortOrder } })
+        }
 
         let matchOptions ='';
 
@@ -1251,11 +1257,15 @@ const pdfs = await pdfModel.aggregate([
   {
     $match: {
       ...matchOptions,
+      clientEmail: {
+        $regex: searchQuery,
+        $options: "i",
+      },
          },
   },
   {
     $facet: {
-      limitedPdfs:options,
+      quotations:options,
       totalCount: [
         { $count: "count" }, // Count the total number of documents matching the filter
       ],
@@ -1264,7 +1274,7 @@ const pdfs = await pdfModel.aggregate([
 ]);
 
 
-const pdfList = pdfs[0]?.limitedPdfs || [];
+const pdfList = pdfs[0]?.quotations || [];
 const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
 const pdfCount = Math.ceil(totalDocuments / limit);
 

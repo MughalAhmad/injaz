@@ -70,6 +70,7 @@ const initialstate = {
         approved:34,
         rejected:346, 
       },total:0 },
+    quatationOptions:{currentPage:1, query:'', sort:'' },
     status: 'idle',
     error: null,
     isLoading: true,
@@ -80,7 +81,19 @@ const initialstate = {
 const pdfSlice = createSlice({
     name: "pdf",
     initialState: initialstate,
-    reducers: {},
+    reducers: {
+        updateQuotationOptions(state, action) {
+            if(action.payload.field === 'currentPage'){
+                state.quatationOptions.currentPage = action.payload.value;
+            }
+            if(action.payload.field === 'query'){
+                state.quatationOptions.query = action.payload.value;
+            }
+            if(action.payload.field === 'sort'){
+                state.quatationOptions.sort = action.payload.value;
+            }
+         }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getAllPdf.pending, (state) => {
@@ -132,5 +145,5 @@ const pdfSlice = createSlice({
    
 });
 
-export const { } = pdfSlice.actions;
+export const { updateQuotationOptions} = pdfSlice.actions;
 export default pdfSlice;

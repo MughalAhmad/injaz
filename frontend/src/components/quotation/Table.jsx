@@ -1,45 +1,19 @@
-import React, {useState, useEffect} from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllPdf } from '../../redux/features/pdfSlice';
+import React, {useState} from 'react'
+import { useSelector } from 'react-redux';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import AssigmModel from './AssigmModel';
 import QuotationTableRow from './QuotationTableRow';
-import {sweetNotification} from "../common/SweetAlert";
-import {updateShowBackDropLoader } from "../../redux/features/adminSlice";
 
-const Table = ({currentPage}) => {
 
-    const dispatch = useDispatch();
+const Table = () => {
+
     const { pdfData } = useSelector(state => state.pdfStore);
-    const { companyName } = useSelector(state => state.brandingStore);
     const { user } = useSelector(state => state.adminStore);
     const [visible, setVisible] = useState(false)
     const [row, setRow] = useState({})
 
     
-    
-      const getAllQuotationData = () =>{
-        const data = {
-          companyName: companyName,
-          userId: user?._id,
-          role: user?.role,
-          currentPage:currentPage,
-        }
-        dispatch(updateShowBackDropLoader(true));
-        dispatch(getAllPdf(data)).then((resp)=>{
-              dispatch(updateShowBackDropLoader(false));
-              if (resp && !resp.payload.hasError) {
-                sweetNotification(false, resp.payload.msg);
-              }
-              else{
-                sweetNotification(true, resp.payload.msg);
-              }
-            }).catch((error) => {
-              console.log(error);
-              dispatch(updateShowBackDropLoader(false));
-              sweetNotification(true, "Something went wrong");
-          });
-      }
+
     
     
 
@@ -47,12 +21,6 @@ const Table = ({currentPage}) => {
       setRow(row)
       setVisible(!visible)
     }
-
-    
-    useEffect(() => {
-      getAllQuotationData()
-      }, [localStorage.getItem("companyName"), currentPage])
-   
 
   return (
       <div className="w-full">

@@ -26,7 +26,7 @@ const Team = () => {
     dispatch(getAllUsers({queryParams})).then((resp)=>{
           dispatch(updateShowBackDropLoader(false));
           if (resp && !resp.payload.hasError) {
-            sweetNotification(false, resp.payload.msg);
+            // sweetNotification(false, resp.payload.msg);
           }
           else{
             sweetNotification(true, resp.payload.msg);

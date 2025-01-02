@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux';
 import QuotationTable from "./Table";
 import { current } from '@reduxjs/toolkit';
 
-const QuoationPaginate = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+const QuoationPaginate = ({ setCurrentPage, currentPage }) => {
 
   const { pdfData } = useSelector(state => state.pdfStore);
 
@@ -16,7 +15,7 @@ const QuoationPaginate = () => {
   };
 
     const renderItems = () => {
-    return <QuotationTable currentPage={currentPage}/>
+    return <QuotationTable/>
   };
 
   return (

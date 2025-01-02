@@ -9,7 +9,7 @@ class PdfService extends Service {
         return await this.ApiClient.post('/pdf/create', data);
     }
     async getAllPdf(data) {
-        return await this.ApiClient.get(`/pdf/getAllPdf?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}`);
+        return await this.ApiClient.get(`/pdf/getAllPdf${data}`);
     }
     async getQuotation(data) {
         return await this.ApiClient.get(`/pdf/getQuotation?id=${data}`);
