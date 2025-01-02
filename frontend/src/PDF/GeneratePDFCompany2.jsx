@@ -202,31 +202,29 @@ const MyDocument = ({
       <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:"16px", fontFamily: 'CustomFont'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
       </View>
 
-       <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px',display:"flex",flexDirection:'row' }}>
-      
-            <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'15%' }}>Activity Code</Text>
-              <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'55%' }}>Description</Text>
-              <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'15%' }}>Approval</Text>
-              <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'12%'}}>Authority</Text>
-      
-      
-      
-            </View>
-             
-             <View style={{width:'88%', marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5}}>  
-      
-              {state.map((item)=>(
-                <View style={{display:'flex', flexDirection:'row',marginTop:5}}>
-              <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/Injaz/check.png" />
-              <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'13%' ,textAlign:'left'}}>{item.code}</Text>
-              <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'56%', color:'#208edb' ,textAlign:'left'}}>{item.description}</Text>
-              <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#C40014' ,textAlign:'left',paddingLeft:"4px"}}>{item.approval}</Text>
-              <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#ed9b1b' ,textAlign:'left'}}>{item.authority}</Text>
-              </View>
-              ))}
-           
-      
-            </View>
+         <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px',display:"flex",flexDirection:'row' }}>
+             <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'15%' }}>Activity Code</Text>
+             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'55%' }}>Description</Text>
+             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'15%' }}>Approval</Text>
+             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'12%'}}>Authority</Text>
+             </View>
+       
+             <View style={{width:"100vw", marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5,}}>  
+              <View style={{width:'88%'}}>
+       
+               {state.map((item)=>(
+                 <View style={{display:'flex', flexDirection:'row',marginTop:5}}>
+               <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
+               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'13%' ,textAlign:'left' }}>{item.code}</Text>
+               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'56%', color:'#208edb' ,textAlign:'left'}}>{item.description}</Text>
+               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#C40014' ,textAlign:'left',paddingLeft:"4px"}}>{item.approval}</Text>
+               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#ed9b1b' ,textAlign:'left'}}>{item.authority}</Text>
+               </View>
+               ))}
+            
+             </View>
+       
+             </View>
 
 {/* step No 1 */}
       

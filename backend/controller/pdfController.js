@@ -15,8 +15,10 @@ const ReadFile = Util.promisify(Fs.readFile);
 // Generate PDF
 
 const injazHtml = async (data, checkBox, state) =>{
-  let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
-  let mainUrl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+  // let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
+  // let mainUrl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+  let url = "http://localhost:5000/injaz/" ;
+  let mainUrl = "http://localhost:5000/conqueror/" ;
 
   const setImg = (name)=>{
     if (name === 'Ajman') {
@@ -593,7 +595,8 @@ const injazHtml = async (data, checkBox, state) =>{
 
 const conquerorHtml = async (data, checkBox, state) =>{
 
-  let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+  // let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
+  let url = "http://localhost:5000/conqueror/" ;
 
   const setImg = (name)=>{
     if (name === 'Ajman') {
@@ -1164,11 +1167,17 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
     const browser = await puppeteer.launch({
         headless: true,
-        executablePath: '/usr/bin/chromium-browser',
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-        env: { DISPLAY: null }, // Suppress GUI-related logs
         dumpio: true
      });
+
+  //    {
+  //     headless: true,
+  //     executablePath: '/usr/bin/chromium-browser',
+  //     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  //     env: { DISPLAY: null }, // Suppress GUI-related logs
+  //     dumpio: true
+  //  }
     const page = await browser.newPage();
 
     await page.setContent(data, { waitUntil: 'networkidle0' });
@@ -1562,15 +1571,18 @@ return res.status(200).json({
     sendPDF : async (req, res, next) => {
       try {
          const {data, checkBoxData, stateArray} = req.body;
-      // const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
+      const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
 
 // Compress the PDF
-// const compressedPdfBuffer = await compressPDF(pdfBuffer);
+const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
 
 
-let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
-let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
+// let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
+// let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
+
+let url = "http://localhost:5000/injaz/" ;
+let Curl ="http://localhost:5000/conqueror/" ;
 
 
         let message = {
@@ -1579,10 +1591,10 @@ let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
           subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
           attachments: [
-            // {
-            //   filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
-            //   content: compressedPdfBuffer,
-            // },
+            {
+              filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
+              content: compressedPdfBuffer,
+            },
             data.selectCompany === "Injaz" ?
             {
               filename: 'page3Logo.png',
