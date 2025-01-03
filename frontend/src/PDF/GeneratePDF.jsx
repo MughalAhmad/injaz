@@ -183,7 +183,7 @@ const MyDocument = ({
           <View style={{ height:'50%', width:"100%"}}>
         <Text style={{fontSize:"10px", marginTop:'2px', fontFamily: 'CustomFont', color:'#296d98', position:"absolute", lineHeight:'1px', top:"-3px"}}>{data.clientEmail || "empty"}</Text>
         </View>
-        <Text style={{fontSize:"10px", marginTop:'2px', height:'50%', width:"100%", fontFamily: 'CustomFont', color:'#4c733a'}}>{`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</Text>
+        <Text style={{fontSize:"10px", height:'50%', width:"100%", fontFamily: 'CustomFont', color:'#4c733a'}}>{`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</Text>
         </View>
 </View>
 
@@ -207,8 +207,8 @@ const MyDocument = ({
         <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
         <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'13%' ,textAlign:'left' }}>{item.code}</Text>
         <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'56%', color:'#208edb' ,textAlign:'left'}}>{item.description}</Text>
-        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#C40014' ,textAlign:'left',paddingLeft:"4px"}}>{item.approval}</Text>
-        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#ed9b1b' ,textAlign:'left'}}>{item.authority}</Text>
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#C40014' ,textAlign:'left',paddingLeft:"5px"}}>{item.approval}</Text>
+        <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#ed9b1b' ,textAlign:'left',paddingLeft:"3px"}}>{item.authority}</Text>
         </View>
         ))}
      
@@ -224,10 +224,10 @@ const MyDocument = ({
 
 
       <View style={{ marginTop: 2, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 7, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "9px", width: '25%',color:'#296d98', fontFamily: 'CustomFont500'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%',color:'#296d98', fontFamily: 'CustomFont500'}}>Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}>Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
@@ -243,10 +243,10 @@ const MyDocument = ({
 <Text style={{ color: '#733463', marginLeft: 35, marginTop: 17, fontSize: "10px", fontFamily: 'CustomFont',}}>Step 2: Immigration Card</Text>
       
       <View style={{ marginTop:2, marginHorizontal: 35, backgroundColor: '#cfe8ff', paddingVertical: 7, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color:'#296d98'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color:'#296d98'}}>Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}>Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
@@ -262,7 +262,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8 ,color:'#337cd6',}}>
         AED {data?.step2Establishment?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014', fontFamily:"CustomFont600"}}>
         AED {data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
       </Text>
       </View>
@@ -277,7 +277,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8 ,color:'#337cd6',}}>
         AED {data?.step2value1?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014', fontFamily:"CustomFont600"}}>
         AED {data?.step2value1IN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -292,10 +292,10 @@ const MyDocument = ({
 <Text style={{color:'#337cd6', marginLeft: 35, marginTop:17, fontSize: "10px", fontFamily: 'CustomFont',}}>Step 3: Entry VISA</Text>
       
       <View style={{ marginTop: 2, marginHorizontal: 35, backgroundColor: '#f5f5f5', paddingVertical: 7, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Description</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color: '#c40014'}}> Conqueror Price</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}> Remarks</Text>
-      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}> Timeline</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Description</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500',color: '#c40014'}}>Conqueror Price</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500' }}>Remarks</Text>
+      <Text style={{ fontSize: "9px", width: '25%', fontFamily: 'CustomFont500'}}>Timeline</Text>
       </View>
 
       <View style={{ marginTop: 4, marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
@@ -305,7 +305,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8 }}>
         AED {data?.step2value2a?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4,color:'#296d98',}}>
+      <Text style={{ fontSize: 8, marginRight:4,color:'#296d98', fontFamily:"CustomFont600"}}>
         AED {data?.step2value2aIN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -322,7 +322,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8 }}>
         AED {data?.step2value2?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6', fontFamily:"CustomFont600"}}>
         AED {data?.step2value2IN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -337,9 +337,10 @@ const MyDocument = ({
       {/* <Text style={{ fontSize: "8px", width: '25%' }}>{`AED ${data?.step2value3.toLocaleString()}` || "Conditional"}</Text> */}
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' , backgroundColor:'#f8c6ab',}}>
       <Text style={{ fontSize: 8,color:'#337cd6' }}>
-        AED {data?.step2value3?.toLocaleString() || "0.00"}
+        {/* AED {data?.step2value3?.toLocaleString() || "0.00"} */}
+        Conditional
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014',}}>
+      <Text style={{ fontSize: 8, marginRight:4, color: '#c40014', fontFamily:"CustomFont600"}}>
         AED {data?.step2value3IN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -355,7 +356,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8, color:'#337cd6' }}>
         AED {data?.medical?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6', fontFamily:"CustomFont600"}}>
         AED {data?.medicalIN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -373,7 +374,7 @@ const MyDocument = ({
       <Text style={{ fontSize: 8, color:'#337cd6' }}>
         AED {data?.emiratesId?.toLocaleString() || "0.00"}
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6'}}>
+      <Text style={{ fontSize: 8, marginRight:4, color:'#337cd6', fontFamily:"CustomFont600"}}>
         AED {data?.emiratesIdIN?.toLocaleString() || "0.00"}
       </Text>
       
@@ -389,10 +390,10 @@ const MyDocument = ({
 
       <View style={{ fontSize: "8px", width: '25%', display:'flex',flexDirection:'row', justifyContent:'space-between' }}>
       <Text style={{ fontSize: 8, color:'#4c733a' }}>
-        AED 2500
+        
       </Text>
-      <Text style={{ fontSize: 8, marginRight:4, color:'#2b472b'}}>
-        AED {data?.discount.toLocaleString() || "0.00"}
+      <Text style={{ fontSize: 8, marginRight:4, color:'#2b472b', fontFamily:"CustomFont600"}}>
+      AED 2500
       </Text>
       </View>
 
@@ -413,17 +414,17 @@ const MyDocument = ({
 
       
       <View style={{ marginTop:"1px", marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px', display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "9px", fontWeight: 'CustomFont500', color: '#c40014', }}> PRO Fees {((2500 - Number(data?.discount)) / 2500) * 100}% AED {2500 - Number(data?.discount)}.00 will be discounted if you Proceed within {moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</Text>
+      <Text style={{ fontSize: "9px", fontWeight: 'CustomFont500', color: '#c40014', }}>PRO Fees {((2500 - Number(data?.discount)) / 2500) * 100}% AED {2500 - Number(data?.discount)}.00 will be discounted if you Proceed within {formatDate(new Date(data?.date))}</Text>
       </View>
 
 
       <View style={{ marginTop: "1px", marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%' , fontFamily:'CustomFont400', }}><Text style={{backgroundColor:'#f8c6ab',}}>Discount</Text></Text>
-      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont400' }}>AED {2500 - Number(data?.discount)}</Text>
+      <Text style={{ fontSize: "8px", width: '75%', fontFamily:"CustomFont600"}}>AED {2500 - Number(data?.discount)}</Text>
       </View>
       <View style={{ marginTop: "5px", marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
-      <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont' ,}}><Text style={{backgroundColor: '#cfe8ff'}}>Grand Total </Text></Text>
-      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont',color:'#337cd6' }}>AED {data?.gtAmount.toLocaleString() || "0.00"}</Text>
+      <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont' ,}}><Text style={{backgroundColor: '#cfe8ff'}}>Grand Total</Text></Text>
+      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont',color:'#337cd6' }}>AED {data?.gtAmount.toLocaleString() || "0.00"} Dirham</Text>
       </View>
       <View style={{ marginTop: '5px', marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont400' }}>In Word:</Text>
@@ -636,10 +637,13 @@ const MyDocument = ({
      <Page size="A4">
     <Image src="/png11.png" />
     </Page>
-    </>)}
     <Page size="A4">
     <Image style={{width:"100%",height:'100%'}} src="/png12.png" />
     </Page>
+    </>)}
+    {/* <Page size="A4">
+    <Image style={{width:"100%",height:'100%'}} src="/png12.png" />
+    </Page> */}
 
     {/* {imageSources.map((src, index) => (
       <Page size="A4" key={index}>

@@ -57,17 +57,25 @@ const TeamForm = () => {
             enableReinitialize: true,
             onSubmit: async (values) => {
 
+                     // Trim values
+        const trimmedValues = Object.fromEntries(
+          Object.entries(values).map(([key, value]) => [
+              key,
+              typeof value === "string" ? value.trim() : value,
+          ])
+      );
+
                 const body = {
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    email: values.email,
-                    password: values.password,
-                    confirmPassword: values.confirmPassword,
-                    phone: values.phone,
-                    mobile: values.mobile,
-                    address: values.address,
-                    userId: values.userId,
-                    nationality: values.nationality,
+                    firstName: trimmedValues.firstName,
+                    lastName: trimmedValues.lastName,
+                    email: trimmedValues.email,
+                    password: trimmedValues.password,
+                    confirmPassword: trimmedValues.confirmPassword,
+                    phone: trimmedValues.phone,
+                    mobile: trimmedValues.mobile,
+                    address: trimmedValues.address,
+                    userId: trimmedValues.userId,
+                    nationality: trimmedValues.nationality,
                 };
                 if(formState === 'update'){
                   body._id=useData._id

@@ -54,17 +54,25 @@ const RefForm = () => {
             enableReinitialize: true,
             onSubmit: async (values) => {
 
+               // Trim values
+        const trimmedValues = Object.fromEntries(
+          Object.entries(values).map(([key, value]) => [
+              key,
+              typeof value === "string" ? value.trim() : value,
+          ])
+      );
+
                 const body = {
 
-                    fullName: values.fullName,
-                    fbId: values.fbId,
-                    metaId: values.metaId,
-                    email: values.email,
-                    companyEmail: values.companyEmail,
-                    phone: values.phone,
-                    mobile: values.mobile,
-                    company: values.company,
-                    refCode: values.refCode
+                    fullName: trimmedValues.fullName,
+                    fbId: trimmedValues.fbId,
+                    metaId: trimmedValues.metaId,
+                    email: trimmedValues.email,
+                    companyEmail: trimmedValues.companyEmail,
+                    phone: trimmedValues.phone,
+                    mobile: trimmedValues.mobile,
+                    company: trimmedValues.company,
+                    refCode: trimmedValues.refCode
 
                 };
                 if(formState === 'update'){

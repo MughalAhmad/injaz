@@ -59,22 +59,22 @@ const injazHtml = async (data, checkBox, state) =>{
   }
 
   const activityBox = state.map((item)=>`<div
-    style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px;">
-    <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
-    <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
-    <span style="width:55%; font-size: 16px; font-weight: 600;">${item.description}</span>
-    <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014; padding-left:10px">${item.approval}</span>
-    <span style="width:12%; font-size: 16px; font-weight: 600; color:#C40014">${item.authority}</span>
+  style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px;">
+  <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
+  <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
+  <span style="width:55%; font-size: 16px; font-weight: 600;">${item.description}</span>
+  <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
+  <span style="width:12%; font-size: 16px; font-weight: 600; color:#C40014">${item.authority}</span>
 </div>`).join('');
 
   const checkBoxHTML = checkBox
     .map(
       (item, index) => `
-       <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px;">
+       <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px; color:${item.status==='1' ? 'red' : 'black'}">
                 <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+'check.png'} />
-                <span style="width:58%; font-size: 25px;">${checkBox[index]?.title}</span>
-                <span style=" width:20%;font-size: 25px;">${ checkBox[index]?.value }</span>
-                <span style=" font-size: 25px; color:#1E2957">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
+                <span style="width:58%; font-size: 20px;">${checkBox[index]?.title}</span>
+                <span style=" width:20%;font-size: 20px;">${ checkBox[index]?.value }</span>
+                <span style=" font-size: 20px; ">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
             </div>
       `
     )
@@ -150,11 +150,11 @@ const injazHtml = async (data, checkBox, state) =>{
             </div>
 
             <div
-                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; display:flex; flex-direction:row;">
-                <span style="font-size: 15px; font-weight: 600; width:15%; padding-left:15px">
+                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; display:flex; flex-direction:row;">
+                <span style="font-size: 15px; font-weight: 600; width:15%;">
                     Activity Code
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:20px">
+                <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:35px">
                     Description
                 </span>
                 <span style="font-size: 15px; font-weight: 600; width:15%">
@@ -166,176 +166,178 @@ const injazHtml = async (data, checkBox, state) =>{
 
             </div>
 
-            <div style="display:flex; flex-direction:row; gap:35px; justify-content: center;">
-                <div style="width:95%">
+           <div style="display:flex; flex-direction:row; gap:35px; justify-content: center;">
+                <div style="width:100%">
                 ${activityBox}
                 </div>
             </div>
 
             <!-- {/* step No 1 */} -->
 
-            <div style="margin-top: 25px; padding-top: 2px; border-top:5px solid black">
-                <p style="font-size: 20px; font-weight: bold;  color: #4c733a; margin-left: 15px; margin-top: 10px">Step
+            <div style="padding-top: 5px; border-top:5px solid black">
+                <p style="font-size: 20px; font-weight: bold;  color: #4c733a;">Step
                     1: License</p>
             </div>
            <div
-                style=" margin-top: 4px; background-color: #89d976; padding-top: 9px; padding-bottom: 9px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Description</span>
+                style=" margin-top: 2px; background-color: #89d976; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Description</span>
                 <span style="font-size: 18px; width: 25%; font-weight: 500; color:#296d98;">Injaz Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Timeline</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">License Fee</span>
-                <span style="font-size: 20px; width: 25%; color:#C40014; background-color:#f8c6ab; font-weight:500;">AED ${data?.step1value.toLocaleString() || "0.00"}</span>
-                <span style="font-size: 20px; width: 25%; padding-right:3px; color:#C40014; font-weight:500;">${data?.step1Remarks}</span>
-                <span style="font-size: 20px; width: 25%">${data?.step1Timeline}</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16px; width: 25%">License Fee</span>
+                <span style="font-size: 16px; width: 25%; color:#C40014; background-color:#f8c6ab; font-weight:500;">AED ${data?.step1value.toLocaleString() || "0.00"}</span>
+                <span style="font-size: 16px; width: 25%; padding-right:3px; color:#C40014; font-weight:500;">${data?.step1Remarks}</span>
+                <span style="font-size: 16px; width: 25%">${data?.step1Timeline}</span>
             </div>
+
+
             <!-- {/* step No 2 */} -->
-           <div style=" padding-top: 2px;">
-                <p style="font-size: 20px; font-weight: bold;  color: #733463; margin-left: 15px; margin-top: 10px">Step
+          <div style="margin-top: 40px">
+                <p style="font-size: 20px; font-weight: bold;  color: #733463;">Step
                     2: Immigration Card</p>
             </div>
 
 
 
              <div
-                style=" margin-top: 4px; background-color: #36801c; padding-top: 9px; padding-bottom: 9px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;"> Description</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;"> Injaz Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;"> Timeline</span>
+                style=" margin-top: 2px; background-color: #36801c; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;">Description</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;">Injaz Price</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:white;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">Pre-Approval Fee</span>
-                <span style="font-size: 20px; width: 25%; color:#337cd6;">AED ${Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</span>
-                <span style="font-size: 20px; width: 25%; padding-right:3px">One-Time</span>
-                <span style="font-size: 20px; width: 25%">5-10 days</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16px; width: 25%">Pre-Approval Fee</span>
+                <span style="font-size: 16px; width: 25%; color:#337cd6;">AED ${Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</span>
+                <span style="font-size: 16px; width: 25%; ">One-Time</span>
+                <span style="font-size: 16px; width: 25%">5-10 days</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">Establishment Card</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16px; width: 25%">Establishment Card</span>
                  <div
-                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style"color:#337cd6;">
                         AED ${data?.step2Establishment?.toLocaleString() || "0.00"}
                     </span >
-                    <span style=" margin-right:15px; color:#c40014;">
+                    <span style=" margin-right:15px; color:#c40014;  font-weight: bold;">
                         AED ${data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 20px; width: 25%; padding-right:3px; color:#c40014; font-weight:500;">${data?.step2EstablishmentRemark}</span>
-                <span style="font-size: 20px; width: 25%">${data?.step2EstablishmentTimeline}</span>
+                <span style="font-size: 16px; width: 25%; color:#c40014; font-weight:500;">${data?.step2EstablishmentRemark}</span>
+                <span style="font-size: 16px; width: 25%">${data?.step2EstablishmentTimeline}</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">E-Channel Card</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16px; width: 25%">E-Channel Card</span>
                  <div
-                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#337cd6">
                         AED ${data?.step2value1?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#c40014;">
+                    <span style=" margin-right:15px; color:#c40014;  font-weight: bold;">
                         AED ${data?.step2value1IN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
 
-                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
-                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%"></span>
             </div>
 
             <!-- {/* step No 3 */} -->
-            <div style=" padding-top: 2px;">
-                <p style="font-size: 20px; font-weight: bold;  color: #337cd6; margin-left: 15px; margin-top: 10px">Step
+<div style=" margin-top: 40px">
+                <p style="font-size: 20px; font-weight: bold;  color: #337cd6;">Step
                     3: Entry VISA</p>
             </div>
 
 
               <div
-                style=" margin-top: 4px; background-color: #cfe8ff; padding-top: 9px; padding-bottom: 9px; padding-left: 15px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Description</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#c40014; "> Injaz Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Timeline</span>
+                style=" margin-top: 2px; background-color: #cfe8ff; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Description</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#c40014; ">Injaz Price</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Investor</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16; width: 25%">Visa (Per Visa) Investor</span>
                 <div
-                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span>
                         AED ${data?.step2value2a?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#296d98;">
+                    <span style=" margin-right:15px; color:#296d98; font-weight: bold;">
                         AED ${data?.step2value2aIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 20px; width: 25%; padding-right:3px">${data?.step3Renewable}</span>
-                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 16px; width: 25%;">${data?.step3Renewable}</span>
+                <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
-                <span style="font-size: 20px; width: 25%">Visa (Per Visa) Employment</span>
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
+                <span style="font-size: 16px; width: 25%">Visa (Per Visa) Employment</span>
                 <div
-                    style="font-size: 20px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
+                    style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span>
                     AED ${data?.step2value2?.toLocaleString() || "0.00"}
 
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6;">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                     AED ${data?.step2value2IN?.toLocaleString() || "0.00"}
 
                     </span>
 
                 </div>
-                <span style="font-size: 20px; width: 25%; padding-right:3px"></span>
-                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; background-color:#f8c6ab;">Status Change</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between; background-color:#f8c6ab;">
                     <span style="color:#337cd6;">
-                      AED ${data?.step2value3?.toLocaleString() || "0.00"}
+                      Conditional
 
                     </span>
-                    <span style=" margin-right:15px; color:#c40014;">
+                    <span style=" margin-right:15px; color:#c40014; font-weight: bold;">
                       AED ${data?.step2value3IN?.toLocaleString() || "0.00"}
 
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px">${data?.step3StatusChange}</span>
+                <span style="font-size: 16px; width: 25%;">${data?.step3StatusChange}</span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
 
-             <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+             <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Medical Test (Per visa)</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#337cd6;">
                          AED ${data?.medical?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6;">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                         AED ${data?.medicalIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%">${data?.medicalTimeline}</span>
             </div>
 
 
             <!-- {/* //////////////// */} -->
 
-           <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+           <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Emirates ID (Per Visa)</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
@@ -343,56 +345,56 @@ const injazHtml = async (data, checkBox, state) =>{
                      AED ${data?.emiratesId?.toLocaleString() || "0.00"}
 
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6;">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                         AED ${data?.emiratesIdIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%">${data?.emiratesIdTimeline}</span>
             </div>
 
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">PRO Fees</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span>
-                        AED 2500
+
                     </span>
-                    <span style=" margin-right:15px; color:#2b472b;">
-                        AED ${data?.discount.toLocaleString() || "0.00"}
+                    <span style=" margin-right:15px; color:#2b472b; font-weight: bold;">
+                        AED 2500
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row;">
+            <div style="margin-top: 2px; display:flex; flex-direction:row;">
                 <span style=" font-size: 18px; font-weight: bold; width:25%">Total Step (1, 2, 3):</span>
 
                 <span
                     style="color:#337cd6; font-size: 16px; font-weight: bold; width: 25%; text-align:right; padding-right:15px"><span style="background-color:#cfe8ff">AED ${(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } </span> </span>
-                <span style="font-size: 20px; width: 25%"></span>
-                <span style="font-size: 20px; width: 25%"></span>
+                <span style="font-size: 16px; width: 25%"></span>
+                <span style="font-size: 16px; width: 25%"></span>
             </div>
 
             <!-- {/* Total  */} -->
 
            <div
                 style="margin-top:1px; background-color: #0b4b6a; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; font-weight:500; color:white; padding-left:5px;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
+                <span style="font-size: 18px; font-weight:500; color:white;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; font-weight: 400;"><span style="background-color:#f8c6ab">Discount</span></span>
-                <span style="font-size: 16px; width: 75%; font-weight: 400;">AED ${2500 - Number(data?.discount)}</span>
+                <span style="font-size: 16px; width: 75%; font-weight: bold;">AED ${2500 - Number(data?.discount)}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; font-weight: bold;"><span style="background-color:#cfe8ff">Grand Total</span></span>
-                <span style="font-size: 16px; width: 75%; font-weight: bold; color:#337cd6;">AED ${data?.gtAmount.toLocaleString() || "0.00"}</span>
+                <span style="font-size: 16px; width: 75%; font-weight: bold; color:#337cd6; font-weight: bold;">AED ${data?.gtAmount.toLocaleString() || "0.00"}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
@@ -435,13 +437,13 @@ const injazHtml = async (data, checkBox, state) =>{
 
 
     <!-- page 3 -->
-    <div>
+    <div class="first-page" style="position: relative;">
         <img src=${url+"header.png"} alt="Header" />
 
         <div style="margin-left: 50px; margin-right: 50px;">
             <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
             <div
-                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 5px;">
+                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 15px;">
                 <span style="font-size: 25px; font-weight: 600;">
                     Full Package Inclusive
                 </span>
@@ -452,27 +454,19 @@ const injazHtml = async (data, checkBox, state) =>{
              ${checkBoxHTML}
         
             <!-- Images -->
-            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 15px;">
+            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 30px;">
 
                 <img src=${url+"pngLs1.png"} alt="Image 1" />
 
-                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top: 15px;" />
+                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top: 30px;" />
 
                 <img src=${url+"pngLs4.png"} alt="Image 4"
-                    style="margin-top: 15px; margin-bottom: 10px;" />
+                    style="margin-top: 30px; margin-bottom: 20px;" />
 
             </div>
         </div>
         <!-- Footer -->
-        <div style="margin-top: 10px;display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    padding-left:20px;
-    padding-right:20px;
-    background-color: #1E2957;
-    color:white;
-    padding-top:15px;
-    padding-bottom:15px">
+        <div class="footer">
 
             <div style="display:flex; flex-direction:row; align-items:center">
                 <div
@@ -641,22 +635,22 @@ const conquerorHtml = async (data, checkBox, state) =>{
     <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
     <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
     <span style="width:55%; font-size: 16px; font-weight: 600;">${item.description}</span>
-    <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014; padding-left:10px">${item.approval}</span>
+    <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
     <span style="width:12%; font-size: 16px; font-weight: 600; color:#C40014">${item.authority}</span>
 </div>`).join('');
 
-  const checkBoxHTML = checkBox
-    .map(
-      (item, index) => `
-       <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px;">
-                <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+'check.png'} />
-                <span style="width:58%; font-size: 25px;">${checkBox[index]?.title}</span>
-                <span style=" width:20%;font-size: 25px;">${ checkBox[index]?.value }</span>
-                <span style=" font-size: 25px; color:#C40014">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
-            </div>
-      `
-    )
-    .join(''); // Combine the array of strings into a single HTML string
+const checkBoxHTML = checkBox
+.map(
+  (item, index) => `
+   <div style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px; padding-left:10px; color:${item.status==='1' ? 'red' : 'black'}">
+            <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+'check.png'} />
+            <span style="width:58%; font-size: 20px;">${checkBox[index]?.title}</span>
+            <span style=" width:20%;font-size: 20px;">${ checkBox[index]?.value }</span>
+            <span style=" font-size: 20px; ">${checkBox[index]?.status === "0" ? 'NOT INCLUDED' : 'INCLUDED'}</span>
+        </div>
+  `
+)
+.join(''); // Combine the array of strings into a single HTML string
 
   const html =`
   <!DOCTYPE html>
@@ -728,11 +722,11 @@ const conquerorHtml = async (data, checkBox, state) =>{
             </div>
 
            <div
-                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; display:flex; flex-direction:row;">
-                <span style="font-size: 15px; font-weight: 600; width:15%; padding-left:15px">
+                style="margin-top:5px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; display:flex; flex-direction:row;">
+                <span style="font-size: 15px; font-weight: 600; width:15%;">
                     Activity Code
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:20px">
+                <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:35px">
                     Description
                 </span>
                 <span style="font-size: 15px; font-weight: 600; width:15%">
@@ -745,115 +739,115 @@ const conquerorHtml = async (data, checkBox, state) =>{
             </div>
 
             <div style="display:flex; flex-direction:row; gap:35px; justify-content: center;">
-                <div style="width:95%">
+                <div style="width:100%">
                 ${activityBox}
                 </div>
             </div>
 
             <!-- {/* step No 1 */} -->
 
-            <div style="margin-top: 25px; padding-top: 2px; border-top:5px solid black">
-                <p style="font-size: 20px; font-weight: bold;  color: #4c733a; margin-left: 15px; margin-top: 10px">Step
+            <div style="padding-top: 5px; border-top:5px solid black">
+                <p style="font-size: 20px; font-weight: bold;  color: #4c733a;">Step
                     1: License</p>
             </div>
             <div
-                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 9px; padding-bottom: 9px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Description</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#296d98;"> Conqueror Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Timeline</span>
+                style=" margin-top: 2px; background-color: #f5f5f5; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Description</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#296d98;">Conqueror Price</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">License Fee</span>
                 <span style="font-size: 16px; width: 25%; color:#C40014; background-color:#f8c6ab; font-weight:500;">AED ${data?.step1value.toLocaleString() || "0.00"}</span>
                 <span style="font-size: 16px; width: 25%; padding-right:3px color:#C40014; font-weight:500;">${data?.step1Remarks}</span>
                 <span style="font-size: 16px; width: 25%">${data?.step1Timeline}</span>
             </div>
             <!-- {/* step No 2 */} -->
-            <div style=" padding-top: 2px;">
-                <p style="font-size: 20px; font-weight: bold;  color: #733463; margin-left: 15px; margin-top: 10px">Step
+            <div style="margin-top: 40px">
+                <p style="font-size: 20px; font-weight: bold;  color: #733463;">Step
                     2: Immigration Card</p>
             </div>
             <div
-                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 9px; padding-bottom: 9px; padding-left: 6px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Description</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#296d98;"> Conqueror Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Timeline</span>
+                style=" margin-top: 2px; background-color: #f5f5f5; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Description</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#296d98;">Conqueror Price</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Pre-Approval Fee</span>
                 <span style="font-size: 16px; width: 25%; color:#337cd6;">AED ${Number(data?.step2ApprovalFee).toLocaleString() || "0.00"}</span>
-                <span style="font-size: 16px; width: 25%; padding-right:3px">One-Time</span>
+                <span style="font-size: 16px; width: 25%;">One-Time</span>
                 <span style="font-size: 16px; width: 25%">5-10 days</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Establishment Card</span>
                  <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#337cd6">
                         AED ${data?.step2Establishment?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#c40014">
+                    <span style=" margin-right:15px; color:#c40014; font-weight: bold;">
                         AED ${data?.step2EstablishmentIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px; color:#c40014; font-weight:500;">${data?.step2EstablishmentRemark}</span>
+                <span style="font-size: 16px; width: 25%; color:#c40014; font-weight:500;">${data?.step2EstablishmentRemark}</span>
                 <span style="font-size: 16px; width: 25%">${data?.step2EstablishmentTimeline}</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">E-Channel Card</span>
                  <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#337cd6">
                         AED ${data?.step2value1?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#c40014">
+                    <span style=" margin-right:15px; color:#c40014; font-weight: bold;">
                         AED ${data?.step2value1IN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
 
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
             <!-- {/* step No 3 */} -->
-            <div style=" padding-top: 2px;">
-                <p style="font-size: 20px; font-weight: bold;  color: #337cd6; margin-left: 15px; margin-top: 10px">Step
+            <div style=" margin-top: 40px">
+                <p style="font-size: 20px; font-weight: bold;  color: #337cd6;">Step
                     3: Entry VISA</p>
             </div>
 
             <div
-                style=" margin-top: 4px; background-color: #f5f5f5; padding-top: 9px; padding-bottom: 9px; padding-left: 15px; padding-right: 6px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Description</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#c40014; "> Conqueror Price</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Remarks</span>
-                <span style="font-size: 18px; width: 25%; font-weight: 500;"> Timeline</span>
+                style=" margin-top: 2px; background-color: #f5f5f5; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row">
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Description</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500; color:#c40014; ">Conqueror Price</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Remarks</span>
+                <span style="font-size: 18px; width: 25%; font-weight: 500;">Timeline</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Visa (Per Visa) Investor</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span>
                         AED ${data?.step2value2a?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#296d98">
+                    <span style=" margin-right:15px; color:#296d98; font-weight: bold;">
                         AED ${data?.step2value2aIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px">${data?.step3Renewable}</span>
+                <span style="font-size: 16px; width: 25%;">${data?.step3Renewable}</span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Visa (Per Visa) Employment</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
@@ -861,53 +855,53 @@ const conquerorHtml = async (data, checkBox, state) =>{
                     AED ${data?.step2value2?.toLocaleString() || "0.00"}
 
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                     AED ${data?.step2value2IN?.toLocaleString() || "0.00"}
 
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; background-color:#f8c6ab;">Status Change</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between; background-color:#f8c6ab;">
                     <span style="color:#337cd6;">
-                      AED ${data?.step2value3?.toLocaleString() || "0.00"}
+                     Conditional
 
                     </span>
-                    <span style=" margin-right:15px; color:#c40014;">
+                    <span style=" margin-right:15px; color:#c40014; font-weight: bold;">
                       AED ${data?.step2value3IN?.toLocaleString() || "0.00"}
 
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px">${data?.step3StatusChange}</span>
+                <span style="font-size: 16px; width: 25%;">${data?.step3StatusChange}</span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Medical Test (Per visa)</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#337cd6;">
                          AED ${data?.medical?.toLocaleString() || "0.00"}
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6;">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                         AED ${data?.medicalIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%">${data?.medicalTimeline}</span>
             </div>
 
             <!-- {/* //////////////// */} -->
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">Emirates ID (Per Visa)</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
@@ -915,32 +909,32 @@ const conquerorHtml = async (data, checkBox, state) =>{
                      AED ${data?.emiratesId?.toLocaleString() || "0.00"}
 
                     </span>
-                    <span style=" margin-right:15px; color:#337cd6;">
+                    <span style=" margin-right:15px; color:#337cd6; font-weight: bold;">
                         AED ${data?.emiratesIdIN?.toLocaleString() || "0.00"}
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%">${data?.emiratesIdTimeline}</span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row">
+            <div style="margin-top: 2px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%">PRO Fees</span>
                 <div
                     style="font-size: 16px; width: 25% ; display:flex; flex-direction:row; justify-content: space-between">
                     <span style="color:#4c733a;">
-                        AED 2500
+                        
                     </span>
                     <span style=" margin-right:15px; color:#2b472b;">
-                        AED ${data?.discount.toLocaleString() || "0.00"}
+                        AED 2500
                     </span>
 
                 </div>
-                <span style="font-size: 16px; width: 25%; padding-right:3px"></span>
+                <span style="font-size: 16px; width: 25%;"></span>
                 <span style="font-size: 16px; width: 25%"></span>
             </div>
 
-            <div style="margin-top: 4px; padding-left: 10px; padding-right: 10px; display:flex; flex-direction:row;">
+            <div style="margin-top: 2px; display:flex; flex-direction:row;">
                 <span style="font-size: 18px; font-weight: bold; width:25%">Total Step (1, 2, 3):</span>
 
                 <span
@@ -953,12 +947,12 @@ const conquerorHtml = async (data, checkBox, state) =>{
 
             <div
                 style="margin-top:1px; background-color: #D9D9D9AB; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; font-weight:500; color: #C40014; padding-left:5px;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
+                <span style="font-size: 18px; font-weight:500; color: #C40014;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you Proceed within ${formatDate(new Date(data?.date))}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; font-weight: 400;"><span style="background-color:#f8c6ab">Discount</span></span>
-                <span style="font-size: 16px; width: 75%; font-weight: 400;">AED ${2500 - Number(data?.discount)}</span>
+                <span style="font-size: 16px; width: 75%; font-weight: bold;">AED ${2500 - Number(data?.discount)}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
@@ -1006,13 +1000,14 @@ const conquerorHtml = async (data, checkBox, state) =>{
 
 
     <!-- page 3 -->
-    <div>
+        <div class="first-page" style="position: relative;">
+
         <img src=${url+"header.png"} alt="Header" />
 
         <div style="margin-left: 50px; margin-right: 50px;">
             <img class="logo" src=${url+"page3Logo.png"} alt="Logo" />
-            <div
-                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 5px;">
+           <div
+                style="margin-top:25px; background-color: #D9D9D9AB; padding-top:15px; padding-bottom: 15px; padding-left:18px; padding-right:18px; margin-top: 15px;">
                 <span style="font-size: 25px; font-weight: 600;">
                     Full Package Inclusive
                 </span>
@@ -1023,24 +1018,16 @@ const conquerorHtml = async (data, checkBox, state) =>{
              ${checkBoxHTML}
         
             <!-- Images -->
-            <div style="display: flex; flex-direction: column; justify-content: center">
+            <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 30px;">
 
                 <img src=${url+"pngLs1.png"} alt="Image 1" />
 
-                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top:-20px" />
+                <img src=${url+"pngLs2.png"} alt="Image 2" style="margin-top:30px" />
 
             </div>
         </div>
         <!-- Footer -->
-        <div style="margin-top: 10px;display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    padding-left:20px;
-    padding-right:20px;
-    background-color: #C40014;
-    color:white;
-    padding-top:15px;
-    padding-bottom:15px">
+        <div class="footer">
 
             <div style="display:flex; flex-direction:row; align-items:center">
                 <div
@@ -1598,7 +1585,7 @@ dashboardData: async (req, res, next) => {
 },
 
    
-getNoficationData: async (req, res, next) => {
+    getNoficationData: async (req, res, next) => {
       try {
         const {company, userId} = req.query; 
     
@@ -1702,6 +1689,26 @@ return res.status(200).json({
 // Compress the PDF
 const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
+     let acceptDataSet={
+      id:data?._id,
+      action:'approved'
+     }
+
+     let rejectDataSet={
+      id:data?._id,
+      action:'rejected '
+     }
+
+const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY);
+const rejectToken = jwt.sign({ rejectDataSet }, process.env.JWT_SECRET_KEY);
+
+let hostName = process.env.NODE_ENV === 'development' ? 'localhost:5000' : req.get('host');
+let baseUrl = `${req.protocol}://${hostName}`;
+
+
+const acceptLink = `${baseUrl}/test/${acceptToken}`;
+const rejectLink = `${baseUrl}/test/${rejectToken}`;
+
 
 
 // let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
@@ -1739,7 +1746,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
             <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
               <!-- Header -->
               <div style="text-align: center; margin-bottom: 20px;">
-                <img src="cid:C_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+                <img src="cid:C_page3Logo" alt="Conqueror Logo" style="max-width: 150px;">
               </div>
           
               <!-- Title -->
@@ -1768,8 +1775,8 @@ let Curl ="http://localhost:5000/conqueror/" ;
                   If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
                 </p>
                 <div>
-                  <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                  <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+                  <a href="${acceptLink}" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                  <a href="${rejectLink}" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
                 </div>
               </div>
           
@@ -1804,7 +1811,8 @@ let Curl ="http://localhost:5000/conqueror/" ;
               </p>
 
             </div>
-          </div>`
+          </div>
+          `
           :
           `<div style="font-family: Arial, sans-serif; background-color: #f5f7fa; margin: 0; padding: 0;">
           <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
@@ -1839,10 +1847,10 @@ let Curl ="http://localhost:5000/conqueror/" ;
               <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
                 If the information aligns with your expectations, please click "Accept" to proceed. Should you choose not to move forward, simply click "Reject" to update your records accordingly.
               </p>
-              <div>
-                <a href="#" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
-                <a href="#" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
-              </div>
+               <div>
+                  <a href="${acceptLink}" style="background: #28a745; color: #fff; text-decoration: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px;">Accept</a>
+                  <a href="${rejectLink}" style="background: #dc3545; color: #fff; text-decoration: none; padding: 10px 20px; margin-left: 10px; border-radius: 5px;">Reject</a>
+                </div>
             </div>
         
             <!-- Footer -->
@@ -1890,6 +1898,30 @@ let Curl ="http://localhost:5000/conqueror/" ;
         });
       }
     },
+    
+    changePdfStatus: async (req, res, next) => {
+      try {
+        const {token} = req.params; 
+
+        console.log("Token",token)
+       
+
+return res.status(200).json({
+  hasError: false,
+  msg: "",
+  data: null
+});
+
+
+      } catch (error) {
+        return res.status(200).json({
+          hasError: true,
+          msg: error,
+          data: { quotation: null },
+        });
+      }
+    },
+
   //   resetPassword: async (req, res, next) => {
   //     try {
   //         const { email } = req.body;

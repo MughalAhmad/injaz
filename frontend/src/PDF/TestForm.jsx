@@ -741,8 +741,12 @@ useEffect(() => {
 
   const getEstablishment = () => {
     if (data.stateValue === "Dubai") return `Federel Immigration Fees Renewable every year`;
+    if (data.stateValue === "Dubai (IFZA)") return `Federel Immigration Fees Renewable every year`;
+
 
     if (data.stateValue !== "Dubai") return `Federel Immigration Fees Renewable every two year`;
+    if (data.stateValue !== "Dubai (IFZA)") return `Federel Immigration Fees Renewable every two year`;
+
     return data.step2EstablishmentRemark;
   };
 
@@ -936,29 +940,29 @@ useEffect(() => {
     }
   };
 
-  const hanldeSave =()=>{
-    const fullData={
-      data:data,
-      checkBoxData:checkBoxData,
-      stateArray:stateArray
-    }
-    dispatch(updateShowBackDropLoader(true));
-    dispatch(sendPDF(fullData))
-      .then(response => {
-        dispatch(updateShowBackDropLoader(false));
-        if (response && !response.payload.hasError) {
-         sweetNotification(false, response.payload.msg)
-        }
-        else{
-          sweetNotification(true, response.payload.msg)
-        }
-      })
-      .catch(error => {
-        dispatch(updateShowBackDropLoader(false));
-        sweetNotification(true, 'Something went wrong');
-        console.error('Dispatch failed:', error);
-      });
-  }
+  // const hanldeSave =()=>{
+  //   const fullData={
+  //     data:data,
+  //     checkBoxData:checkBoxData,
+  //     stateArray:stateArray
+  //   }
+  //   dispatch(updateShowBackDropLoader(true));
+  //   dispatch(sendPDF(fullData))
+  //     .then(response => {
+  //       dispatch(updateShowBackDropLoader(false));
+  //       if (response && !response.payload.hasError) {
+  //        sweetNotification(false, response.payload.msg)
+  //       }
+  //       else{
+  //         sweetNotification(true, response.payload.msg)
+  //       }
+  //     })
+  //     .catch(error => {
+  //       dispatch(updateShowBackDropLoader(false));
+  //       sweetNotification(true, 'Something went wrong');
+  //       console.error('Dispatch failed:', error);
+  //     });
+  // }
   
 
   const updateCompanyName = () => {
@@ -1236,7 +1240,7 @@ useEffect(() => {
    
        }
     <Button title='Clear' click={clear} btnColor='bg-[#EF3826]' hoverBtn='hover:bg-[#d99b95]' />
-    <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
+    {/* <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/> */}
    </div>
 }
 
@@ -1273,7 +1277,7 @@ useEffect(() => {
    
        }
     <Button title='Clear' click={clear} btnColor='bg-[#EF3826]' hoverBtn='hover:bg-[#d99b95]' />
-    <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/>
+    {/* <Button title='Share PDF' click={hanldeSave} btnColor='bg-[#EDAB00]' hoverBtn='hover:bg-[#e1ce9d]'/> */}
    </div>
 }
 

@@ -16,7 +16,6 @@ import { sweetNotification } from "../common/SweetAlert";
 const profileSchema = Yup.object({
     firstName: Yup.string().required("First Name Required"),
     lastName: Yup.string().required("Last Name Required"),
-    email: Yup.string().email().required("Enter Valid Email"),
     phone: Yup.number().required("Phone Number Required"),
     mobile: Yup.number().required("Mobile Number Required"),
     nationality: Yup.string().required("Nationality Required"),
@@ -77,17 +76,25 @@ const ProfileForm = () => {
               validationSchema: profileSchema,
               enableReinitialize: true,
               onSubmit: async (values) => {
+
+                         // Trim values
+        const trimmedValues = Object.fromEntries(
+          Object.entries(values).map(([key, value]) => [
+              key,
+              typeof value === "string" ? value.trim() : value,
+          ])
+      );
   
                   const body = {
                     _id:user._id,
-                    firstName:values.firstName,
-                    lastName:values.lastName,
-                    email:values.email,
-                    phone:values.phone,
-                    mobile:values.mobile,
-                    userId:values.userId,
-                    nationality:values.nationality,
-                    address:values.address
+                    firstName:trimmedValues.firstName,
+                    lastName:trimmedValues.lastName,
+                    email:trimmedValues.email,
+                    phone:trimmedValues.phone,
+                    mobile:trimmedValues.mobile,
+                    userId:trimmedValues.userId,
+                    nationality:trimmedValues.nationality,
+                    address:trimmedValues.address
                   };
                  
                   dispatch(updateShowBackDropLoader(true));
@@ -315,13 +322,14 @@ const handleCanncel = () =>{
             <Input
                             type="email"
                             title='Email'
-                            name="email"
-                            placeholder="Enter Email"
+                            // name="email"
+                            // placeholder="Enter Email"
                             size="lg"
+                            disabled={true}
                             value={values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            feedback={[errors.email, touched.email]}
+                            // onChange={handleChange}
+                            // onBlur={handleBlur}
+                            // feedback={[errors.email, touched.email]}
                         />
             </div>
           </div>

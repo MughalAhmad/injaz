@@ -1,6 +1,6 @@
 const UserModel = require("../models/userModel"); 
 const PdfModel = require("../models/pdfModel"); 
-const {sendMail} = require("../integrations/sendMail");
+const {supportSendMail} = require("../integrations/sendMail");
 
 module.exports = {
   edit: async (req, res, next) => {
@@ -15,48 +15,55 @@ module.exports = {
         { new: true }
       );
       if (!upadatedUser) throw new Error("User update process failed");
+      let Curl ="http://localhost:5000/conqueror/" ;
 
       let message = {
-        from: process.env.MAIL_EMAIL_CONQUEROR,
+        from: process.env.SUPPORT_EMAIL,
         to: upadatedUser.email,
         subject: 'User Info Updated',
-        html:  `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
-<div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="cid:injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-  </div>
-
-  <h3 style="font-size: 20px; color: #333; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
-  <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${findUser.firstName} ${findUser.lastName},</p>
-  <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
-  <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-    <p style="margin: 0; font-size: 18px; color:white">Email:${findUser.email}</p>
-    <p style="margin: 0; font-size: 18px;">Password:${findUser.password}</p>
-
-  </div>
-
-
-  <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
-
-  <div style="text-align: center; margin: 30px 0;">
-    <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-    <div>
-      <a href="https://facebook.com" style="margin: 0 5px;"><img src="https://facebook.com" alt="Facebook"></a>
-      <a href="https://instagram.com" style="margin: 0 5px;"><img src="https://instagram.com" alt="Instagram"></a>
-      <a href="https://linkedin.com" style="margin: 0 5px;"><img src="https://linkedin.com" alt="LinkedIn"></a>
-      <a href="https://youtube.com" style="margin: 0 5px;"><img src="https://youtube.com" alt="YouTube"></a>
-      <a href="https://telegram.com" style="margin: 0 5px;"><img src="https://telegram.com" alt="Telegram"></a>
-      <a href="https://whatsapp.com" style="margin: 0 5px;"><img src="https://whatsapp.com" alt="WhatsApp"></a>
+        attachments: [
+          {
+            filename: 'page3Logo.png',
+            path: Curl+'page3Logo.png',
+            cid: 'C_page3Logo' // same CID as referenced in the email
+        }
+          ],
+          html:  `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="cid:C_page3Logo" alt="Conqueror Logo" style="max-width: 150px;">
     </div>
-  </div>
-
-  <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Injaz Group.</p>
-  <p style="font-size: 12px; color: #999; text-align: center;">Injaz Group Fzc<br>City Pharmacy Bid, Port Saeed, Dubai</p>
-</div>
-</div>`, 
+  
+    <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
+    <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${findUser.firstName} ${findUser.lastName},</p>
+    <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
+    <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <p style="margin: 0; font-size: 18px; color:white">Email:${req.body.email}</p>
+      <p style="margin: 0; font-size: 18px;">Password:${req.body.password}</p>
+  
+    </div>
+  
+    <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Support Team</p>
+  
+    <div style="text-align: center; margin: 30px 0;">
+      <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+      <div>
+                   <a href="https://www.facebook.com/conquerorllc?mibextid=LQQJ4d&mibextid=LQQJ4d" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                  <a href="https://www.instagram.com/uaeconqueror?igsh=a2xpMnZnOGRpcWw=" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                  <a href="https://api.whatsapp.com/send/?phone=%2B97142837636&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                  </div>
+    </div>
+  
+    <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Company.</p>
+   <p style="font-size: 12px; color: #999; text-align: center;">
+                  Conqueror Aspiration L.L.C<br>
+                  City Pharmacy Bid, Port Saeed, Dubai
+                </p>
+                </div>
+  </div>`, 
       };
 
-      const { error } =  await sendMail(message);
+      const { error } =  await supportSendMail(message);
 
       if (error) throw new Error('User Email Send Process Failed!');
 
@@ -129,53 +136,55 @@ module.exports = {
       const user = await UserModel.create(req.body);
       if (!user) throw new Error("Error in Creating user");
 
+      let Curl ="http://localhost:5000/conqueror/" ;
+
       let message = {
-        from: process.env.MAIL_EMAIL_CONQUEROR,
+        from: process.env.SUPPORT_EMAIL,
         to: user.email,
         subject: 'User Info Updated',
+        attachments: [
+        {
+          filename: 'page3Logo.png',
+          path: Curl+'page3Logo.png',
+          cid: 'C_page3Logo' // same CID as referenced in the email
+      }
+        ],
         html:  `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
-<div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="cid:injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-  </div>
-
-  <h3 style="font-size: 20px; color: #333; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
-  <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${findUser.firstName} ${findUser.lastName},</p>
-  <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
-  <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-    <p style="margin: 0; font-size: 18px; color:white">Email:${findUser.email}</p>
-    <p style="margin: 0; font-size: 18px;">Password:${findUser.password}</p>
-
-  </div>
-
-  <div style="text-align: center; margin: 20px 0;">
-    <p style="font-size: 14px; color: #333;">Or click on the button below for Signin</p>
-    <a href="https://quotation.injazgroup.co.uk/" style="text-decoration: none;">
-      <button style="background: #0A144E; color: #ffffff; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">Login</button>
-    </a>
-  </div>
-
-  <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
-
-  <div style="text-align: center; margin: 30px 0;">
-    <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-    <div>
-      <a href="https://facebook.com" style="margin: 0 5px;"><img src="https://facebook.com" alt="Facebook"></a>
-      <a href="https://instagram.com" style="margin: 0 5px;"><img src="https://instagram.com" alt="Instagram"></a>
-      <a href="https://linkedin.com" style="margin: 0 5px;"><img src="https://linkedin.com" alt="LinkedIn"></a>
-      <a href="https://youtube.com" style="margin: 0 5px;"><img src="https://youtube.com" alt="YouTube"></a>
-      <a href="https://telegram.com" style="margin: 0 5px;"><img src="https://telegram.com" alt="Telegram"></a>
-      <a href="https://whatsapp.com" style="margin: 0 5px;"><img src="https://whatsapp.com" alt="WhatsApp"></a>
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="cid:C_page3Logo" alt="Conqueror Logo" style="max-width: 150px;">
     </div>
-  </div>
-
-  <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Injaz Group.</p>
-  <p style="font-size: 12px; color: #999; text-align: center;">Injaz Group Fzc<br>City Pharmacy Bid, Port Saeed, Dubai</p>
-</div>
-</div>`, 
+  
+    <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
+    <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${user.firstName} ${user.lastName},</p>
+    <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
+    <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <p style="margin: 0; font-size: 18px; color:white">Email:${req.body.email}</p>
+      <p style="margin: 0; font-size: 18px;">Password:${req.body.password}</p>
+  
+    </div>
+  
+    <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Support Team</p>
+  
+    <div style="text-align: center; margin: 30px 0;">
+      <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+      <div>
+                   <a href="https://www.facebook.com/conquerorllc?mibextid=LQQJ4d&mibextid=LQQJ4d" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                  <a href="https://www.instagram.com/uaeconqueror?igsh=a2xpMnZnOGRpcWw=" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                  <a href="https://api.whatsapp.com/send/?phone=%2B97142837636&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                  </div>
+    </div>
+  
+    <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Company.</p>
+   <p style="font-size: 12px; color: #999; text-align: center;">
+                  Conqueror Aspiration L.L.C<br>
+                  City Pharmacy Bid, Port Saeed, Dubai
+                </p>
+                </div>
+  </div>`, 
       };
 
-      const { error } =  await sendMail(message);
+      const { error } =  await supportSendMail(message);
 
       if (error) throw new Error('User Email Send Process Failed!');
 
@@ -317,104 +326,55 @@ module.exports = {
       const findUser = await UserModel.findOne({ _id: uid });
       if (!findUser) throw new Error("User Not Found");
 
+      let Curl ="http://localhost:5000/conqueror/" ;
 
       let message = {
-        from: process.env.MAIL_EMAIL_CONQUEROR,
+        from: process.env.SUPPORT_EMAIL,
         to: findUser.email,
         subject: 'User Info Updated',
-        html: 
-        
-        
-//         `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
-//   <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-//     <div style="text-align: center; margin-bottom: 20px;">
-//       <img src="${baseUrl}/public/images/injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-//     </div>
-
-//     <h3 style="font-size: 20px; color: #333; margin-bottom: 10px;">Use this code to reset your password</h3>
-//     <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear [User Name],</p>
-//     <p style="font-size: 14px; color: #555; line-height: 1.5;">We have received a request to reset your account password. To complete the process, please use the following One-Time Password (OTP) to proceed:</p>
-//     <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-//       <p style="margin: 0; font-size: 18px;">Your OTP:</p>
-//       <p style="font-size: 36px; font-weight: bold; margin: 10px 0;">123456</p>
-//       <button style="background: #ffffff; color: #0A144E; border: 1px solid #ffffff; padding: 10px 20px; font-size: 14px; cursor: pointer; border-radius: 5px;">Copy Code</button>
-//     </div>
-//     <p style="font-size: 12px; color: #777; text-align: center;">This code is valid for the next 15 minutes.</p>
-
-//     <div style="text-align: center; margin: 20px 0;">
-//       <p style="font-size: 14px; color: #333;">Or click on the button below to reset your password</p>
-//       <a href="#" style="text-decoration: none;">
-//         <button style="background: #0A144E; color: #ffffff; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">Reset Password</button>
-//       </a>
-//     </div>
-
-//     <p style="font-size: 14px; color: #555; margin: 20px 0;">If you didn’t request a password reset, you can ignore this email. Your password will remain the same.</p>
-//     <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
-
-//     <div style="text-align: center; margin: 30px 0;">
-//       <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-//       <div>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Facebook"></a>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Instagram"></a>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="LinkedIn"></a>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="YouTube"></a>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="Telegram"></a>
-//         <a href="#" style="margin: 0 5px;"><img src="https://via.placeholder.com/32" alt="WhatsApp"></a>
-//       </div>
-//     </div>
-
-//     <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Injaz Group.</p>
-//     <p style="font-size: 12px; color: #999; text-align: center;">Injaz Group Fzc<br>City Pharmacy Bid, Port Saeed, Dubai</p>
-//   </div>
-// </div>`
-        
-        
-
-
-`<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
-<div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="cid:injaz.png" alt="Injaz Group Logo" style="max-width: 150px;">
-  </div>
-
-  <h3 style="font-size: 20px; color: #333; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
-  <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${findUser.firstName} ${findUser.lastName},</p>
-  <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
-  <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-    <p style="margin: 0; font-size: 18px; color:white">Email:${findUser.email}</p>
-    <p style="margin: 0; font-size: 18px;">Password:${findUser.password}</p>
-
-  </div>
-
-  <div style="text-align: center; margin: 20px 0;">
-    <p style="font-size: 14px; color: #333;">Or click on the button below for Signin</p>
-    <a href="https://quotation.injazgroup.co.uk/" style="text-decoration: none;">
-      <button style="background: #0A144E; color: #ffffff; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">Login</button>
-    </a>
-  </div>
-
-  <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
-
-  <div style="text-align: center; margin: 30px 0;">
-    <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
-    <div>
-      <a href="https://facebook.com" style="margin: 0 5px;"><img src="https://facebook.com" alt="Facebook"></a>
-      <a href="https://instagram.com" style="margin: 0 5px;"><img src="https://instagram.com" alt="Instagram"></a>
-      <a href="https://linkedin.com" style="margin: 0 5px;"><img src="https://linkedin.com" alt="LinkedIn"></a>
-      <a href="https://youtube.com" style="margin: 0 5px;"><img src="https://youtube.com" alt="YouTube"></a>
-      <a href="https://telegram.com" style="margin: 0 5px;"><img src="https://telegram.com" alt="Telegram"></a>
-      <a href="https://whatsapp.com" style="margin: 0 5px;"><img src="https://whatsapp.com" alt="WhatsApp"></a>
+        attachments: [
+          {
+            filename: 'page3Logo.png',
+            path: Curl+'page3Logo.png',
+            cid: 'C_page3Logo' // same CID as referenced in the email
+        }
+          ],
+          html:  `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="cid:C_page3Logo" alt="Conqueror Logo" style="max-width: 150px;">
     </div>
-  </div>
-
-  <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Injaz Group.</p>
-  <p style="font-size: 12px; color: #999; text-align: center;">Injaz Group Fzc<br>City Pharmacy Bid, Port Saeed, Dubai</p>
-</div>
-</div>`
-              , 
+  
+    <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Use this credential for sign-in to our web application</h3>
+    <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${findUser.firstName} ${findUser.lastName},</p>
+    <p style="font-size: 14px; color: #555; line-height: 1.5;">We are providing you with the website email and password that you can use to sign in to our web application. Please do not share this information with anyone.</p>
+    <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <p style="margin: 0; font-size: 18px; color:white">Email:${findUser.email}</p>
+      <p style="margin: 0; font-size: 18px;">Password:${findUser.password}</p>
+  
+    </div>
+  
+    <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Support Team</p>
+  
+    <div style="text-align: center; margin: 30px 0;">
+      <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+      <div>
+                   <a href="https://www.facebook.com/conquerorllc?mibextid=LQQJ4d&mibextid=LQQJ4d" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                  <a href="https://www.instagram.com/uaeconqueror?igsh=a2xpMnZnOGRpcWw=" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                  <a href="https://api.whatsapp.com/send/?phone=%2B97142837636&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                  </div>
+    </div>
+  
+    <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Company.</p>
+   <p style="font-size: 12px; color: #999; text-align: center;">
+                  Conqueror Aspiration L.L.C<br>
+                  City Pharmacy Bid, Port Saeed, Dubai
+                </p>
+                </div>
+  </div>`,  
       };
 
-      const { error } =  await sendMail(message);
+      const { error } =  await supportSendMail(message);
 
       if (error) throw new Error('User Email Send Process Failed!');
 

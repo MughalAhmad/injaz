@@ -41,4 +41,24 @@ module.exports = {
         return {error: error};
     }
   },
+  supportSendMail: async (emailData) => {
+    try {
+      let config = {
+        service: "gmail",
+        auth: {
+          user: process.env.SUPPORT_EMAIL,
+          pass: process.env.SUPPORT_PASS,
+        },
+      };
+
+      const transporter = nodemailer.createTransport(config);
+
+      
+      const data = await transporter
+        .sendMail(emailData);
+        return {error: null};
+    } catch (error) {
+        return {error: error};
+    }
+  },
 };
