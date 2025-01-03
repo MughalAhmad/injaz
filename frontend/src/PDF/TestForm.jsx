@@ -472,6 +472,10 @@ const { user } = useSelector(state => state.adminStore);
     {
       id:0,
       name:"enter value"
+    },
+    {
+      id:'Conditional',
+      name:"Conditional"
     }
   ];
 
@@ -1140,8 +1144,8 @@ useEffect(() => {
 
 
 <div className='my-8 flex flex-wrap gap-6 md:gap-5'>
- <SelectAndInput value={data.step2value3} list={selectStatusChange} name='step2value3' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change'/>
- <SelectAndInput value={data.step2value3IN} list={selectStatusChange} name='step2value3IN' placeholder='Select' type='number' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change (include)'/>
+ <SelectAndInput value={data.step2value3} list={selectStatusChange} name='step2value3' placeholder='Select' type='text' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change'/>
+ <SelectAndInput value={data.step2value3IN} list={selectStatusChange} name='step2value3IN' placeholder='Select' type='text' basicHandle={handleChange} handleChange={handleCustomSelect} label='Status Change (include)'/>
 
  <Input label="Remarks" disabled='disabled' value={data.step3StatusChange} name='step3StatusChange'/>
   <Input label="Timeline" disabled='disabled' value={data.step3TimelineStatusChange} name='step3TimelineStatusChange'/>

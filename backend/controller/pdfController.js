@@ -62,9 +62,9 @@ const injazHtml = async (data, checkBox, state) =>{
   style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px;">
   <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
   <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
-  <span style="width:55%; font-size: 16px; font-weight: 600;">${item.description}</span>
+  <span style="width:55%; font-size: 16px; font-weight: 600; color:#208edb;">${item.description}</span>
   <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
-  <span style="width:12%; font-size: 16px; font-weight: 600; color:#C40014">${item.authority}</span>
+  <span style="width:12%; font-size: 16px; font-weight: 600; color:#ed9b1b;">${item.authority}</span>
 </div>`).join('');
 
   const checkBoxHTML = checkBox
@@ -384,7 +384,7 @@ const injazHtml = async (data, checkBox, state) =>{
 
            <div
                 style="margin-top:1px; background-color: #0b4b6a; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
-                <span style="font-size: 18px; font-weight:500; color:white;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${moment(data?.date).format("YYYY-MM-DD") || "YYYY-MM-DD"}</span>
+                <span style="font-size: 18px; font-weight:500; color:white;">PRO Fees ${((2500 - Number(data?.discount)) / 2500) * 100}% AED ${2500 - Number(data?.discount)}.00 will be discounted if you are Proceed within ${formatDate(new Date(data?.date))}</span>
             </div>
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
@@ -399,7 +399,7 @@ const injazHtml = async (data, checkBox, state) =>{
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; font-weight: 400;">In Word:</span>
-                <span style="font-size: 16px; width: 75%; font-weight: 400;"> ${data?.word || "empty"}</span>
+                <span style="font-size: 16px; width: 75%; font-weight: 400;"> ${data?.word || "empty"} Dirham</span>
             </div>
 
         </div>
@@ -634,9 +634,9 @@ const conquerorHtml = async (data, checkBox, state) =>{
     style="display:flex; flex-direction:row; width:100%; align-items: center; margin-top:5px;">
     <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
     <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
-    <span style="width:55%; font-size: 16px; font-weight: 600;">${item.description}</span>
+    <span style="width:55%; font-size: 16px; font-weight: 600; color:#208edb;">${item.description}</span>
     <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
-    <span style="width:12%; font-size: 16px; font-weight: 600; color:#C40014">${item.authority}</span>
+    <span style="width:12%; font-size: 16px; font-weight: 600; color:#ed9b1b">${item.authority}</span>
 </div>`).join('');
 
 const checkBoxHTML = checkBox
@@ -962,7 +962,7 @@ const checkBoxHTML = checkBox
 
             <div style="margin-top:1px; padding-top:5px; padding-bottom:5px; display:flex; flex-direction:row">
                 <span style="font-size: 16px; width: 25%; font-weight: 400;">In Word:</span>
-                <span style="font-size: 16px; width: 75%; font-weight: 400;"> ${data?.word || "empty"}</span>
+                <span style="font-size: 16px; width: 75%; font-weight: 400;"> ${data?.word || "empty"} Dirham</span>
             </div>
 
         </div>
@@ -1702,12 +1702,12 @@ const compressedPdfBuffer = await compressPDF(pdfBuffer);
 const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY);
 const rejectToken = jwt.sign({ rejectDataSet }, process.env.JWT_SECRET_KEY);
 
-let hostName = process.env.NODE_ENV === 'development' ? 'localhost:5000' : req.get('host');
+let hostName = process.env.NODE_ENV === 'development' ? 'localhost:4173' : 'quotation.injazgroup.co.uk';
 let baseUrl = `${req.protocol}://${hostName}`;
 
 
-const acceptLink = `${baseUrl}/test/${acceptToken}`;
-const rejectLink = `${baseUrl}/test/${rejectToken}`;
+const acceptLink = `${baseUrl}/sendMailResponse?token=${acceptToken}`;
+const rejectLink = `${baseUrl}/sendMailResponse?token=${rejectToken}`;
 
 
 
@@ -1898,13 +1898,36 @@ let Curl ="http://localhost:5000/conqueror/" ;
         });
       }
     },
-    
     changePdfStatus: async (req, res, next) => {
       try {
-        const {token} = req.params; 
+        const {token} = req.query; 
+        // Verify the token
+        const check = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        if (!check) throw new Error("Token not found");
+        let id;
+        let action;
+        if(check.acceptDataSet){
+            id=check.acceptDataSet.id;
+            action=check.acceptDataSet.action;
+        }
+        else{
+            id=check.rejectDataSet.id;
+            action=check.rejectDataSet.action
+        }
 
-        console.log("Token",token)
-       
+        console.log("check_id", id);
+          console.log("check_action", action);
+      
+      
+          const quotation = await pdfModel.findOne({ _id:id });
+          if (!quotation) throw new Error("Quotation not found");
+
+          quotation.pdfStatus=action;
+      
+          const updateQuotation = await pdfModel.findByIdAndUpdate( { _id:id  },
+              quotation,
+              { new: true });
+              if (!updateQuotation) throw new Error("Quotation not update");
 
 return res.status(200).json({
   hasError: false,

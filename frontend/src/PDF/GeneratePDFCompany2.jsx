@@ -519,11 +519,11 @@ const MyDocument = ({
       </View>
       <View style={{ marginTop: "5px", marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont' }}><Text style={{backgroundColor: '#cfe8ff'}}>Grand Total</Text></Text>
-      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont' }}>AED {data?.gtAmount.toLocaleString() || "0.00"} Dirham</Text>
+      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont' }}>AED {data?.gtAmount.toLocaleString() || "0.00"}</Text>
       </View>
       <View style={{ marginTop: '5px', marginHorizontal: 35, display:'flex', flexDirection:'row' }}>
       <Text style={{ fontSize: "8px", width: '25%', fontFamily:'CustomFont400' }}>In Word:</Text>
-      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont400' }}>{data?.word || "empty"}</Text>
+      <Text style={{ fontSize: "8px", width: '75%', fontFamily:'CustomFont400' }}>{data?.word || "empty"} Dirham</Text>
       </View>
 
 

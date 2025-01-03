@@ -2,7 +2,7 @@ const express = require ("express");
 const pdfController = require ("../controller/pdfController");
 const router = express.Router();
 
-router.get("/changePdfStatus/:token", pdfController.changePdfStatus);   
+router.post("/changePdfStatus", pdfController.changePdfStatus);   
 router.post("/create", pdfController.createPdf);
 router.get("/getAllPdf", pdfController.getAllPdf);
 router.get("/dashboard", pdfController.dashboardData);

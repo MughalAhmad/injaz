@@ -23,7 +23,7 @@ import Page404 from "./pages/404/Page404";
 import { useSelector } from 'react-redux';
 import "sweetalert2/dist/sweetalert2.min.css";
 import ViewQuotation from "./components/quotation/ViewQuotation";
-
+import MailResponse from "./components/common/MailResponse";
 function App() {
   const {user, isAuthenticated, showLoader, showBackDropLoader} = useSelector(state => state.adminStore);
 
@@ -33,6 +33,9 @@ function App() {
       {showBackDropLoader && <BackDropLoader show={showBackDropLoader} />}
     <Router>
       <Suspense fallback={<FallbackLoader />}>
+      <Routes>
+      <Route path="/sendMailResponse" element={<MailResponse />} />
+      </Routes>
     <Routes>
       {/* Public Route */}
       <Route path="/login" element={<Login />} />
@@ -40,6 +43,7 @@ function App() {
       <Route path="/digit6" element={<Digit6Verify />} />
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/sucessfulpassword" element={<SucessfulPassword />} />
+
       {/* Protected Routes */}
       {/* <Route element={<UserProtectedRoutes />}> */}
          <Route path="/" element={<Layout/>}>
