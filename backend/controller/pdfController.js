@@ -1497,15 +1497,15 @@ dashboardData: async (req, res, next) => {
       // Filter for the current day's data
       const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Start of today
       const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // End of today
-      dateFilter.createdAt = { $gte: startOfDay, $lte: endOfDay };
+      dateFilter.updatedAt = { $gte: startOfDay, $lte: endOfDay };
     } else if (sortValue === 'week') {
       // Filter for the current week's data (from Sunday to today)
       const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Start of current week (Sunday)
-      dateFilter.createdAt = { $gte: startOfWeek };
+      dateFilter.updatedAt = { $gte: startOfWeek };
     } else if (sortValue === 'month') {
       // Filter for the current month's data (from the 1st of the month to today)
       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // First day of the current month
-      dateFilter.createdAt = { $gte: startOfMonth };
+      dateFilter.updatedAt = { $gte: startOfMonth };
     }
    
     let testDATA 
@@ -1692,8 +1692,7 @@ const compressedPdfBuffer = await compressPDF(pdfBuffer);
 const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY);
 const rejectToken = jwt.sign({ rejectDataSet }, process.env.JWT_SECRET_KEY);
 
-let hostName = process.env.NODE_ENV === 'development' ? 'localhost:4173' : 'quotation.injazgroup.co.uk';
-let baseUrl = `${req.protocol}://${hostName}`;
+let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4173' : 'https://quotation.injazgroup.co.uk';
 
 
 const acceptLink = `${baseUrl}/sendMailResponse?token=${acceptToken}`;
@@ -1920,6 +1919,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
           if (!quotation) throw new Error("Quotation not found");
 
           quotation.pdfStatus=action;
+          quotation.updatedAt=new Date();
       
           const updateQuotation = await pdfModel.findByIdAndUpdate( { _id:id  },
               quotation,

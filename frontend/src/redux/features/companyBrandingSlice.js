@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialstate = {
-    companyName: localStorage.getItem("companyName")
+    companyName: localStorage.getItem("companyName") ? localStorage.getItem("companyName"):'Injaz'
 }
 
 const companyBrandingSlice = createSlice({

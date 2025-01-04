@@ -118,7 +118,7 @@ const DashboardTableRow = ({ row, index, handleRowData }) => {
                 />
               </span>
             </CDropdownToggle>
-            <CDropdownMenu>
+            <CDropdownMenu className="z-50">
               <CDropdownItem className="cursor-pointer"  onClick={handleViewQuotation}> View</CDropdownItem>
               <CDropdownItem className="cursor-pointer" onClick={()=>handleRowData(row)}> Assign</CDropdownItem>
               <CDropdownItem className="cursor-pointer" onClick={()=>setVisible(!visible)}> Send</CDropdownItem>

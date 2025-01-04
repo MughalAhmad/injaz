@@ -20,6 +20,10 @@ import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreu
 
 
 const Layout = () => {
+  if(!localStorage.getItem("companyName")){
+    localStorage.setItem("companyName","Injaz");
+    dispatch(updateCompanyName("Injaz"))
+  }
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,7 +60,8 @@ const Layout = () => {
     else{
       navigate("/login")
     }
-  }, [window.location.pathname])
+   
+  }, [window.location.pathname, localStorage.getItem("companyName")])
 
 
 

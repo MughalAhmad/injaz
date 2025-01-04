@@ -80,9 +80,6 @@ const Dashboard = () => {
       }
 
    useEffect(() => {
-    if(!localStorage.getItem("companyName")){
-      localStorage.setItem("companyName","Injaz")
-    }
     getAllDashboardData()
     }, [localStorage.getItem("companyName"), currentPage, sort, cardName])
 
