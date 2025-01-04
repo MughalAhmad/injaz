@@ -77,9 +77,17 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
         <td className="px-4 py-2 font-semibold text-sm text-center">
           {row.stateValue}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
-          {row.pdfStatus}
-        </td>
+        {row.pdfStatus === 'pending' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-yellow-500 bg-opacity-10 text-yellow-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
+
+        {row.pdfStatus === 'rejected' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-rose-400 bg-opacity-10 text-rose-400 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
+
+        {row.pdfStatus === 'approved' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-green-500 bg-opacity-10 text-green-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
         {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
         <td className="px-4 py-2 flex justify-center relative">
           <CDropdown>

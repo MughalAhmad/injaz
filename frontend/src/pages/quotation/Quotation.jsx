@@ -15,7 +15,7 @@ const Quotation = () => {
   const navigate = useNavigate();
   const {user} = useSelector(state => state.adminStore);
 const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("-1");
     const { companyName } = useSelector(state => state.brandingStore);
 
       const getAllQuotationData = () =>{
@@ -86,9 +86,8 @@ const [query, setQuery] = useState("");
             />
           </div>
           <select onChange={(e)=>handleSort(e)} className='w-28 h-10 md:h-14 font-normal text-sm border-2 rounded-lg pr-3 pl-1'>
-            <option value=''>Select</option>
-            <option value='1'>Name: A-Z</option>
-            <option value='-1'>Name: Z-A</option>
+            <option value='-1'>Id: Z-A</option>
+            <option value='1'>Id: A-Z</option>
           </select>
           
         </div>

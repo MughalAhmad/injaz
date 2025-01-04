@@ -564,23 +564,6 @@ const injazHtml = async (data, checkBox, state) =>{
             </div>
         </div>
     </div>
-
-
-<div class="first-page"><img src=${url+"png1.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png2.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png3.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png4.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png5.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png6.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png7.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png8.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png9.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png10.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png11.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png12.png"} class="img" alt="Image Injaz" /></div>
-
-
     </body>
     </html>
   `
@@ -1125,23 +1108,6 @@ const checkBoxHTML = checkBox
             </div>
         </div>
     </div>
-
-
-<div class="first-page"><img src=${url+"png1.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png2.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png3.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png4.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png5.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png6.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png7.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png8.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png9.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png10.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png11.png"} class="img" alt="Image Injaz" /></div>
-<div class="first-page"><img src=${url+"png12.png"} class="img" alt="Image Injaz" /></div>
-
-
     </body>
     </html>
   `
@@ -1172,6 +1138,7 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
      const testPDF = await page.pdf({
       format: 'A4',
       printBackground: true,
+      scale: 0.8,
     });
 
 
@@ -1190,6 +1157,7 @@ const compressPDF = async (pdfBuffer) => {
   // Save the compressed PDF
   const compressedPdfBuffer = await pdfDoc.save({
     useObjectStreams: true, // Optimize PDF structure
+    compress: true,
   });
 
   console.log('PDF compressed successfully');
@@ -1237,8 +1205,22 @@ const compressPDF = async (pdfBuffer) => {
         ];
 
         if(sortOrder){
-          options.unshift({ $sort: { clientEmail: sortOrder } })
+          options.unshift({ $sort: { _id: sortOrder } })
         }
+       
+        
+        // Build search filter only if `searchQuery` is provided
+    const searchFilter = searchQuery
+    ? {
+        $or: [
+          { clientName: { $regex: searchQuery, $options: "i" } }, // Case-insensitive searchQuery in `status`
+          { clientEmail: { $regex: searchQuery, $options: "i" } }, // Case-insensitive searchQuery in `category`
+          { pdfStatus: { $regex: searchQuery, $options: "i" } }, // Case-insensitive searchQuery in `title`
+          { reference: { $regex: searchQuery, $options: "i" } }, // Case-insensitive searchQuery in `title`
+        ],
+      }
+    : null;
+        
 
         let matchOptions ='';
 
@@ -1249,15 +1231,15 @@ if(role === "admin"){
 
 }
 
+ // Combine `matchOptions` and `searchFilter`
+ const matchStage = {
+  ...matchOptions,
+  ...(searchFilter && searchFilter), // Only include searchFilter if it's not null
+};
+
 const pdfs = await pdfModel.aggregate([
   {
-    $match: {
-      ...matchOptions,
-      clientEmail: {
-        $regex: searchQuery,
-        $options: "i",
-      },
-         },
+    $match: matchStage,
   },
   {
     $facet: {
@@ -1794,7 +1776,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
               </p>
               <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
 
-              ${editerText}
+              ${editerText ? editerText : ''}
 
               <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Sales Team</p>
           
