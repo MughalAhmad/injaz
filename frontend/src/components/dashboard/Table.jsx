@@ -38,6 +38,7 @@ const Table = () => {
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Reference</th>
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Company</th>
             <th className="px-4 py-2 font-bold text-sm text-black text-center">State</th>
+            <th className="px-4 py-2 font-bold text-sm text-black text-center">Status</th>
             {user.role === 'admin' && <th className="px-4 py-2 font-bold text-sm text-black text-center">Assign</th>}
             <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
           </tr>

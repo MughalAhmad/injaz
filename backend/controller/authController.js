@@ -83,13 +83,13 @@ module.exports = {
                 `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f7fa;">
   <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
     <div style="text-align: center; margin-bottom: 20px;">
-      <img src="cid:C_page3Logo" alt="Injaz Group Logo" style="max-width: 150px;">
+      <img src="cid:C_page3Logo" alt="Conqueror Logo" style="max-width: 150px;">
     </div>
 
-    <h3 style="font-size: 20px; color: #333; margin-bottom: 10px;">Use this code to reset your password</h3>
+    <h3 style="font-size: 20px; color: #C40014; margin-bottom: 10px;">Use this code to reset your password</h3>
     <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${user.firstName} ${user.lastName},</p>
     <p style="font-size: 14px; color: #555; line-height: 1.5;">We have received a request to reset your account password. To complete the process, please use the following One-Time Password (OTP) to proceed:</p>
-    <div style="text-align: center; background: #0A144E; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <div style="text-align: center; background: #ed1c24; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
       <p style="margin: 0; font-size: 18px;">Your OTP:</p>
       <p style="font-size: 36px; font-weight: bold; margin: 10px 0;">${code}</p>
    </div>
@@ -99,16 +99,21 @@ module.exports = {
     <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Support Team</p>
 
     <div style="text-align: center; margin: 30px 0;">
-      <p style="font-size: 14px; color: #333;">CONNECT WITH</p>
+                <p style="font-size: 14px; color: #C40014; font-weight: 600;">CONNECT WITH</p>
        <div>
-        <a href="#" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
-        <a href="#" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
-        <a href="#" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
-        </div>
+                 <a href="https://www.facebook.com/conquerorllc?mibextid=LQQJ4d&mibextid=LQQJ4d" style="background: #0165E1; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Facebook</a>
+                <a href="https://www.instagram.com/uaeconqueror?igsh=a2xpMnZnOGRpcWw=" style="background: #dd2a7b; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">Instagram</a>
+                <a href="https://api.whatsapp.com/send/?phone=%2B97142837636&text&type=phone_number&app_absent=0" style="background: #5FFC7B; color: #fff; text-decoration: none; padding: 6px 10px; margin-right: 5px; border-radius: 5px;">WhatsApp</a>
+                </div>
     </div>
 
     <p style="font-size: 12px; color: #999; text-align: center;">You’re receiving this email because you’re an esteemed member of the Injaz Group.</p>
-    <p style="font-size: 12px; color: #999; text-align: center;">Injaz Group Fzc<br>City Pharmacy Bid, Port Saeed, Dubai</p>
+    <p style="font-size: 12px; color: #999; text-align: center;">
+                Conqueror Aspiration L.L.C<br>
+                City Pharmacy Bid, Port Saeed, Dubai
+              </p>
+
+
   </div>
 </div>`,
       };

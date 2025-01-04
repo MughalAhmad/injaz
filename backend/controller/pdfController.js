@@ -1205,7 +1205,7 @@ const compressPDF = async (pdfBuffer) => {
           stateArray:req.body.stateArray
         }
 
-        console.log(modifyBody)
+        // console.log(modifyBody)
          const pdf = await pdfModel.create(modifyBody);
         if (!pdf) throw new Error("Error in Creating pdf");
   
@@ -1489,7 +1489,7 @@ return res.status(200).json({
 // ////////////////////////////////////////////
 dashboardData: async (req, res, next) => {
   try {
-    const { currentPage, sortValue, company, role, userId } = req.query;
+    const { currentPage, sortValue, company, role, userId ,name} = req.query;
     const page = currentPage || 1;
     const limit = 10;
     const skip = (page - 1) * limit;
@@ -1525,6 +1525,12 @@ dashboardData: async (req, res, next) => {
       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // First day of the current month
       dateFilter.createdAt = { $gte: startOfMonth };
     }
+   
+    let testDATA 
+     if(name){
+      testDATA = {pdfStatus:name}
+     }
+
 
     // Apply the date filter if sortValue is provided
     if (Object.keys(dateFilter).length > 0) {
@@ -1534,6 +1540,8 @@ dashboardData: async (req, res, next) => {
     const pdfs = await pdfModel.aggregate([
       {
         $match: {
+    ...testDATA, 
+          
           ...matchOptions,
         },
       },
@@ -1683,7 +1691,7 @@ return res.status(200).json({
     },
     sendPDF : async (req, res, next) => {
       try {
-         const {data, checkBoxData, stateArray} = req.body;
+         const {data, checkBoxData, stateArray, editerText} = req.body;
       const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
 
 // Compress the PDF
@@ -1696,7 +1704,7 @@ const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
      let rejectDataSet={
       id:data?._id,
-      action:'rejected '
+      action:'rejected'
      }
 
 const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY);
@@ -1785,6 +1793,9 @@ let Curl ="http://localhost:5000/conqueror/" ;
                 If you have any questions or need further clarification, please don’t hesitate to reach out.
               </p>
               <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+
+              ${editerText}
+
               <p style="font-size: 14px; color: #333;">Best regards,<br>Conqueror Aspiration L.L.C Sales Team</p>
           
               <div style="text-align: center; margin: 5px 0;">
@@ -1858,6 +1869,9 @@ let Curl ="http://localhost:5000/conqueror/" ;
               If you have any questions or need further clarification, please don’t hesitate to reach out.
             </p>
             <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
+
+            ${editerText}
+
             <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Fzc Sales Team</p>
         
             <div style="text-align: center; margin: 5px 0;">

@@ -12,6 +12,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1)
     const [sort, setSort] = useState("");
+    const [cardName, setCardName] = useState("");
   
   const {user} = useSelector(state => state.adminStore);
   const { pdfData } = useSelector(state => state.pdfStore);
@@ -22,29 +23,31 @@ const Dashboard = () => {
       count:pdfData?.cardData?.pending + pdfData?.cardData?.approved + pdfData?.cardData?.rejected || 0,
       title:'Total Quotation',
       icon:'/svgs/dashboard.svg',
-      bg:'bg-blue-500'
+      bg:'bg-blue-500',
+      name:''
     },
     {
       count:pdfData?.cardData?.pending,
       title:'Pending Approvals',
       icon:'/svgs/dashboardPendding.svg',
-      bg:'bg-yellow-500'
+      bg:'bg-yellow-500',
+      name:'pending'
       },
     {
       count:pdfData?.cardData?.approved,
       title:'Approved Quotations',
       icon:'/svgs/dashboardApproved.svg',
-      bg:'bg-green-500'
+      bg:'bg-green-500',
+      name:'approved'
     },
     {
       count:pdfData?.cardData?.rejected,
       title:'Rejected Quotations',
       icon:'/svgs/dashboardReject.svg',
-      bg:'bg-rose-400'
+      bg:'bg-rose-400',
+      name:'rejected'
     }
   ]
-
-  console.log("useruseruseruser",user)
 
     const getAllDashboardData = () =>{
       const data = {
@@ -52,7 +55,8 @@ const Dashboard = () => {
         userId: user?._id,
         role: user?.role,
         currentPage:currentPage,
-        sortValue:sort
+        sortValue:sort,
+        cardName:cardName
       }
       dispatch(updateShowBackDropLoader(true));
       
@@ -80,7 +84,7 @@ const Dashboard = () => {
       localStorage.setItem("companyName","Injaz")
     }
     getAllDashboardData()
-    }, [localStorage.getItem("companyName"), currentPage, sort])
+    }, [localStorage.getItem("companyName"), currentPage, sort, cardName])
 
   return (
     <div className='px-3 md:px-10'>
@@ -95,7 +99,7 @@ const Dashboard = () => {
       </div>
       <div className='flex flex-col flex-wrap gap-3 items-center md:flex-row'>
       {cardData.map((item)=>(
-    <Card count={item.count} title={item.title} icon={item.icon} bg={item.bg}/>
+    <Card count={item.count} key={item.bg} title={item.title} name={item.name} icon={item.icon} bg={item.bg}  setCardName={setCardName}/>
       ))}
       </div>
       <DashboardPaginate

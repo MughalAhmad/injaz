@@ -59,9 +59,9 @@ const handleMouseLeave = () => setIsHovered(false);
       <td className="px-4 py-2 flex justify-center relative">
     
         <CDropdown>
-              <CDropdownToggle>
+              <CDropdownToggle className='relative'>
               <span
-          className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${localStorage.getItem("companyName") === "Conqueror" ? "hover:bg-red-300  " : "hover:bg-blue-200" } flex justify-center items-center`}
+          className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group absolute top-0 left-2 ${localStorage.getItem("companyName") === "Conqueror" ? "hover:bg-red-300  " : "hover:bg-blue-200" } flex justify-center items-center`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >

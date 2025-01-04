@@ -10,18 +10,21 @@ import {updateShowBackDropLoader} from "../../redux/features/adminSlice";
 import { sendPDF } from '../../redux/features/pdfSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import TextEditer from "../common/TextEditer";
 
 const DashboardTableRow = ({ row, index, handleRowData }) => {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false)
+  
   const { user } = useSelector(state => state.adminStore);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
   const handleMail = () =>{
-    console.log("helllllOOOOO")
+    setVisible(!visible);
       const modifyData={
         data:row,
       checkBoxData:row.checkBoxData,
@@ -74,13 +77,25 @@ const DashboardTableRow = ({ row, index, handleRowData }) => {
         <td className="px-4 py-2 font-semibold text-sm text-center">
           {row.stateValue}
         </td>
+
+        {row.pdfStatus === 'pending' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-yellow-500 bg-opacity-10 text-yellow-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
+
+        {row.pdfStatus === 'rejected' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-rose-400 bg-opacity-10 text-rose-400 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
+
+        {row.pdfStatus === 'approved' && <td className="px-4 py-2 font-semibold text-sm text-center">
+          <span className="bg-green-500 bg-opacity-10 text-green-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
+        </td>}
         {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
 
         <td className="px-4 py-2 flex justify-center relative">
           <CDropdown>
-            <CDropdownToggle>
+            <CDropdownToggle className="relative">
               <span
-                className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${
+                className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group absolute top-0 left-2 ${
                   localStorage.getItem("companyName") === "Conqueror"
                     ? "hover:bg-red-300  "
                     : "hover:bg-blue-200"
@@ -105,11 +120,14 @@ const DashboardTableRow = ({ row, index, handleRowData }) => {
             <CDropdownMenu>
               <CDropdownItem className="cursor-pointer"  onClick={handleViewQuotation}> View</CDropdownItem>
               <CDropdownItem className="cursor-pointer" onClick={()=>handleRowData(row)}> Assign</CDropdownItem>
-              <CDropdownItem className="cursor-pointer" onClick={handleMail}> Send</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={()=>setVisible(!visible)}> Send</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </td>
       </tr>
+
+      {visible && <TextEditer visible={visible} setVisible={setVisible} handleMail={handleMail}/>}
+
     </>
   );
 };

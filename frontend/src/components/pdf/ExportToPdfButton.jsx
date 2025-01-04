@@ -6,7 +6,6 @@ import logo from "../public/img.jpg"
 const ExportToPdfButton = ({ columns = [], data = [], fileName = 'test.pdf', logoImage = logo,  ReportName = '', startDate  , endDate, name, phone, email }) => {
 
   const exportPDFBtnClickHandler = () => {
-    console.log("hello")
     const doc = new jsPDF();
 
     const logo = new Image();

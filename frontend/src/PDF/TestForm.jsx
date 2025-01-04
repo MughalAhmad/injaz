@@ -119,7 +119,6 @@ const { user } = useSelector(state => state.adminStore);
    isEmail:""
   });
 
-    console.log("TESSSSSSSSSSSSSSSST",data.clientPhone.split('-').pop())
   const ActivitiesHeads =['Code', 'Activity Description', 'Approval', 'Authority'];
   const ActivitiesFields ={ code: "", description: "", approval: "", authority: "" };
 
@@ -423,6 +422,14 @@ const { user } = useSelector(state => state.adminStore);
         status:"0", 
         filed:false,
 
+    },
+    {
+      id:'23',
+        title:"Health Insurances",
+        value:0 ,
+        status:"0", 
+        filed:true,
+
     }
     ]);
     
@@ -568,7 +575,6 @@ const saveDataIntoDB = () =>{
     .then(response => {
       dispatch(updateShowBackDropLoader(false));
       if (response && !response.payload.hasError) {
-       console.log("responseresponseresponse",response)
        navigate("/quotation")
        sweetNotification(false, response.payload.msg)
       }
@@ -625,7 +631,6 @@ const saveDataIntoDB = () =>{
   
 
   const handleAmount = () => {
-    console.log("AMOUNT CALL")
     let totalAmount = [data.step1value,   Number(data.step2EstablishmentIN), data.step2value1IN,  data.step2value2aIN, data.step2value2IN, 2500 , Number(data.medicalIN) , Number(data.emiratesIdIN)].reduce(
 
       (total, item) => total + Number(item), 
@@ -656,7 +661,6 @@ const saveDataIntoDB = () =>{
       item.title === changedItem.title ? { ...item, status: changedItem.status === "1" ? "0" : "1" } : item
     );
     setCheckBoxData(updatedData);
-    console.log("hHELLLLLOOOOOO")
     handleAmount()
   };
 
@@ -772,10 +776,6 @@ useEffect(() => {
   }));
 }, [data.stateValue]);
 
-  console.log("data",data)
-  // console.log("stateArray",stateArray)
-  console.log("ChecckBox",checkBoxData)
-// console.log(btnStatus)
 
   const handlePackageChange = (e,id) => {
     setCheckBoxData(prevData => 
@@ -839,7 +839,6 @@ useEffect(() => {
   }
 
  const handleValue = (loading,error, )=> {
-    console.log(loading)
           if (error) {
             setBtnStatusText("error")
             console.error('PDF Generation Error:', error);
@@ -928,9 +927,7 @@ useEffect(() => {
   
     try {
       const response = await dispatch(allRefs());
-      if (response && !response.payload.hasError) {
-        console.log("check refs", response.payload.data.refs);
-  
+      if (response && !response.payload.hasError) {  
         setSelectReference((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const newRefs = response.payload.data.refs.filter(

@@ -23,7 +23,7 @@ const DashboardPaginate = ({ setCurrentPage, currentPage }) => {
       <div>{renderItems()}</div>
 
 
-      <div className="py-5 px-5 flex justify-between items-center">
+      <div className="pt-4 px-5 flex justify-between items-center">
         <p className="text-textPrimary font-normal text-sm">
       Showing {currentPage} to {pdfData?.pages} of {pdfData?.total} entries
         </p>

@@ -80,7 +80,6 @@ const TeamForm = () => {
                 if(formState === 'update'){
                   body._id=useData._id
                 }
-                console.log(formState)
                 dispatch(updateShowBackDropLoader(true));
 
                 dispatch( formState === 'update' ? updateUser(body) : createUser(body) )
@@ -113,7 +112,6 @@ const TeamForm = () => {
             console.error(error);
           });
         };
-        console.log(useData)
           
         useEffect(() => {
           if(formState === 'update'){

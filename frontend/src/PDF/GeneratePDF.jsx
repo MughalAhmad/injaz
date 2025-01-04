@@ -495,7 +495,7 @@ const MyDocument = ({
       </View>
 
       {/* <View > */}
-        <Image style={{ marginHorizontal: 35, marginTop:"13px"}} src="/pngLs1.png" />
+        <Image style={{ marginHorizontal: 35}} src="/pngLs1.png" />
       {/* </View> */}
 
       {/* <View> */}

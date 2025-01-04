@@ -4,7 +4,6 @@ import countryCodes from '../../json/CountryCode.json';
 const CountryFlags = ({ label = "text", placeholder="text", className, onFlagChange }) => {
   const [countryCode, setCountryCode] = useState(countryCodes[0].iso);
   const [flag, setFlag] = useState(countryCodes[0].iso);
-  console.log('countryCode',countryCode)
 
   // Call the onPhoneChange function whenever countryCode or phoneNumber changes
   useEffect(() => {

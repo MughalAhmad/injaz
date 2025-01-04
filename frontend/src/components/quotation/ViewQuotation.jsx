@@ -313,6 +313,7 @@ const getQuotationData = () =>{
         <div
           key={item.id} // Ensure each item has a unique key if it has an id field
           className="w-full lg:w-1/2 mb-2 flex justify-between items-center rounded-lg"
+          readOnly
         >
             <input
             className="w-16 h-16 mr-2 md:w-5 md:h-5"

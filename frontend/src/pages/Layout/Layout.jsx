@@ -105,8 +105,8 @@ useEffect(() => {
         <div className="mt-3 flex items-center justify-between mr-5">
         {companyName === "Conqueror" ? <img src= "/page3Logo.png" alt="logo"/> : <img src= "/Injaz/page3Logo.png" alt="logo"/> }
          <CDropdown>
-                      <CDropdownToggle className="w-10 h-10">
-                      <img src={ArrowDown} alt="arrow-down" className="w-auto h-9 cursor-pointer" />
+                      <CDropdownToggle className="w-10 h-10 mt-2 md:mt-4 relative">
+                      <img src={ArrowDown} alt="arrow-down" className="w-auto h-3.5 cursor-pointer absolute top-2.5" />
                       </CDropdownToggle>
                       <CDropdownMenu>
                         <CDropdownItem className="cursor-pointer" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</CDropdownItem>
@@ -115,24 +115,24 @@ useEffect(() => {
                     </CDropdown>
         </div>
 
-        <div className="flex gap-3 items-center mt-6 mb-3">
-          <img src={userImg} className="w-11 h-11 rounded-full" alt="user"/>
-          <div>
-            <p className="text-xl font-normal text-textPrimary">{ user?.firstName }</p>
-            <p className="text-slate500 font-normal text-xs"><span className="bg-backgroundGreen500 min-w-2.5 min-h-2.5 rounded-full inline-block mr-0.5"></span>Online</p>
+        <div className="flex gap-3 items-center mt-6">
+          <img src={userImg} className="w-14 h-14 rounded-full" alt="user"/>
+          <div className="flex flex-col">
+            <span className="text-xl font-normal text-textPrimary">{ user?.firstName }</span>
+            <span className="text-slate500 font-normal text-xs"><span className="bg-backgroundGreen500 min-w-2.5 min-h-2.5 rounded-full inline-block mr-0.5"></span>Online</span>
           </div>
         </div>
 
         <hr/>
 
         <nav className="flex-1  space-y-2 mt-10">
-          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/')}>
-           <img src={`/svgs/${location === "/" ? "dashboardWhite":"dashboardGray"}.svg`} alt="dashboard-icon" className={`${location === "/" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
-            <p>Dashboard</p>
+          <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/')}>
+           <img src={`/svgs/${location === "/" ? "dashboardWhite":"dashboardGray"}.svg`} alt="dashboard-icon" className={`${location === "/" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
+            <p >Dashboard</p>
           </span>
 
-          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/quotation')}>
-           <img src={`/svgs/${location === "/quotation" ? "quotationWhite":"quotationGray"}.svg`} alt="dashboard-icon" className={`${location === "/quotation" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+          <span className={`flex items-center gap-3  rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/quotation')}>
+           <img src={`/svgs/${location === "/quotation" ? "quotationWhite":"quotationGray"}.svg`} alt="dashboard-icon" className={`${location === "/quotation" ? "w-7 h-auto -mt-3" : "w-5 h-auto -mt-5"} `}/>
             <p>Quotations</p>
           </span>
 
@@ -141,23 +141,24 @@ useEffect(() => {
             <p>Create Quotations</p>
           </span>} */}
 
-          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/team')}>
-           <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+          {user?.role === "admin" &&  <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/team')}>
+           <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
             <p>Team</p>
           </span>}
 
-          {user?.role === "admin" &&  <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/reference')}>
-           <img src={`/svgs/${location === "/reference" ? "referenceWhite":"referenceGray"}.svg`} alt="dashboard-icon" className={`${location === "/reference" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
+          {user?.role === "admin" &&  <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/reference')}>
+           <img src={`/svgs/${location === "/reference" ? "referenceWhite":"referenceGray"}.svg`} alt="dashboard-icon" className={`${location === "/reference" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
             <p>Refrence</p>
           </span>}
 
-          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/profile')}>
-          <svg 
-  xmlns="http://www.w3.org/2000/svg" 
-  viewBox="0 0 24 24" 
-  width="24" 
-  height="24" 
+          <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/profile" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/profile')}>
+          <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
   fill="currentColor"
+  style={{ marginTop: '-20px' }}
 >
   <circle cx="12" cy="8" r="4" />
   <ellipse cx="12" cy="18" rx="8" ry="5" />
@@ -166,8 +167,8 @@ useEffect(() => {
             <p>Profile</p>
           </span>
 
-          <span className={`flex items-center gap-3 py-2 rounded-2xl cursor-pointer h-14 font-normal text-sm pl-4 text-slate500`} onClick={()=>handleLogout()}>
-           <img src={`/svgs/${companyName === "Injaz" ? "logoutBlue":"logoutRed"}.svg`} alt="dashboard-icon" className="w-5 h-auto"/>
+          <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 font-normal text-sm pl-4 text-slate500`} onClick={()=>handleLogout()}>
+           <img src={`/svgs/${companyName === "Injaz" ? "logoutBlue":"logoutRed"}.svg`} alt="dashboard-icon" className="w-5 h-auto -mt-4"/>
             <p>Logout</p>
           </span>
 

@@ -21,7 +21,7 @@ class PdfService extends Service {
         return await this.ApiClient.put(`/pdf/updateNotification?pdfId=${data}`);
     }
     async getDashboardData(data) {
-        return await this.ApiClient.get(`/pdf/dashboard?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}&&sortValue=${data.sortValue}`);
+        return await this.ApiClient.get(`/pdf/dashboard?company=${data.companyName}&&userId=${data.userId}&&role=${data.role}&&currentPage=${data.currentPage}&&sortValue=${data.sortValue}&&name=${data.cardName}`);
     }
     async allRefs() {
         return await this.ApiClient.get(`/pdf/allRefs`);

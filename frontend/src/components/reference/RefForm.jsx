@@ -78,8 +78,6 @@ const RefForm = () => {
                 if(formState === 'update'){
                   body._id=refData._id
                 }
-                console.log(formState)
-                console.log(body)
                 dispatch(updateShowBackDropLoader(true));
 
                 dispatch( formState === 'update' ? updateRef(body) : createRef(body) )
@@ -119,7 +117,6 @@ const RefForm = () => {
             console.error(error);
           });
         };
-        console.log(formState)
           
         useEffect(() => {
           if(formState === 'update'){

@@ -92,8 +92,8 @@ const Navbar = () => {
       <div className="flex justify-end items-center">
         {/* Language Selector Dropdown */}
       
-          <CDropdown>
-              <CDropdownToggle className="flex gap-3 items-center">
+          {/* <CDropdown>
+              <CDropdownToggle >
               <span>Language</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -111,15 +111,15 @@ const Navbar = () => {
             </svg>
               </CDropdownToggle>
               <CDropdownMenu className="w-52 ">
-                <CDropdownItem className="cursor-pointer flex items-center gap-2 mb-2"> <img src={English} alt="English" className="w-11 h-auto" />English< img src={Checked} alt="Checked" className="ml-11"/></CDropdownItem>
+                <CDropdownItem className="cursor-pointer flex items-center gap-2 mb-2"> <img src={English} alt="English" className="w-11 h-auto" />English< img src={Checked} alt="Checked" className=""/></CDropdownItem>
                 <CDropdownItem className="cursor-pointer flex items-center gap-2 mb-2"><img src={Spanish} alt="Spanish" className="w-11 h-auto"/>Spanish< img src={Checked} alt="Checked" className="ml-10"/></CDropdownItem>
                 <CDropdownItem className="cursor-pointer flex items-center gap-2"><img src={French} alt="French" className="w-11 h-auto"/>French< img src={Checked} alt="Checked" className="ml-12"/></CDropdownItem>
               </CDropdownMenu>
-            </CDropdown>
+            </CDropdown> */}
 
 
         {/* Notification Icon */}
-        <button onClick={()=>setVisible(!visible)} className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mr-6">
+        <button onClick={()=>setVisible(!visible)} className="relative flex justify-center items-center bg-backgroundYellow400 bg-opacity-12 w-12 h-12 rounded-lg mx-8">
          <img src={Notification} alt="Notification" className="w-5 h-auto" />
           <div className="absolute top-1 right-1 text-white w-5 h-5 bg-red-500 rounded-full flex justify-center items-center">{notifications.length}</div>
         </button>
@@ -131,13 +131,13 @@ const Navbar = () => {
               alt="Profile"
               className="w-16 h-16 mr-3 rounded-xl hidden md:block"
             />
-            <div className="pr-2 leading-5">
-              <p className="text-base font-medium text-textPrimary">{user?.firstName}</p>
-              <p className="text-sm font-normal text-stone300">{user?.role}</p>
+            <div className="pr-2 leading-5 flex flex-col">
+              <span className="text-base font-medium text-textPrimary">{user?.firstName}</span>
+              <span className="text-sm font-normal text-stone300">{user?.role}</span>
             </div>
             <CDropdown>
               <CDropdownToggle>
-              <svg
+              {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -150,7 +150,7 @@ const Navbar = () => {
                 strokeWidth={2}
                 d="M19 9l-7 7-7-7"
               />
-            </svg>
+            </svg> */}
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem className="cursor-pointer" onClick={() => navigate("/profile")}>Profile</CDropdownItem>

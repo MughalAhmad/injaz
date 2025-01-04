@@ -15,11 +15,24 @@ const NewPassword = () => {
   const [password, setPassword] = useState('')
   const [conformPassword, setConformPassword] = useState('')
 
+ const [showPassword1, setShowPassword1] = useState(false); // New state for toggling password visibility
+ const [showPassword2, setShowPassword2] = useState(false); // New state for toggling password visibility
+
+  const togglePasswordVisibility1 = () => {
+    setShowPassword1(!showPassword1); // Toggle the visibility
+  };
+
+    const togglePasswordVisibility2 = () => {
+      setShowPassword2(!showPassword2); // Toggle the visibility
+    };
+
+
+
+
     const validateList = ["Password must be between 8 to 32 character.", "Must contain a uppercase character.", "Must contain a number.", "Must contain one special character."]
 
      const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(location?.state?.email)
        const data={
         email:location?.state?.email,
         password:password
@@ -94,7 +107,7 @@ const NewPassword = () => {
       >
         New Password
       </label>
-      <div
+      {/* <div
         className="flex gap-2 justify-center w-full h-16 mb-4 p-2 bg-transparent border border-neutral400 rounded-lg"
       >
         <img src={Lock} alt='lock' className='w-3.5 h-auto mt-0.5'/>
@@ -107,7 +120,38 @@ const NewPassword = () => {
         required
         onChange={(e)=>setPassword(e.target.value)}
       />
-      </div>
+      </div> */}
+
+        <div className="flex gap-2 items-center justify-between w-full h-16 mb-4 p-2 bg-transparent border border-neutral400 rounded-lg">
+                    <img src={Lock} alt="lock" className="w-3.5 h-auto mt-0.5" />
+                    <input
+                      type={showPassword1 ? "text" : "password"} // Toggle between "text" and "password"
+                      id="password"
+                      name="password"
+                      onChange={(e)=>setPassword(e.target.value)}
+                      className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility1}
+                      className="text-sm text-neutral400 focus:outline-none"
+                    >
+                      {/* {showPassword ? "👁️" : "👁️‍🗨️"}  */}
+                      {/* Add icons or text for visibility toggle */}
+                      {showPassword1 ? (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.4 1.106-1.512 3.225-3.542 4.882C15.154 18.95 13.629 19 12 19c-1.63 0-3.155-.05-5-1.118-2.03-1.657-3.142-3.776-3.542-4.882z" />
+        </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825c-1.46.733-3.041 1.175-4.875 1.175-4.477 0-8.268-2.943-9.542-7a12.094 12.094 0 014.33-6.13M8.7 8.73a4.5 4.5 0 015.6 5.6m1.517-5.22C18.32 9.98 20 11.778 21 13c-.9 1.39-2.46 3.145-4.542 4.41M3 3l18 18" />
+        </svg>
+      )}
+                    </button>
+                  </div>
      
     </div>
     <div>
@@ -117,7 +161,7 @@ const NewPassword = () => {
       >
         Again Password
       </label>
-      <div
+      {/* <div
         className="flex gap-2 justify-center w-full h-16 mb-4 p-2 bg-transparent border border-neutral400 rounded-lg"
       >
         <img src={Lock} alt='lock' className='w-3.5 h-auto mt-0.5'/>
@@ -130,7 +174,38 @@ const NewPassword = () => {
         required
         onChange={(e)=>setConformPassword(e.target.value)}
       />
-      </div>
+      </div> */}
+
+        <div className="flex gap-2 items-center justify-between w-full h-16 mb-4 p-2 bg-transparent border border-neutral400 rounded-lg">
+                    <img src={Lock} alt="lock" className="w-3.5 h-auto mt-0.5" />
+                    <input
+                      type={showPassword2 ? "text" : "password"} // Toggle between "text" and "password"
+                      id="password"
+                      name="password"
+                      onChange={(e)=>setConformPassword(e.target.value)}
+                      className="w-full h-full bg-transparent font-medium text-xs outline-none text-neutral400"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility2}
+                      className="text-sm text-neutral400 focus:outline-none"
+                    >
+                      {/* {showPassword ? "👁️" : "👁️‍🗨️"}  */}
+                      {/* Add icons or text for visibility toggle */}
+                      {showPassword2 ? (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.4 1.106-1.512 3.225-3.542 4.882C15.154 18.95 13.629 19 12 19c-1.63 0-3.155-.05-5-1.118-2.03-1.657-3.142-3.776-3.542-4.882z" />
+        </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825c-1.46.733-3.041 1.175-4.875 1.175-4.477 0-8.268-2.943-9.542-7a12.094 12.094 0 014.33-6.13M8.7 8.73a4.5 4.5 0 015.6 5.6m1.517-5.22C18.32 9.98 20 11.778 21 13c-.9 1.39-2.46 3.145-4.542 4.41M3 3l18 18" />
+        </svg>
+      )}
+                    </button>
+                  </div>
      
     </div>
 

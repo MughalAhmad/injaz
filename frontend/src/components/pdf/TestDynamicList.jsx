@@ -23,7 +23,6 @@ const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => 
   };
 
   const handlData =()=>{
-    console.log(rows);
     onhandleChange(rows);
   }
 

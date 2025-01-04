@@ -37,11 +37,10 @@ export const BackDropLoader = () => {
 
 export const FallbackLoader = () => {
   return (
-    <div className="w-[100%] h-screen flex justify-center items-center bg-black absolute ">
+    <div className="w-[100%] h-screen flex justify-center items-center bg-gray-200 bg-opacity-70 absolute z-[1000]">
     <div className="w-48 h-16 flex justify-center items-center relative ">
-      {/* <img src={logo} alt="none"/> */}
-      <h1 className="text-3xl text-white">hello</h1>
-      <h1 className="text-3xl text-red-400">hello</h1>
+      <img src={logo} alt="none"/>
+      {/* <h1 className="text-3xl text-red-400">hello</h1> */}
 
   </div>
   </div>

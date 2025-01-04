@@ -21,7 +21,6 @@ const DynamicList = ({heads=[],fields=[], title='text', onhandleChange, handleAm
   };
 
   const handlData =()=>{
-    console.log(rows);
     onhandleChange(rows);
   }
 

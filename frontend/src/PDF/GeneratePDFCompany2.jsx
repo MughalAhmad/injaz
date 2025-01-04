@@ -591,8 +591,8 @@ const MyDocument = ({
 
         <Image style={{ marginHorizontal: 35, marginTop:"13px"}} src="/Injaz/pngLs1.png" />
 
-        <Image style={{marginHorizontal: 35, marginTop: 15,}} src="/Injaz/pngLs2.png" />
-        <Image style={{marginHorizontal: 35, marginTop: 15,}} src="/Injaz/pngLs4.png" />
+        <Image style={{marginHorizontal: 35, marginTop: 10,}} src="/Injaz/pngLs2.png" />
+        <Image style={{marginHorizontal: 35, marginTop: 10,}} src="/Injaz/pngLs4.png" />
 
 
 

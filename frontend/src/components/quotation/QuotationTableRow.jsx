@@ -10,20 +10,25 @@ import { useSelector,useDispatch } from 'react-redux';
 import {updateShowBackDropLoader} from "../../redux/features/adminSlice";
 import { sendPDF } from '../../redux/features/pdfSlice';
 import {sweetNotification} from "../common/SweetAlert";
+import TextEditer from "../common/TextEditer";
+
 const QuotationTableRow = ({ row, index, handleRowData }) => {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+    const [visible, setVisible] = useState(false)
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
   const { user } = useSelector(state => state.adminStore);
 
-  const handleMail = () =>{
+  const handleMail = (editerText) =>{
+    setVisible(!visible);
     const modifyData={
       data:row,
     checkBoxData:row.checkBoxData,
-    stateArray:row.stateArray
+    stateArray:row.stateArray,
+    editerText:editerText
     }
     dispatch(updateShowBackDropLoader(true));
         dispatch(sendPDF(modifyData))
@@ -72,12 +77,15 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
         <td className="px-4 py-2 font-semibold text-sm text-center">
           {row.stateValue}
         </td>
+        <td className="px-4 py-2 font-semibold text-sm text-center">
+          {row.pdfStatus}
+        </td>
         {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
         <td className="px-4 py-2 flex justify-center relative">
           <CDropdown>
-            <CDropdownToggle>
+            <CDropdownToggle className="relative">
               <span
-                className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group ${
+                className={`h-6 w-6 rounded-full cursor-pointer bg-opacity-25 group absolute top-0 left-2 ${
                   localStorage.getItem("companyName") === "Conqueror"
                     ? "hover:bg-red-300  "
                     : "hover:bg-blue-200"
@@ -102,11 +110,14 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
             <CDropdownMenu>
               <CDropdownItem className="cursor-pointer" onClick={handleViewQuotation}> View</CDropdownItem>
               {user?.role === "admin" && <CDropdownItem className="cursor-pointer" onClick={() => handleRowData(row)}> Assign</CDropdownItem>}
-              <CDropdownItem className="cursor-pointer" onClick={handleMail}> Send</CDropdownItem>
+              <CDropdownItem className="cursor-pointer" onClick={()=>setVisible(!visible)}> Send</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </td>
       </tr>
+
+{visible && <TextEditer visible={visible} setVisible={setVisible} handleMail={handleMail}/>}
+
     </>
   );
 };
