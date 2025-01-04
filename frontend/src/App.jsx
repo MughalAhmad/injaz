@@ -8,7 +8,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { useSelector } from 'react-redux';
 
 // import TestForm from "./PDF/TestForm";
-// import Login from "./pages/auth/Login";
+import Login from "./pages/auth/Login";
 // import ForgotPassword from "./pages/auth/ForgotPassword";
 // import Digit6Verify from "./pages/auth/Digit6Verify";
 // import NewPassword from "./pages/auth/NewPassword";
@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux';
 // import MailResponse from "./components/common/MailResponse";
 
 const TestForm = lazy(()=>import('./PDF/TestForm'));
-const Login = lazy(()=>import('./pages/auth/Login'));
+// const Login = lazy(()=>import('./pages/auth/Login'));
 const ForgotPassword = lazy(()=>import('./pages/auth/ForgotPassword'));
 const Digit6Verify = lazy(()=>import('./pages/auth/Digit6Verify'));
 const NewPassword = lazy(()=>import('./pages/auth/NewPassword'));

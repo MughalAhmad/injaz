@@ -1852,7 +1852,8 @@ let Curl ="http://localhost:5000/conqueror/" ;
             </p>
             <p style="font-size: 14px; color: #555;">We look forward to the opportunity to work with you and achieve our mutual goals.</p>
 
-            ${editerText}
+              ${editerText ? editerText : ''}
+
 
             <p style="font-size: 14px; color: #333;">Best regards,<br>Injaz Group Fzc Sales Team</p>
         

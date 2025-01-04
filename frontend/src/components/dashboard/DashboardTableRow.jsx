@@ -23,12 +23,13 @@ const DashboardTableRow = ({ row, index, handleRowData }) => {
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
-  const handleMail = () =>{
+  const handleMail = (editerText) =>{
     setVisible(!visible);
       const modifyData={
         data:row,
       checkBoxData:row.checkBoxData,
-      stateArray:row.stateArray
+      stateArray:row.stateArray,
+      editerText:editerText
       }
       dispatch(updateShowBackDropLoader(true));
           dispatch(sendPDF(modifyData))
