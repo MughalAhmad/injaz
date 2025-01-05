@@ -63,16 +63,16 @@ const handleMouseLeave = () => setIsHovered(false);
       key={row.id}
       className={`${index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'} py-10`}
     >
-      <td className="px-4 py-2 font-semibold text-sm">{index + 1}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">
+      <td className="px-4 py-4 font-semibold text-sm">{index + 1}</td>
+      <td className="px-4 py-4 font-semibold text-sm text-center">
         {row.firstName} {row.lastName}
       </td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.email}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.phone}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.nationality}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.userId}</td>
-      <td className="px-4 py-2 font-semibold text-sm text-center">{row.password}</td>
-      <td className="px-4 py-2 flex justify-center relative">
+      <td className="px-4 py-4 font-semibold text-sm text-center">{row.email}</td>
+      <td className="px-4 py-4 font-semibold text-sm text-center">{row.phone}</td>
+      <td className="px-4 py-4 font-semibold text-sm text-center">{row.nationality}</td>
+      <td className="px-4 py-4 font-semibold text-sm text-center">{row.userId}</td>
+      <td className="px-4 py-4 font-semibold text-sm text-center">{row.password}</td>
+      <td className="px-4 py-4 flex justify-center relative">
     
 <CDropdown>
               <CDropdownToggle className='relative'>

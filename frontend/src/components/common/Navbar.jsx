@@ -77,7 +77,7 @@ const Navbar = () => {
 
   return (
     <>
-    <nav className="bg-white shadow-md py-3 flex flex-col-reverse gap-4 sm:gap-1 lg:flex-row lg:items-center lg:justify-between mt-16 md:mt-0 sticky top-[60px] md:top-0 z-10">
+    <nav className="bg-white shadow-md py-3 flex flex-col-reverse gap-4 sm:gap-1 lg:flex-row lg:items-center lg:justify-between mt-16 md:mt-0 sticky top-[90px] md:top-0 z-10">
       {/* Left Section: Search Bar */}
       <div className="flex items-center h-14 w-full lg:ml-4 lg:w-96 rounded-2xl bg-backgroundGray50">
       <img src={localStorage.getItem("companyName") === "Conqueror" ? SearchRed : Search } alt="Search" className="m-4"/>

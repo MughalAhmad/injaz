@@ -31,16 +31,16 @@ const Table = () => {
     <table className="min-w-full">
       <thead className="bg-gray-100">
           <tr>
-            <th className="px-4 py-2 text-left font-bold text-sm text-black">ID</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Customer Name</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Email</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Phone</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Reference</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Company</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">State</th>
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Status</th>
-            {user.role === 'admin' && <th className="px-4 py-2 font-bold text-sm text-black text-center">Assign</th>}
-            <th className="px-4 py-2 font-bold text-sm text-black text-center">Actions</th>
+            <th className="px-4 py-4 text-left font-bold text-sm text-black">ID</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Customer Name</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Email</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Phone</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Reference</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Company</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">State</th>
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Status</th>
+            {user.role === 'admin' && <th className="px-4 py-4 font-bold text-sm text-black text-center">Assign</th>}
+            <th className="px-4 py-4 font-bold text-sm text-black text-center">Actions</th>
           </tr>
         </thead>
         <tbody>

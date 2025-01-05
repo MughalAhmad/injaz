@@ -32,7 +32,7 @@ const Layout = () => {
   
   const { companyName } = useSelector(state => state.brandingStore);
   const {user, isAuthenticated, userImg} = useSelector(state => state.adminStore);
-  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-base text-white text-center pt-3 justify-center`;
+  const highLight = `${companyName === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary"} font-bold text-base text-white text-center justify-center`;
 
   const handleCompanyMenu = (name) =>{
     localStorage.setItem("companyName",name)
@@ -120,7 +120,7 @@ useEffect(() => {
                     </CDropdown>
         </div>
 
-        <div className="flex gap-3 items-center mt-6">
+        <div className="flex gap-3 items-center my-6">
           <img src={userImg} className="w-14 h-14 rounded-full" alt="user"/>
           <div className="flex flex-col">
             <span className="text-xl font-normal text-textPrimary">{ user?.firstName }</span>
@@ -132,12 +132,12 @@ useEffect(() => {
 
         <nav className="flex-1  space-y-2 mt-10">
           <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/')}>
-           <img src={`/svgs/${location === "/" ? "dashboardWhite":"dashboardGray"}.svg`} alt="dashboard-icon" className={`${location === "/" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
+           <img src={`/svgs/${location === "/" ? "dashboardWhite":"dashboardGray"}.svg`} alt="dashboard-icon" className={`${location === "/" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
             <p >Dashboard</p>
           </span>
 
           <span className={`flex items-center gap-3  rounded-2xl cursor-pointer h-14 ${location === "/quotation" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/quotation')}>
-           <img src={`/svgs/${location === "/quotation" ? "quotationWhite":"quotationGray"}.svg`} alt="dashboard-icon" className={`${location === "/quotation" ? "w-7 h-auto -mt-3" : "w-5 h-auto -mt-5"} `}/>
+           <img src={`/svgs/${location === "/quotation" ? "quotationWhite":"quotationGray"}.svg`} alt="dashboard-icon" className={`${location === "/quotation" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
             <p>Quotations</p>
           </span>
 
@@ -147,12 +147,12 @@ useEffect(() => {
           </span>} */}
 
           {user?.role === "admin" &&  <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/team" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/team')}>
-           <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
+           <img src={`/svgs/${location === "/team" ? "teamWhite":"teamGray"}.svg`} alt="dashboard-icon" className={`${location === "/team" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
             <p>Team</p>
           </span>}
 
           {user?.role === "admin" &&  <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 ${location === "/reference" ? highLight : "font-normal text-sm pl-4 text-slate500" } `} onClick={()=>handleMenu('/reference')}>
-           <img src={`/svgs/${location === "/reference" ? "referenceWhite":"referenceGray"}.svg`} alt="dashboard-icon" className={`${location === "/reference" ? "w-7 h-auto -mt-5" : "w-5 h-auto -mt-5"} `}/>
+           <img src={`/svgs/${location === "/reference" ? "referenceWhite":"referenceGray"}.svg`} alt="dashboard-icon" className={`${location === "/reference" ? "w-7 h-auto" : "w-5 h-auto"} `}/>
             <p>Refrence</p>
           </span>}
 
@@ -163,7 +163,6 @@ useEffect(() => {
   width="24"
   height="24"
   fill="currentColor"
-  style={{ marginTop: '-20px' }}
 >
   <circle cx="12" cy="8" r="4" />
   <ellipse cx="12" cy="18" rx="8" ry="5" />
@@ -173,7 +172,7 @@ useEffect(() => {
           </span>
 
           <span className={`flex items-center gap-3 rounded-2xl cursor-pointer h-14 font-normal text-sm pl-4 text-slate500`} onClick={()=>handleLogout()}>
-           <img src={`/svgs/${companyName === "Injaz" ? "logoutBlue":"logoutRed"}.svg`} alt="dashboard-icon" className="w-5 h-auto -mt-4"/>
+           <img src={`/svgs/${companyName === "Injaz" ? "logoutBlue":"logoutRed"}.svg`} alt="dashboard-icon" className="w-5 h-auto"/>
             <p>Logout</p>
           </span>
 
@@ -202,11 +201,24 @@ useEffect(() => {
       </div>
 
       {/* Mobile Sidebar (toggleable with a menu button) */}
-      <div className="md:hidden bg-gray-800 text-white w-full fixed top-0 left-0 z-20">
+      <div className="md:hidden bg-gray-200 text-white w-full fixed top-0 left-0 z-20">
         <div className="flex items-center justify-between p-4">
-          <div className="text-xl font-bold">Logo</div>
+
+        <div className="flex items-center justify-between mr-5">
+        {companyName === "Conqueror" ? <img className="w-32 h-auto" src= "/page3Logo.png" alt="logo"/> : <img className="w-32 h-auto" src= "/Injaz/page3Logo.png" alt="logo"/> }
+         <CDropdown>
+                      <CDropdownToggle className="w-10 h-10 mt-2 md:mt-4 relative">
+                      <img src={ArrowDown} alt="arrow-down" className="w-auto h-3.5 cursor-pointer absolute top-2.5" />
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        <CDropdownItem className="cursor-pointer" onClick={()=>handleCompanyMenu('Conqueror')}>Conqueror</CDropdownItem>
+                        <CDropdownItem className="cursor-pointer" onClick={()=>handleCompanyMenu('Injaz')}>Injaz</CDropdownItem>
+                      </CDropdownMenu>
+                    </CDropdown>
+        </div>
+
           <button
-            className="text-white focus:outline-none"
+            className="text-black focus:outline-none"
             onClick={() => {
               const menu = document.getElementById("mobile-menu");
               menu.classList.toggle("hidden");
@@ -228,26 +240,26 @@ useEffect(() => {
             </svg>
           </button>
         </div>
-        <div id="mobile-menu" className="hidden flex-col px-4 py-2">
-        <p onClick={()=>handleMenu('/')} className="block py-2 px-4 rounded hover:bg-gray-700">
+        <div id="mobile-menu" className="hidden flex-col px-4 py-2 text-black">
+        <p onClick={()=>handleMenu('/')} className="block py-2 px-4 rounded hover:bg-gray-300">
             Dashboard
           </p>
-          <p onClick={()=>handleMenu('/quotation')} className="block py-2 px-4 rounded hover:bg-gray-700">
+          <p onClick={()=>handleMenu('/quotation')} className="block py-2 px-4 rounded hover:bg-gray-300">
           Quotations
           </p>
           {/* {user?.role === "admin" && <p onClick={()=>handleMenu('/form')} className="block py-2 px-4 rounded hover:bg-gray-700 cursor-pointer">
           Create Quotations
           </p>} */}
-          {user?.role === "admin" && <p onClick={()=>handleMenu('/team')} className="block py-2 px-4 rounded hover:bg-gray-700">
+          {user?.role === "admin" && <p onClick={()=>handleMenu('/team')} className="block py-2 px-4 rounded hover:bg-gray-300">
           Team
           </p>}
-          {user?.role === "admin" &&<p onClick={()=>handleMenu('/reference')} className="block py-2 px-4 rounded hover:bg-gray-700">
+          {user?.role === "admin" &&<p onClick={()=>handleMenu('/reference')} className="block py-2 px-4 rounded hover:bg-gray-300">
           Refrence 
           </p>}
-          <p onClick={()=>handleMenu('/profile')} className="block py-2 px-4 rounded hover:bg-gray-700">
+          <p onClick={()=>handleMenu('/profile')} className="block py-2 px-4 rounded hover:bg-gray-300">
           Profile
           </p>
-          <p onClick={()=>handleLogout()} className="block py-2 px-4 rounded hover:bg-gray-700">
+          <p onClick={()=>handleLogout()} className="block py-2 px-4 rounded hover:bg-gray-300">
             Logout
           </p>
         </div>

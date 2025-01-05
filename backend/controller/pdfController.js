@@ -1681,22 +1681,22 @@ const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
      let acceptDataSet={
       id:data?._id,
-      action:'approved'
+      action:'approved',
      }
 
      let rejectDataSet={
       id:data?._id,
-      action:'rejected'
+      action:'rejected',
      }
 
-const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY);
-const rejectToken = jwt.sign({ rejectDataSet }, process.env.JWT_SECRET_KEY);
+const acceptToken = jwt.sign({ acceptDataSet }, process.env.JWT_SECRET_KEY,{ expiresIn: "2d" });
+const rejectToken = jwt.sign({ rejectDataSet }, process.env.JWT_SECRET_KEY,{ expiresIn: "2d" });
 
 let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4173' : 'https://quotation.injazgroup.co.uk';
 
 
-const acceptLink = `${baseUrl}/sendMailResponse?token=${acceptToken}`;
-const rejectLink = `${baseUrl}/sendMailResponse?token=${rejectToken}`;
+const acceptLink = `${baseUrl}/sendMailResponse?token=${acceptToken}&&comapny=${data?.selectCompany}&&action=approved`;
+const rejectLink = `${baseUrl}/sendMailResponse?token=${rejectToken}&&comapny=${data?.selectCompany}&&action=rejected`;
 
 
 
@@ -1711,7 +1711,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
           from: data.selectCompany === "Conqueror" ? process.env.MAIL_EMAIL_CONQUEROR : process.env.MAIL_EMAIL_INJAZ,
           to: data.clientEmail,
           cc: data.selectCompany === "Conqueror" ? process.env.MAIL_CONQUEROR_CC : process.env.MAIL_INJAZ_CC,
-          subject: `Business Setup in ${data.stateValue}, Including ${data.packageIncludingVisa} Visa`,
+          subject:`${data.clientName} | ${data.country} | ${data.packageIncludingVisa} Visa Pkg | ${data.stateValue}`,
           attachments: [
             {
               filename: `Offer-${data.packageIncludingVisa} Visa.pdf`,
@@ -1899,7 +1899,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
         const {token} = req.query; 
         // Verify the token
         const check = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        if (!check) throw new Error("Token not found");
+        if (!check) throw new Error("Email Expired");
         let id;
         let action;
         if(check.acceptDataSet){
@@ -1934,10 +1934,10 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
+    return res.status(200).json({
           hasError: true,
-          msg: error,
-          data: { quotation: null },
+          msg: "Email Expired",
+          data: null ,
         });
       }
     },

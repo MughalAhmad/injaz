@@ -20,7 +20,6 @@ import {sweetNotification} from "../components/common/SweetAlert"
 import {useNavigate} from "react-router-dom"
 import DateDropDown from '../components/pdf/DateDropDown';
 import {updateShowBackDropLoader } from "../redux/features/adminSlice";
-
 const TestForm = () => {
   const toWords = new ToWords();
   const dispatch = useDispatch();
@@ -1218,11 +1217,13 @@ useEffect(() => {
  <button
         className={`w-24 h-11 ${btnStatusText === 'error' ? `bg-[#df3c3c]` : btnStatusText === 'save' ? 'bg-[#4AD991]' : 'bg-[#8f9693]' }  text-white rounded-lg flex justify-center items-center text-sm cursor-pointer ${btnStatusText === 'error' ? `hover:bg-[#eb9797]` : btnStatusText === 'save' ? 'hover:bg-[#99eec3]' : 'hover:cursor-wait' }`}
       >
-<PDFDownloadLink document={<MyDocument
-        data={data}
-        checkBox={checkBoxData}
-        state={stateArray}
-         />} fileName={`${data.clientName}-Quotation-Conqueror-PDF`}>
+<PDFDownloadLink 
+        document={<MyDocument
+            data={data}
+            checkBox={checkBoxData}
+            state={stateArray}
+            />} 
+        fileName={`${data.clientName}-Quotation-Conqueror-PDF`}>
   
        {({ loading, error }) => (
     <button
@@ -1251,6 +1252,7 @@ useEffect(() => {
 
 
     {generatePDFBtn &&
+
  <button
         className={`w-24 h-11 ${btnStatusText === 'error' ? `bg-[#df3c3c]` : btnStatusText === 'save' ? 'bg-[#4AD991]' : 'bg-[#8f9693]' }  text-white rounded-lg flex justify-center items-center text-sm cursor-pointer ${btnStatusText === 'error' ? `hover:bg-[#eb9797]` : btnStatusText === 'save' ? 'hover:bg-[#99eec3]' : 'hover:cursor-wait' }`}
       >

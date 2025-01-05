@@ -11,6 +11,8 @@ export default {
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+        sans: ['Roboto', 'sans-serif'],
       },
       colors: {
         backgroundPrimary: 'var(--background-primary)',

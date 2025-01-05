@@ -56,40 +56,40 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
     <>
       <tr
         key={row.id}
-        className={`${index % 2 !== 0 ? "bg-gray-100" : "bg-white"} py-10`}
+        className={`${index % 2 !== 0 ? "bg-gray-100" : "bg-white"}`}
       >
-        <td className="px-4 py-2 font-semibold text-sm">{index + 1}</td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm">{index + 1}</td>
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.clientName}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.clientEmail}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.clientPhone}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.reference}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.selectCompany}
         </td>
-        <td className="px-4 py-2 font-semibold text-sm text-center">
+        <td className="px-4 py-4 font-semibold text-sm text-center">
           {row.stateValue}
         </td>
-        {row.pdfStatus === 'pending' && <td className="px-4 py-2 font-semibold text-sm text-center">
+        {row.pdfStatus === 'pending' && <td className="px-4 py-4 font-semibold text-sm text-center">
           <span className="bg-yellow-500 bg-opacity-10 text-yellow-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
         </td>}
 
-        {row.pdfStatus === 'rejected' && <td className="px-4 py-2 font-semibold text-sm text-center">
+        {row.pdfStatus === 'rejected' && <td className="px-4 py-4 font-semibold text-sm text-center">
           <span className="bg-rose-400 bg-opacity-10 text-rose-400 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
         </td>}
 
-        {row.pdfStatus === 'approved' && <td className="px-4 py-2 font-semibold text-sm text-center">
+        {row.pdfStatus === 'approved' && <td className="px-4 py-4 font-semibold text-sm text-center">
           <span className="bg-green-500 bg-opacity-10 text-green-500 px-2 py-1 rounded-lg">{row.pdfStatus}</span>
         </td>}
-        {user.role === 'admin' && <td className="px-4 py-2 font-semibold text-sm text-center">{row.notify}</td>}
-        <td className="px-4 py-2 flex justify-center relative">
+        {user.role === 'admin' && <td className="px-4 py-4 font-semibold text-sm text-center">{row.notify}</td>}
+        <td className="px-4 py-4 flex justify-center relative">
           <CDropdown>
             <CDropdownToggle className="relative">
               <span
