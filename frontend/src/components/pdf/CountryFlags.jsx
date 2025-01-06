@@ -7,10 +7,10 @@ const CountryFlags = ({ label = "text", placeholder="text", className, onFlagCha
 
   // Call the onPhoneChange function whenever countryCode or phoneNumber changes
   useEffect(() => {
-    if (onFlagChange) {
+    // if (onFlagChange) {
         setFlag(countryCode);
       onFlagChange(countryCode);
-    }
+    // }
   }, [countryCode, flag]);
 
   return (

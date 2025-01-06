@@ -102,7 +102,7 @@ const { user } = useSelector(state => state.adminStore);
    pro:2500,
    word:'',
    flag:'',
-   country:'',
+   country:'Afghanistan',
 
    medical:"",
    medicalIN:"",
@@ -487,10 +487,14 @@ const { user } = useSelector(state => state.adminStore);
 
 
   const handleFlagChange = (data) => {
+    let countryName = data.split('-').pop();
+    if(data.split('-').pop() === "AF"){
+      countryName='Afghanistan';
+    }
     setData((prevData) => ({
       ...prevData,
       flag: data.split('-')[0],
-      country: data.split('-').pop(),
+      country: countryName,
     }));
   };
 
