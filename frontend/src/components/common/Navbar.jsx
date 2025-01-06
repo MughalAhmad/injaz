@@ -44,13 +44,15 @@ const Navbar = () => {
          
       }
         const getAllQuotationData = () =>{
+          let queryParams = `?currentPage=${1}&&filter=${''}&&sortValue=${''}&&company=${companyName}&&userId=${user?._id}&&role=${user?.role}`;
+
               const data = {
-                companyName: companyName,
-                userId: user?._id,
-                role: user?.role,
-                currentPage:1,
+                // companyName: companyName,
+                // userId: user?._id,
+                // role: user?.role,
+                // currentPage:1,
               }
-              dispatch(getAllPdf(data))
+              dispatch(getAllPdf(queryParams))
             }
 
              const getAllDashboardData = () =>{
@@ -59,7 +61,8 @@ const Navbar = () => {
                     userId: user?._id,
                     role: user?.role,
                     currentPage:1,
-                    sortValue:""
+                    sortValue:"",
+                    cardName:''
                   }
                   dispatch(getDashboardData(data))
                 }
@@ -74,6 +77,7 @@ const Navbar = () => {
     getAllDashboardData()
     }
   }, [visible,localStorage.getItem("companyName")])
+
 
   return (
     <>

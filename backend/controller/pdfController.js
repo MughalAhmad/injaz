@@ -1,16 +1,15 @@
 const pdfModel = require("../models/pdfModel");
 const refModel = require("../models/referenceModel");
 const {sendMail} = require("../integrations/sendMail");
-// const { all } = require("../routes/pdfRoute");
 const puppeteer = require('puppeteer');
-const path = require("node:path");
 const { PDFDocument } = require('pdf-lib');
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
-
-const Fs = require('fs');
-const Util = require('util');
-const ReadFile = Util.promisify(Fs.readFile);
+const ILovePDFApi = require('@ilovepdf/ilovepdf-nodejs');
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+const gs = require('ghostscript-node');
 
 // Generate PDF
 
@@ -1114,8 +1113,9 @@ const checkBoxHTML = checkBox
   return html;
 }
 
-const generatePDF = async (data, checkBoxData, stateArray) => {
 
+
+const generatePDF = async (data, checkBoxData, stateArray) => {
 
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
     const browser = await puppeteer.launch({
@@ -1124,18 +1124,12 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
         dumpio: true
      });
 
-  //    {
-  //     headless: true,
-  //     executablePath: '/usr/bin/chromium-browser',
-  //     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-  //     env: { DISPLAY: null }, // Suppress GUI-related logs
-  //     dumpio: true
-  //  }
     const page = await browser.newPage();
 
     await page.setContent(data, { waitUntil: 'networkidle0' });
 
-     const testPDF = await page.pdf({
+
+    const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
       scale: 0.8,
@@ -1144,12 +1138,119 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
 
     console.log('PDF generated successfully: multi-page-report.pdf');
     await browser.close();
-    return testPDF;
+
+    return pdfBuffer;
   });
    return pdfData;      
 
 };
 
+// const generatePDF = async (data, checkBoxData, stateArray) => {
+//   try {
+//     // Step 1: Generate the HTML content
+//     const htmlGenerator = data?.selectCompany === "Injaz" ? injazHtml : conquerorHtml;
+//     const htmlContent = await htmlGenerator(data, checkBoxData, stateArray);
+
+//     // Step 2: Generate the PDF with Puppeteer
+//     const browser = await puppeteer.launch({
+//       headless: true,
+//       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+//     });
+
+//     const page = await browser.newPage();
+//     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+//     const pdfPath = path.resolve(__dirname, 'generated.pdf');
+//     await page.pdf({
+//       path: pdfPath,
+//       format: 'A4',
+//       printBackground: true,
+//       scale: 0.8,
+//     });
+
+//     console.log('PDF generated successfully:', pdfPath);
+//     await browser.close();
+
+//     // Step 3: Compress the PDF with iLovePDF
+    
+//     const publicKey = 'project_public_bc50da370a4b46f405e9a04deb0eaa0a_Yf78r76db570f6993ea176e1d1dcd527d66a4';
+//     const secretKey = 'secret_key_1336eaf59e89aa4fc53c40f1ae7af168_bojPH097234b6f72759f4305d6039bde48447';
+//     // const instance = new ILovePDFApi(publicKey, secretKey);
+
+//     // const apiUrl = 'https://api.ilovepdf.com/v1/task';  // Ensure this is correct
+
+//     const ilovepdf = new ILovePDFApi(publicKey, secretKey);
+//     let task = ilovepdf.newTask('merge');    await task.start();
+//     await task.addFile(pdfPath);
+//     // await task.addFile(pdfPath);
+//     await task.process();
+
+//     const PDFdata = await task.download();
+// // const response = await axios.post(
+// //   apiUrl, 
+// //   {
+// //     public_key: publicKey,
+// //     secret_key: secretKey,
+// //   },
+// //   {
+// //     headers: {
+// //       'Content-Type': 'application/json',
+// //     },
+// //   }
+// // );
+// // Using Authorization header
+// // const response = await axios.post(
+// //   apiUrl, 
+// //   {},
+// //   {
+// //     headers: {
+// //       'Content-Type': 'application/json',
+// //       'Authorization': `Bearer ${publicKey}:${secretKey}`, // Authorization header format
+// //     },
+// //   }
+// // );
+// // console.log('iLovePDF API Response:', response);
+// // console.log('iLovePDF API Response:', response.data);
+
+//     // const ilovepdf = new ILovePDF(publicKey, secretKey);
+//     // const task = response.newTask('compress');
+//     // const task = instance.newTask('merge');
+
+//     // Promise-based way to use ILovePDFApi.
+// // const compressedPdfPath = await task.start()
+// // .then(() => {
+// //     return task.addFile(pdfPath);
+// // })
+// // .then(() => {
+// //     return task.process();
+// // })
+// // .then(() => {
+// //     return task.download();
+// // })
+// // .then((data) => {
+// //     console.log('DONE');
+// // });
+
+//     console.log('Adding file to iLovePDF compression task...');
+//     // await task.addFile(pdfPath);
+
+//     console.log('Processing compression task...');
+//     // const compressedPdfPath = await task.process();
+
+//     // const compressedPdfPath = path.resolve(__dirname, 'compressed.pdf');
+//     // await task.download(compressedPdfPath);
+
+//     // console.log('Compressed PDF saved to:', compressedPdfPath);
+
+//     // Cleanup: Optionally delete the original PDF
+//     fs.unlinkSync(pdfPath);
+
+//     return ;
+//   } catch (error) {
+//     console.error('Error during PDF generation/compression:', error);
+//     throw error;
+//   }
+// };
 const compressPDF = async (pdfBuffer) => {
   // Load the Puppeteer-generated PDF
   const pdfDoc = await PDFDocument.load(pdfBuffer);
@@ -1163,6 +1264,7 @@ const compressPDF = async (pdfBuffer) => {
   console.log('PDF compressed successfully');
   return compressedPdfBuffer;
 };
+
 
   module.exports = {
     createPdf: async (req, res, next) => {
@@ -1497,15 +1599,16 @@ dashboardData: async (req, res, next) => {
       // Filter for the current day's data
       const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Start of today
       const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // End of today
-      dateFilter.updatedAt = { $gte: startOfDay, $lte: endOfDay };
+      dateFilter.createdAt = { $gte: startOfDay, $lte: endOfDay };
     } else if (sortValue === 'week') {
       // Filter for the current week's data (from Sunday to today)
-      const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Start of current week (Sunday)
-      dateFilter.updatedAt = { $gte: startOfWeek };
+      let startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Start of current week (Sunday
+      startOfWeek.setHours(0, 0, 0, 0); // Reset time to midnight)
+      dateFilter.createdAt = { $gte: startOfWeek };
     } else if (sortValue === 'month') {
       // Filter for the current month's data (from the 1st of the month to today)
       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // First day of the current month
-      dateFilter.updatedAt = { $gte: startOfMonth };
+      dateFilter.createdAt = { $gte: startOfMonth };
     }
    
     let testDATA 
@@ -1676,7 +1779,7 @@ return res.status(200).json({
          const {data, checkBoxData, stateArray, editerText} = req.body;
       const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
 
-// Compress the PDF
+// Compress the PDF'
 const compressedPdfBuffer = await compressPDF(pdfBuffer);
 
      let acceptDataSet={

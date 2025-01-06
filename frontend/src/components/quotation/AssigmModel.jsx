@@ -3,6 +3,8 @@ import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton } 
 import {getAllUsersNameAndId, assignToUser} from "../../redux/features/generalSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../common/Button';
+import {sweetNotification} from "../common/SweetAlert";
+import {updateShowBackDropLoader} from "../../redux/features/adminSlice";
 
 const AssigmModel = ({setVisible, visible, userData}) => {
     const dispatch = useDispatch();
@@ -20,9 +22,23 @@ const AssigmModel = ({setVisible, visible, userData}) => {
             id:id,
             userData:userData
         }
-        dispatch(assignToUser(data));
+            dispatch(updateShowBackDropLoader(true));
+        
+        dispatch(assignToUser(data)).then(response => {
+                    dispatch(updateShowBackDropLoader(false));
+                    if (response && !response.payload.hasError) {
+                     sweetNotification(false, response.payload.msg)
+                    }
+                    else{
+                      sweetNotification(true, response.payload.msg)
+                    }
+                  })
+                  .catch(error => {
+                    dispatch(updateShowBackDropLoader(false));
+                    sweetNotification(true, 'Something went wrong');
+                    console.error('Dispatch failed:', error);
+                  });
         setVisible(!visible);
-        window.location.reload();
     }
 
 useEffect(() => {
