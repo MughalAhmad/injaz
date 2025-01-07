@@ -32,7 +32,6 @@ const NotifyModel = ({setVisible, visible, notifications, getPdfData}) => {
         {notifications?.map((notify)=>(
 
     <div className='flex justify-between items-center'><p>{notify.clientName}</p>
-    {/* <button onClick={()=>handleAccept(notify._id)}>Accept</button> */}
     <Button title="Assign" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() =>handleAccept(notify._id)} />
 
     </div>
@@ -40,10 +39,6 @@ const NotifyModel = ({setVisible, visible, notifications, getPdfData}) => {
     </CModalBody>
     <CModalFooter>
     <Button title="Close" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => setVisible(false)} />
-
-      {/* <CButton color="secondary" onClick={() => setVisible(false)}>
-        Close
-      </CButton> */}
     </CModalFooter>
   </CModal>
   )

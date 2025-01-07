@@ -10,22 +10,18 @@ const authRouter = require ("./routes/authRoute");
 const userRouter = require ("./routes/userRoute");
 const pdfRouter = require ("./routes/pdfRoute");  
 const referenceRouter = require ("./routes/referenceRoute");  
+const errorHandler = require('./middleware/errorHandler');
 
-
-// Serve static files (like images) from the 'public' folder
 app.use('/conqueror', express.static(path.join(__dirname, 'public')));
 app.use('/injaz', express.static(path.join(__dirname, 'public/Injaz')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 const allowedOrigins = [
-    'http://localhost:4000',
-    'http://localhost:5000',
-    'http://localhost:4001',
     'http://localhost:4173',
     'https://portal.injazgroup.co.uk',
     'https://quotation.injazgroup.co.uk',
-    'https://94.136.189.148:4000',
+    'https://94.136.189.148:4173',
 ];
 
 app.use(cors({
@@ -50,6 +46,7 @@ app.use("/api/v1/reference", referenceRouter);
 //     res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 // });
 
+app.use(errorHandler);
 
 app.listen(process.env.PORT, async () => {
     console.log(`Server running on port: ${process.env.PORT}`);

@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Search from "/svgs/search.svg";
-import French from "/svgs/french.svg";
-import English from "/svgs/english.svg";
-import Spanish  from "/svgs/spanish.svg";
-import Checked from "/svgs/gray-check.svg";
 import Notification from "/svgs/notification.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import SearchRed from "/svgs/searchRed.svg";
@@ -45,13 +41,6 @@ const Navbar = () => {
       }
         const getAllQuotationData = () =>{
           let queryParams = `?currentPage=${1}&&filter=${''}&&sortValue=${''}&&company=${companyName}&&userId=${user?._id}&&role=${user?.role}`;
-
-              const data = {
-                // companyName: companyName,
-                // userId: user?._id,
-                // role: user?.role,
-                // currentPage:1,
-              }
               dispatch(getAllPdf(queryParams))
             }
 
@@ -141,20 +130,6 @@ const Navbar = () => {
             </div>
             <CDropdown>
               <CDropdownToggle>
-              {/* <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-4 h-4 text-gray-700"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg> */}
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem className="cursor-pointer" onClick={() => navigate("/profile")}>Profile</CDropdownItem>

@@ -42,10 +42,6 @@ const ForgotPassword = () => {
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
     className="absolute top-0 left-0 w-full h-full object-cover"
-    // autoPlay
-    // loop
-    // muted
-    // playsInline
   >
     <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
@@ -102,12 +98,6 @@ const ForgotPassword = () => {
       Continue
     </button>
   </form>
-
-
-  {/* <div className="flex items-center justify-center mt-4 sm:mt-20 md:mt-36">
-  <span className='font-normal text-sm mr-1 text-stone300'>Didn’t Recieve code?</span>
-  <span className='font-semibold text-sm text-textPrimary hover:text-texPrimaryHover cursor-pointer'>Resend Code</span>
-  </div> */}
 
 
 </div>

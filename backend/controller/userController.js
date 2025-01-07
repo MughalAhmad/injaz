@@ -74,11 +74,7 @@ module.exports = {
         data: { user: upadatedUser },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { user: null },
-      });
+      next(error);
     }
   },
   delete: async (req, res, next) => {
@@ -103,11 +99,7 @@ module.exports = {
         data: users,
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: null,
-      });
+      next(error);
     }
   },
   getUser: async (req, res, next) => {
@@ -122,11 +114,7 @@ module.exports = {
         data: { user: findUser },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { user: null },
-      });
+      next(error);
     }
   },
   new: async (req, res, next) => {
@@ -195,11 +183,7 @@ module.exports = {
         data: { user: user },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { user: null },
-      });
+      next(error);
     }
   },
   getUserList: async (req, res, next) => {
@@ -252,11 +236,7 @@ module.exports = {
         data: { users: userList, pages :userCount,  total:totalDocuments },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { users: null },
-      });
+      next(error);
     }
   },
   getAllUsersNameAndId: async (req, res, next) => {
@@ -284,11 +264,7 @@ module.exports = {
         data: { users: userList },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { users: null },
-      });
+      next(error);
     }
   },
   assignToUser: async (req, res, next) => {
@@ -313,11 +289,7 @@ module.exports = {
         data: { user: upadatedPdf },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { user: null },
-      });
+      next(error);
     }
   },
   sendEmailAndPassword: async (req, res, next) => {
@@ -385,11 +357,7 @@ module.exports = {
         data: { mail: findUser },
       });
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: { mail: null },
-      });
+      next(error);
     }
   },
 };

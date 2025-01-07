@@ -105,7 +105,6 @@ const DashboardTableRow = ({ row, index, handleRowData }) => {
                 onMouseLeave={handleMouseLeave}
               >
                 <img
-                  // src="/svgs/three-dot.svg"
                   src={
                     isHovered
                       ? localStorage.getItem("companyName") === "Injaz"

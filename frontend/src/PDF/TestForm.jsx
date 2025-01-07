@@ -645,7 +645,7 @@ const saveDataIntoDB = () =>{
     calculateGrandTotal = calculateGrandTotal - 2500;
 
 
-    calculateGrandTotal = calculateGrandTotal + Number(data.step2ApprovalFee) + Number(data.discount)
+    calculateGrandTotal = calculateGrandTotal + Number(data.discount)
 
     const roundedNumber = parseFloat(calculateGrandTotal.toFixed(1));
     let words = toWords.convert(roundedNumber);
@@ -1006,7 +1006,7 @@ useEffect(() => {
     //   )
     // );
     
-  }, [localStorage.getItem("companyName"), checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.step2ApprovalFee, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN, data.quotationDate])
+  }, [localStorage.getItem("companyName"), checkBoxData, stateArray, data.discount, data.step1value, data.step2EstablishmentIN, data.step2value1IN, data.step2value2IN, data.step2value2aIN, data.step2value3IN, data.visitingCard, data.letterHeadPad, data.medicalIN, data.emiratesIdIN, data.quotationDate])
   
 
   return (

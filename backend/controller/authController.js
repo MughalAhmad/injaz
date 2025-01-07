@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 const {forgotSendMail} = require("../integrations/sendMail");
-const { use } = require("../routes/authRoute");
 
 module.exports = {
-  initialFetch: async (req, res) => {
+  initialFetch: async (req, res, next) => {
     const user = req.user || {};
     const token = req.token || req.session.token || null;
     const isAuthenticated = user && !user.isBlock && token ? true : false;
@@ -33,11 +32,7 @@ module.exports = {
         });
 
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: null,
-      });
+      next(error);
     }
 },
   logout: async (req, res, next) => {
@@ -129,11 +124,7 @@ module.exports = {
         });
 
     } catch (error) {
-      return res.status(200).json({
-        hasError: true,
-        msg: error.message,
-        data: null,
-      });
+      next(error);
     }
 },
 checkCode: async (req, res, next) => {
@@ -150,11 +141,7 @@ checkCode: async (req, res, next) => {
       });
 
   } catch (error) {
-    return res.status(200).json({
-      hasError: true,
-      msg: error.message,
-      data: null,
-    });
+    next(error);
   }
 },
 newPassword: async (req, res, next) => {
@@ -178,11 +165,7 @@ newPassword: async (req, res, next) => {
       });
 
   } catch (error) {
-    return res.status(200).json({
-      hasError: true,
-      msg: error.message,
-      data: null,
-    });
+    next(error);
   }
 },
 };

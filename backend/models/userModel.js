@@ -45,6 +45,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default:null
     },
+    phoneCode:{
+        type: String,
+        required: true,
+    },
+ mobileCode:{
+        type: String,
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now

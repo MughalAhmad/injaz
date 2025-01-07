@@ -12,7 +12,6 @@ const ReferencePaginate = ({ setCurrentPage, currentPage }) => {
   const { refs } = useSelector(state => state.generalStore);
 
   const handlePageClick = (data) => {
-    // localStorage.setItem("currentPage",data.selected+1)
      let data1 = {
               field:"currentPage",
               value:data.selected+1

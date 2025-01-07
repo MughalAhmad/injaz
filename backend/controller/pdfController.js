@@ -3,19 +3,11 @@ const refModel = require("../models/referenceModel");
 const {sendMail} = require("../integrations/sendMail");
 const puppeteer = require('puppeteer');
 const { PDFDocument } = require('pdf-lib');
-const moment = require("moment");
 const jwt = require("jsonwebtoken");
-const ILovePDFApi = require('@ilovepdf/ilovepdf-nodejs');
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
-const gs = require('ghostscript-node');
 
 // Generate PDF
 
 const injazHtml = async (data, checkBox, state) =>{
-  // let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
-  // let mainUrl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
   let url = "http://localhost:5000/injaz/" ;
   let mainUrl = "http://localhost:5000/conqueror/" ;
 
@@ -571,7 +563,6 @@ const injazHtml = async (data, checkBox, state) =>{
 
 const conquerorHtml = async (data, checkBox, state) =>{
 
-  // let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror" : "http://localhost:5000/conqueror/" ;
   let url = "http://localhost:5000/conqueror/" ;
 
   const setImg = (name)=>{
@@ -1113,8 +1104,6 @@ const checkBoxHTML = checkBox
   return html;
 }
 
-
-
 const generatePDF = async (data, checkBoxData, stateArray) => {
 
  const pdfData = await (data?.selectCompany === "Injaz" ? injazHtml :  conquerorHtml)(data, checkBoxData, stateArray).then(async(data)=>{
@@ -1145,112 +1134,6 @@ const generatePDF = async (data, checkBoxData, stateArray) => {
 
 };
 
-// const generatePDF = async (data, checkBoxData, stateArray) => {
-//   try {
-//     // Step 1: Generate the HTML content
-//     const htmlGenerator = data?.selectCompany === "Injaz" ? injazHtml : conquerorHtml;
-//     const htmlContent = await htmlGenerator(data, checkBoxData, stateArray);
-
-//     // Step 2: Generate the PDF with Puppeteer
-//     const browser = await puppeteer.launch({
-//       headless: true,
-//       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-//     });
-
-//     const page = await browser.newPage();
-//     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-
-//     const pdfPath = path.resolve(__dirname, 'generated.pdf');
-//     await page.pdf({
-//       path: pdfPath,
-//       format: 'A4',
-//       printBackground: true,
-//       scale: 0.8,
-//     });
-
-//     console.log('PDF generated successfully:', pdfPath);
-//     await browser.close();
-
-//     // Step 3: Compress the PDF with iLovePDF
-    
-//     const publicKey = 'project_public_bc50da370a4b46f405e9a04deb0eaa0a_Yf78r76db570f6993ea176e1d1dcd527d66a4';
-//     const secretKey = 'secret_key_1336eaf59e89aa4fc53c40f1ae7af168_bojPH097234b6f72759f4305d6039bde48447';
-//     // const instance = new ILovePDFApi(publicKey, secretKey);
-
-//     // const apiUrl = 'https://api.ilovepdf.com/v1/task';  // Ensure this is correct
-
-//     const ilovepdf = new ILovePDFApi(publicKey, secretKey);
-//     let task = ilovepdf.newTask('merge');    await task.start();
-//     await task.addFile(pdfPath);
-//     // await task.addFile(pdfPath);
-//     await task.process();
-
-//     const PDFdata = await task.download();
-// // const response = await axios.post(
-// //   apiUrl, 
-// //   {
-// //     public_key: publicKey,
-// //     secret_key: secretKey,
-// //   },
-// //   {
-// //     headers: {
-// //       'Content-Type': 'application/json',
-// //     },
-// //   }
-// // );
-// // Using Authorization header
-// // const response = await axios.post(
-// //   apiUrl, 
-// //   {},
-// //   {
-// //     headers: {
-// //       'Content-Type': 'application/json',
-// //       'Authorization': `Bearer ${publicKey}:${secretKey}`, // Authorization header format
-// //     },
-// //   }
-// // );
-// // console.log('iLovePDF API Response:', response);
-// // console.log('iLovePDF API Response:', response.data);
-
-//     // const ilovepdf = new ILovePDF(publicKey, secretKey);
-//     // const task = response.newTask('compress');
-//     // const task = instance.newTask('merge');
-
-//     // Promise-based way to use ILovePDFApi.
-// // const compressedPdfPath = await task.start()
-// // .then(() => {
-// //     return task.addFile(pdfPath);
-// // })
-// // .then(() => {
-// //     return task.process();
-// // })
-// // .then(() => {
-// //     return task.download();
-// // })
-// // .then((data) => {
-// //     console.log('DONE');
-// // });
-
-//     console.log('Adding file to iLovePDF compression task...');
-//     // await task.addFile(pdfPath);
-
-//     console.log('Processing compression task...');
-//     // const compressedPdfPath = await task.process();
-
-//     // const compressedPdfPath = path.resolve(__dirname, 'compressed.pdf');
-//     // await task.download(compressedPdfPath);
-
-//     // console.log('Compressed PDF saved to:', compressedPdfPath);
-
-//     // Cleanup: Optionally delete the original PDF
-//     fs.unlinkSync(pdfPath);
-
-//     return ;
-//   } catch (error) {
-//     console.error('Error during PDF generation/compression:', error);
-//     throw error;
-//   }
-// };
 const compressPDF = async (pdfBuffer) => {
   // Load the Puppeteer-generated PDF
   const pdfDoc = await PDFDocument.load(pdfBuffer);
@@ -1265,7 +1148,6 @@ const compressPDF = async (pdfBuffer) => {
   return compressedPdfBuffer;
 };
 
-
   module.exports = {
     createPdf: async (req, res, next) => {
       try {
@@ -1274,8 +1156,6 @@ const compressPDF = async (pdfBuffer) => {
           checkBoxData:req.body.checkBoxData,
           stateArray:req.body.stateArray
         }
-
-        // console.log(modifyBody)
          const pdf = await pdfModel.create(modifyBody);
         if (!pdf) throw new Error("Error in Creating pdf");
   
@@ -1285,11 +1165,7 @@ const compressPDF = async (pdfBuffer) => {
           data: { pdf: pdf},
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { pdf: null },
-        });
+        next(error);
       }
     },
     getAllPdf: async (req, res, next) => {
@@ -1368,11 +1244,7 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { pdf: null },
-        });
+        next(error);
       }
     },
     getQuotation: async (req, res, next) => {
@@ -1390,187 +1262,9 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { quotation: null },
-        });
+        next(error);
       }
     },
-//     dashboardData: async (req, res, next) => {
-//       try {
-//             const {currentPage, sortValue, company,role, userId} = req.query; 
-//             const page = currentPage || 1;
-//             const limit = 10;
-//             const skip = (page - 1) * limit;
-
-      
-//             const options = [
-//               { $skip: skip }, // Pagination skip
-//               { $limit: limit },
-//             ];
-      
-
-// let matchOptions ='';
-
-// if(role === "admin"){
-//   matchOptions = {selectCompany:company}
-// }else{
-//   matchOptions = {selectCompany:company, userId:userId, notify:'false'}
-// }
-
-      
-//             const pdfs = await pdfModel.aggregate([
-//               {
-//                 $match: {
-//                   ...matchOptions,
-//                 },
-//               },
-//               {
-//                 $facet: {
-//                   pdfs: [],
-//                   limitedPdfs:options,
-//                   totalCount: [
-//                     { $count: "count" }, // Count the total number of documents matching the filter
-//                   ],
-//                 },
-//               },
-//             ]);
-
-//             let statusCount={
-//               pending:0,
-//               approved:0,
-//               rejected:0, 
-//             }
-
-//             pdfs[0]?.pdfs.map((pdf)=>{
-//               if(pdf.pdfStatus === "pending"){
-//                 statusCount.pending = statusCount.pending + 1
-//               }
-//               else if(pdf.pdfStatus === "approved"){
-//                 statusCount.approved = statusCount.approved + 1
-//               }
-//              else {
-//               statusCount.rejected = statusCount.rejected + 1
-
-//               }
-
-//             })
-            
-//             const pdfList = pdfs[0]?.limitedPdfs || [];
-//             const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
-//             const pdfCount = Math.ceil(totalDocuments / limit);
-      
-//             if (!pdfs) throw new Error("Pdfs not found");
-      
-//             return res.status(200).json({
-//               hasError: false,
-//               msg: "All Pdfs Successfully Finded",
-//               data: { pdfs: pdfList, pages :pdfCount, cardData:statusCount, total:totalDocuments },
-//             });
-//           } catch (error) {
-//             return res.status(200).json({
-//               hasError: true,
-//               msg: error.message,
-//               data: { pdfs: null },
-//             });
-//           }
-//     },
-// /////////////////////////////////////////
-
-// dashboardData: async (req, res, next) => {
-//   try {
-//     const { currentPage, sortValue, company, role, userId } = req.query;
-//     const page = currentPage || 1;
-//     const limit = 10;
-//     const skip = (page - 1) * limit;
-
-//     const options = [
-//       { $skip: skip }, // Pagination skip
-//       { $limit: limit },
-//     ];
-
-//     let matchOptions = '';
-
-//     if (role === "admin") {
-//       matchOptions = { selectCompany: company };
-//     } else {
-//       matchOptions = { selectCompany: company, userId: userId, notify: 'false' };
-//     }
-
-//     // Date filtering logic based on sortValue
-//     let dateFilter = {};
-//     const today = new Date();
-    
-//     if (sortValue === 'today') {
-//       const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Start of today
-//       dateFilter.createdAt = { $gte: startOfDay };
-//     } else if (sortValue === 'week') {
-//       const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Start of current week (Sunday)
-//       dateFilter.createdAt = { $gte: startOfWeek };
-//     } else if (sortValue === 'month') {
-//       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // First day of the current month
-//       dateFilter.createdAt = { $gte: startOfMonth };
-//     }
-
-//     // Apply the date filter if sortValue is provided
-//     if (Object.keys(dateFilter).length > 0) {
-//       matchOptions = { ...matchOptions, ...dateFilter };
-//     }
-
-//     const pdfs = await pdfModel.aggregate([
-//       {
-//         $match: {
-//           ...matchOptions,
-//         },
-//       },
-//       {
-//         $facet: {
-//           pdfs: [],
-//           limitedPdfs: options,
-//           totalCount: [
-//             { $count: "count" }, // Count the total number of documents matching the filter
-//           ],
-//         },
-//       },
-//     ]);
-
-//     let statusCount = {
-//       pending: 0,
-//       approved: 0,
-//       rejected: 0,
-//     };
-
-//     pdfs[0]?.pdfs.map((pdf) => {
-//       if (pdf.pdfStatus === "pending") {
-//         statusCount.pending = statusCount.pending + 1;
-//       } else if (pdf.pdfStatus === "approved") {
-//         statusCount.approved = statusCount.approved + 1;
-//       } else {
-//         statusCount.rejected = statusCount.rejected + 1;
-//       }
-//     });
-
-//     const pdfList = pdfs[0]?.limitedPdfs || [];
-//     const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
-//     const pdfCount = Math.ceil(totalDocuments / limit);
-
-//     if (!pdfs) throw new Error("Pdfs not found");
-
-//     return res.status(200).json({
-//       hasError: false,
-//       msg: "All Pdfs Successfully Found",
-//       data: { pdfs: pdfList, pages: pdfCount, cardData: statusCount, total: totalDocuments },
-//     });
-//   } catch (error) {
-//     return res.status(200).json({
-//       hasError: true,
-//       msg: error.message,
-//       data: { pdfs: null },
-//     });
-//   }
-// },
-// ////////////////////////////////////////////
 dashboardData: async (req, res, next) => {
   try {
     const { currentPage, sortValue, company, role, userId ,name} = req.query;
@@ -1669,11 +1363,7 @@ dashboardData: async (req, res, next) => {
       data: { pdfs: pdfList, pages: pdfCount, cardData: statusCount, total: totalDocuments },
     });
   } catch (error) {
-    return res.status(200).json({
-      hasError: true,
-      msg: error.message,
-      data: { pdfs: null },
-    });
+    next(error);
   }
 },
 
@@ -1706,11 +1396,7 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { notificationData: null },
-        });
+        next(error);
       }
     },
     updateNotification: async (req, res, next) => {
@@ -1731,11 +1417,7 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { notificationData: null },
-        });
+        next(error);
       }
     },
     allRefs: async (req, res, next) => {
@@ -1767,11 +1449,7 @@ return res.status(200).json({
 
 
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { refs: null },
-        });
+        next(error);
       }
     },
     sendPDF : async (req, res, next) => {
@@ -1800,11 +1478,6 @@ let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4173' :
 
 const acceptLink = `${baseUrl}/sendMailResponse?token=${acceptToken}&&comapny=${data?.selectCompany}&&action=approved`;
 const rejectLink = `${baseUrl}/sendMailResponse?token=${rejectToken}&&comapny=${data?.selectCompany}&&action=rejected`;
-
-
-
-// let url = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/injaz/" : "http://localhost:5000/injaz/" ;
-// let Curl = process.env.NODE_ENV === "production" ? "https://portal.injazgroup.co.uk/conqueror/" : "http://localhost:5000/conqueror/" ;
 
 let url = "http://localhost:5000/injaz/" ;
 let Curl ="http://localhost:5000/conqueror/" ;
@@ -1990,11 +1663,7 @@ let Curl ="http://localhost:5000/conqueror/" ;
 
       } catch (error) {
         console.error('Error generating PDF:', error);
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { refs: null },
-        });
+        next(error);
       }
     },
     changePdfStatus: async (req, res, next) => {
@@ -2037,11 +1706,7 @@ return res.status(200).json({
 
 
       } catch (error) {
-    return res.status(200).json({
-          hasError: true,
-          msg: "Email Expired",
-          data: null ,
-        });
+        next(error);
       }
     },
 

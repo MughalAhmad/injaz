@@ -15,11 +15,7 @@
           data: { ref: upadatedRef },
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { ref: null },
-        });
+        next(error);
       }
     },
     getReferenceList: async (req, res, next) => {
@@ -73,11 +69,7 @@
           data: { refs: refList, pages:refCount, total:totalDocuments  },
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { refs: null },
-        });
+        next(error);
       }
     },
     delete: async (req, res, next) => {
@@ -97,11 +89,7 @@
           data: refs,
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: null,
-        });
+        next(error);
       }
     },
     getReferences: async (req, res, next) => {
@@ -116,11 +104,7 @@
           data: { ref: findRef },
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { ref: null },
-        });
+        next(error);
       }
     },
     new: async (req, res, next) => {
@@ -136,11 +120,7 @@
           data: { ref: ref },
         });
       } catch (error) {
-        return res.status(200).json({
-          hasError: true,
-          msg: error.message,
-          data: { ref: null },
-        });
+        next(error);
       }
     },
     

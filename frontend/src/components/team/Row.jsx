@@ -82,7 +82,6 @@ const handleMouseLeave = () => setIsHovered(false);
           onMouseLeave={handleMouseLeave}
         >
           <img 
-          // src="/svgs/three-dot.svg" 
           src={isHovered
             ? (localStorage.getItem("companyName") === "Injaz" 
                 ? "/svgs/threeDotBlue.svg" 

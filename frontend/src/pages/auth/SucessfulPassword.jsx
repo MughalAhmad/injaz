@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import ArrowLeft from "/svgs/arrow-left.svg";
 import BigTick from "/svgs/big-tick.svg";
 import { useNavigate } from 'react-router-dom';
 
@@ -16,10 +15,6 @@ const SucessfulPassword = () => {
 <div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
 <video
     className="absolute top-0 left-0 w-full h-full object-cover"
-    // autoPlay
-    // loop
-    // muted
-    // playsInline
   >
     <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.

@@ -3,7 +3,6 @@ import React from 'react'
 const Card = ({title="text",name="", count=0, icon="", bg="",setCardName}) => {
 
   const handleCard = ()=>{
-    console.log("hello");
     setCardName(name)
   }
 

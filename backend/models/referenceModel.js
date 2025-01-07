@@ -37,6 +37,14 @@ const referenceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    phoneCode:{
+        type: String,
+        required: true,
+    },
+ mobileCode:{
+        type: String,
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now

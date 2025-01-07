@@ -3,14 +3,12 @@ import ReactPaginate from 'react-paginate';
 import "./Paginate.css";
 import { useSelector } from 'react-redux';
 import DashboardTable from "./Table";
-import { current } from '@reduxjs/toolkit';
 
 const DashboardPaginate = ({ setCurrentPage, currentPage }) => {
 
   const { pdfData } = useSelector(state => state.pdfStore);
 
   const handlePageClick = (data) => {
-    // localStorage.setItem("currentPage",data.selected+1)
     setCurrentPage(data.selected+1);
   };
 

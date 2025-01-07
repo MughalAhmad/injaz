@@ -19,9 +19,7 @@ const TextEditer = ({setVisible, visible, handleMail}) => {
     <CModalBody className='flex flex-col gap-4'>
        <p>If you want to add something below the default content.</p>
     <ReactQuill theme="snow" value={value} onChange={setValue} />
-    {/* <div className='flex justify-between items-center'><p>hello</p>
-    
-    </div> */}
+   
     </CModalBody>
     <CModalFooter>
     <Button title="Close" size="sm" color={localStorage.getItem("companyName") === "Conqueror" ? "bg-backgroundSecondary" : "bg-backgroundPrimary" } onClick={() => setVisible(false)} />
