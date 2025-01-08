@@ -194,7 +194,7 @@ const pdfSchema = new mongoose.Schema({
         required: true
     },
     step2value3IN: {
-        type: Number,
+        type: String,
         required: true
     },
     step3EmiratesId: {
