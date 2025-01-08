@@ -1706,6 +1706,27 @@ return res.status(200).json({
       } catch (error) {
         next(error);
       }
-    },  
+    },
+    updateReminderAt: async (req, res, next) => {
+      try {
+        const {pdfId} = req.query; 
+        const findPdf = await pdfModel.findOne({_id:pdfId});
+        if (!findPdf) throw new Error("Notification not found");
+        findPdf.reminderAt = 'false';
+        const notifys = await pdfModel.findByIdAndUpdate({_id:pdfId}, findPdf, {new:true} );
+        if (!notifys) throw new Error("Notification not update");
+
+
+return res.status(200).json({
+  hasError: false,
+  msg: "Notification Successfully Updated",
+  data: { notification: notifys, },
+});
+
+
+      } catch (error) {
+        next(error);
+      }
+    }, 
   };
   
