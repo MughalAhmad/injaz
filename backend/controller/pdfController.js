@@ -1265,7 +1265,7 @@ return res.status(200).json({
         next(error);
       }
     },
-dashboardData: async (req, res, next) => {
+    dashboardData: async (req, res, next) => {
   try {
     const { currentPage, sortValue, company, role, userId ,name} = req.query;
     const page = currentPage || 1;
@@ -1365,9 +1365,7 @@ dashboardData: async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-},
-
-   
+    },
     getNoficationData: async (req, res, next) => {
       try {
         const {company, userId} = req.query; 

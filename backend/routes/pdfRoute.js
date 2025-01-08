@@ -7,7 +7,7 @@ const userRole = require('../middleware/checkRole');
 router.post("/changePdfStatus", pdfController.changePdfStatus);   
 router.post("/create", authenticateUser,userRole, pdfController.createPdf);
 router.get("/getAllPdf",authenticateUser, pdfController.getAllPdf);
-router.get("/dashboard",authenticateUser, pdfController.dashboardData);
+router.get("/dashboard", pdfController.dashboardData);
 router.get("/getNoficationData",authenticateUser, pdfController.getNoficationData);
 router.put("/updateNotification",authenticateUser, pdfController.updateNotification);
 router.get("/allRefs",authenticateUser, pdfController.allRefs);

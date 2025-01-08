@@ -83,16 +83,9 @@ const Login = () => {
   if(isAuthenticated) return
 
   return (
-<div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
-<video
-    className="absolute top-0 left-0 w-full h-full object-cover"
-  >
-    <source src="/video.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-
+<div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-top bg-cover relative">
     <div className='w-full h-full bg-[#222A59A8] bg-opacity-66 absolute'></div>
-<div className="w-full p-5 md:px-20 md:py-16 md:max-w-3xl bg-white bg-opacity-80 rounded-3xl relative">
+<div className="w-full p-5 md:px-20 md:py-16 md:max-w-3xl bg-[#ffffff] bg-opacity-70 rounded-3xl relative">
   <h2 className="text-2xl font-poppins font-semibold text-center mb-2.5 text-textPrimary md:text-left">
     Welcome
   </h2>

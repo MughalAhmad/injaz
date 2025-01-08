@@ -39,16 +39,9 @@ const ForgotPassword = () => {
     }
   
   return (
-<div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-center bg-cover relative">
-<video
-    className="absolute top-0 left-0 w-full h-full object-cover"
-  >
-    <source src="/video.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-
+<div className="flex items-center justify-center  min-h-screen px-4 py-2 bg-custom-svg bg-no-repeat bg-top bg-cover relative">
     <div className='w-full h-full bg-[#222A59A8] bg-opacity-66 absolute'></div>
-<div className="w-full px-5 md:max-w-3xl bg-white bg-opacity-80 rounded-3xl sm:px-32 pt-6 sm:pt-12 pb-6 sm:pb-12 relative font-poppins">
+<div className="w-full px-5 md:max-w-3xl bg-[#ffffff] bg-opacity-70 rounded-3xl sm:px-32 pt-6 sm:pt-12 pb-6 sm:pb-12 relative font-poppins">
 
 
 <div className="flex items-center justify-between ">

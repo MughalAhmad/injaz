@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'custom-svg': "url('/svgs/loginBg.svg')",
+        'custom-svg': "url('/login.svg')",
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
