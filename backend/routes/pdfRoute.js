@@ -11,7 +11,7 @@ router.get("/dashboard",authenticateUser, pdfController.dashboardData);
 router.get("/getNoficationData",authenticateUser, pdfController.getNoficationData);
 router.put("/updateNotification",authenticateUser, pdfController.updateNotification);
 router.get("/allRefs",authenticateUser, pdfController.allRefs);
-router.post("/sendPDF",authenticateUser, pdfController.sendPDF);
+router.post("/sendPDF", pdfController.sendPDF);
 router.get("/getQuotation",authenticateUser, pdfController.getQuotation);   
 
 

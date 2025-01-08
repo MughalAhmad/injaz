@@ -56,8 +56,8 @@ function App() {
       <Route path="/digit6" element={<Digit6Verify />} />
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/sucessfulpassword" element={<SucessfulPassword />} />
-        <Route path="*" element={<Page404/>}/>
       <Route path="/sendMailResponse" element={<MailResponse />} />
+        <Route path="*" element={<Page404/>}/>
     </Routes>
   </Suspense>
   </Router>

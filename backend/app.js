@@ -11,7 +11,7 @@ const userRouter = require ("./routes/userRoute");
 const pdfRouter = require ("./routes/pdfRoute");  
 const referenceRouter = require ("./routes/referenceRoute");  
 const errorHandler = require('./middleware/errorHandler');
-
+const {startCronJob} = require('./cornjobs/reminderPDF');
 app.use('/conqueror', express.static(path.join(__dirname, 'public')));
 app.use('/injaz', express.static(path.join(__dirname, 'public/Injaz')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,6 +52,7 @@ app.listen(process.env.PORT, async () => {
     console.log(`Server running on port: ${process.env.PORT}`);
     try {
         const { err } = await dataBaseconfig();
+        // startCronJob();
         if (err) throw new Error(err)
     } catch (ex) {
         console.log('Database Connection Error:', ex);

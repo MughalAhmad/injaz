@@ -190,7 +190,7 @@ const pdfSchema = new mongoose.Schema({
         required: true
     },
     step2value3: {
-        type: Number,
+        type: String,
         required: true
     },
     step2value3IN: {
@@ -255,6 +255,10 @@ const pdfSchema = new mongoose.Schema({
         type: String,
         required: true,
         default:'pending',
+    },
+    reminderAt: {
+        type: Date,
+        default: Date.now
     },
     createdAt: {
         type: Date,

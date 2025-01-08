@@ -148,7 +148,7 @@ const MyDocument = ({
 
       
 
-      <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 35, marginTop:'15px',height:"50px"}}>
+      <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 35, marginTop:'15px',height:"40px"}}>
 
         <View style={{width:"10%", height:'100%'}}>
         <Text style={{fontSize:"11px", height:'50%', width:"100%" }}>Name:</Text>
@@ -202,25 +202,25 @@ const MyDocument = ({
       <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:"16px", fontFamily: 'CustomFont'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
       </View>
 
-         <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px',display:"flex",flexDirection:'row' }}>
-             <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'15%' }}>Activity Code</Text>
-             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'55%' }}>Description</Text>
-             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'15%' }}>Approval</Text>
-             <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'12%'}}>Authority</Text>
-             </View>
+      <View style={{ marginTop: 5, marginHorizontal: 35, backgroundColor: '#D9D9D9AB', paddingVertical:'5px',display:"flex",flexDirection:'row' }}>
+            <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'15%' }}>Activity Code</Text>
+            <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'55%' }}>Description</Text>
+            <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'10%' }}>Approval</Text>
+            <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'17%'}}>Authority</Text>
+            </View>
+      
+            <View style={{width:"100vw", marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5,}}>  
+             <View style={{width:'88%'}}>
        
-             <View style={{width:"100vw", marginHorizontal: 35, display:'flex', flexDirection:"row", gap:5,}}>  
-              <View style={{width:'88%'}}>
-       
-               {state.map((item)=>(
-                 <View style={{display:'flex', flexDirection:'row',marginTop:5}}>
-               <Image style={{ width:'15px', height:'15px',marginTop:'-1px'}} src="/check.png" />
-               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'13%' ,textAlign:'left' }}>{item.code}</Text>
-               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'56%', color:'#208edb' ,textAlign:'left'}}>{item.description}</Text>
-               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#C40014' ,textAlign:'left',paddingLeft:"5px"}}>{item.approval}</Text>
-               <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'16%', color:'#ed9b1b' ,textAlign:'left', paddingLeft:"3px"}}>{item.authority}</Text>
-               </View>
-               ))}
+             {state.map((item)=>(
+                         <View style={{display:'flex', flexDirection:'row',marginTop:5}}>
+                       <Image style={{ width:'15px', height:'15px',marginTop:'-3px'}} src="/Injaz/check.png" />
+                       <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'13%' ,textAlign:'left' }}>{item.code}</Text>
+                       <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'56%', color:'#208edb' ,textAlign:'left'}}>{item.description}</Text>
+                       <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'10%', color:'#C40014' ,textAlign:'left',paddingLeft:"6px"}}>{item.approval}</Text>
+                       <Text style={{ fontSize: "7px", fontFamily:'CustomFont500', width:'22%', color:'#ed9b1b' ,textAlign:'left',paddingLeft:"7px"}}>{item.authority}</Text>
+                       </View>
+                       ))}
             
              </View>
        
@@ -228,7 +228,7 @@ const MyDocument = ({
 
 {/* step No 1 */}
       
-       <View style={{ marginTop: 17,marginHorizontal: 35, borderTop:"5px solid black"}}>
+       <View style={{ marginTop: 10,marginHorizontal: 35, borderTop:"5px solid black"}}>
             <Text style={{ fontSize: "10px", fontFamily: 'CustomFont',  color: '#4c733a' }}>Step 1: License</Text>
             </View>
 

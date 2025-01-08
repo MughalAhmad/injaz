@@ -19,7 +19,7 @@ const authenticateUser = async (req, res, next) => {
 
     } catch (err) {
         console.log('auth middleware error:', 'Unauthorized Access: User is not Authenticated');
-        next({ ...err, statusCode: 401, message: 'Unauthorized Access: User is not Authenticated' });
+        next("Unauthorized Access: User is not Authenticated");
     }
 }
 

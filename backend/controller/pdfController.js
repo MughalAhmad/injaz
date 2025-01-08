@@ -54,8 +54,8 @@ const injazHtml = async (data, checkBox, state) =>{
   <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
   <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
   <span style="width:55%; font-size: 16px; font-weight: 600; color:#208edb;">${item.description}</span>
-  <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
-  <span style="width:12%; font-size: 16px; font-weight: 600; color:#ed9b1b;">${item.authority}</span>
+  <span style="width:10%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
+  <span style="width:17%; font-size: 16px; font-weight: 600; color:#ed9b1b;">${item.authority}</span>
 </div>`).join('');
 
   const checkBoxHTML = checkBox
@@ -135,7 +135,7 @@ const injazHtml = async (data, checkBox, state) =>{
 
 
             <div
-                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 25px;">
+                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 15px;">
                 <span style="padding-left:5px;  font-size:35px; font-weight: bold; color:#C40014">(${data?.stateValue.split(" ")[0] || 'empty'})</span>
                 <span style="padding-left:5px; font-size:35px; font-weight: bold;">License Package including ${data?.packageIncludingVisa || 0} Visa</span>
             </div>
@@ -148,10 +148,10 @@ const injazHtml = async (data, checkBox, state) =>{
                 <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:35px">
                     Description
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:15%">
+                <span style="font-size: 15px; font-weight: 600; width:10%">
                     Approval
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:12%">
+                <span style="font-size: 15px; font-weight: 600; width:17%">
                     Authority
                 </span>
 
@@ -608,8 +608,8 @@ const conquerorHtml = async (data, checkBox, state) =>{
     <img style="height:25px; margin-top:-1px; margin-right:10px" src=${url+"check.png"} />
     <span style="width:15%; font-size: 16px; font-weight: 600;">${item.code}</span>
     <span style="width:55%; font-size: 16px; font-weight: 600; color:#208edb;">${item.description}</span>
-    <span style="width:15%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
-    <span style="width:12%; font-size: 16px; font-weight: 600; color:#ed9b1b">${item.authority}</span>
+    <span style="width:10%; font-size: 16px; font-weight: 600; color:#C40014;">${item.approval}</span>
+    <span style="width:17%; font-size: 16px; font-weight: 600; color:#ed9b1b">${item.authority}</span>
 </div>`).join('');
 
 const checkBoxHTML = checkBox
@@ -689,7 +689,7 @@ const checkBoxHTML = checkBox
 
 
             <div
-                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 25px;">
+                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 15px;">
                 <span style="padding-left:5px;  font-size:35px; font-weight: bold; color:#C40014">(${data?.stateValue.split(" ")[0] || 'empty'})</span>
                 <span style="padding-left:5px; font-size:35px; font-weight: bold;">License Package including ${data?.packageIncludingVisa || 0} Visa</span>
             </div>
@@ -702,10 +702,10 @@ const checkBoxHTML = checkBox
                 <span style="font-size: 15px; font-weight: 600; width:55%; padding-left:35px">
                     Description
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:15%">
+                <span style="font-size: 15px; font-weight: 600; width:10%">
                     Approval
                 </span>
-                <span style="font-size: 15px; font-weight: 600; width:12%">
+                <span style="font-size: 15px; font-weight: 600; width:17%">
                     Authority
                 </span>
 
@@ -1454,7 +1454,7 @@ return res.status(200).json({
     },
     sendPDF : async (req, res, next) => {
       try {
-         const {data, checkBoxData, stateArray, editerText} = req.body;
+         const {data, checkBoxData, stateArray, editerText=""} = req.body;
       const pdfBuffer = await generatePDF(data, checkBoxData, stateArray);
 
 // Compress the PDF'
@@ -1708,200 +1708,6 @@ return res.status(200).json({
       } catch (error) {
         next(error);
       }
-    },
-
-  //   resetPassword: async (req, res, next) => {
-  //     try {
-  //         const { email } = req.body;
-
-  //         const user = await userModel.findOne({ email: email });
-  //         if (!user) throw new Error("User not found!");
-
-  //         const resetToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-  //         let hostName = process.env.NODE_ENV === 'development' ? 'localhost:5001' : req.get('host');
-  //         let baseUrl = `${req.protocol}://${hostName}`;
-  //         const resetLink = `${baseUrl}/changePassword/${resetToken}`;
-
-  //         const mailOptions = {
-  //             from: process.env.SMTP_USER,
-  //             to: email,
-  //             subject: 'Password Reset',
-  //             text: `Click the following button to reset your password: ${resetLink}`,
-  //             html: `
-  //             <div style="text-align: center">
-  //             <div style="background-color: #151718; width:98vw; height:100px; display: flex; justify-content: center;align-items: center;">
-  //             <img src="${baseUrl}/logoWithName.svg" alt="Force Edge"/>
-  //             </div>
-                
-  //               <p>Click the following link to reset your password:</p>
-  //               <a href="${resetLink}" style="
-  //                 display: inline-block;
-  //                 padding: 10px 20px;
-  //                 font-size: 16px;
-  //                 color: silver;
-  //                 background-color: #151718;
-  //                 text-decoration: none;
-  //                 border-radius: 25px;
-  //               ">Reset Password</a>
-  //             </div>
-  //           `,
-  //         };
-
-  //         const { error } = await sendEmail(mailOptions);
-  //         if (error) throw new Error('Reset Password Email Send Process Failed!');
-
-  //         return res.status(200).json({
-  //             hasError: false,
-  //             msg: 'Reset Email Sent',
-  //             data: null
-  //         });
-  //     } catch (error) {
-  //         next(error);
-  //     }
-  // }
-
-  // ///////////////////////////////////////////////
-//   dashboardData: async (req, res, next) => {
-//     try {
-//           const {currentPage, sortValue, company,role, userId} = req.query; 
-//           const searchQuery = '';
-//           const page = currentPage || 1;
-//           const limit = 10;
-//           const skip = (page - 1) * limit;
-
-//           const filterBy = sortValue;
-    
-//           const options = [
-//             { $skip: skip }, // Pagination skip
-//             { $limit: limit },
-//           ];
-
-//         // Get the current date
-// const currentDate = new Date();
-// const currentYear = currentDate.getFullYear();
-// const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed in JavaScript
-// const currentDay = currentDate.getDate();
-// const currentWeek = Math.ceil((currentDay + (new Date(currentYear, currentMonth - 1, 1).getDay())) / 7); // Calculate ISO week
-
-// let dateFilter = {};
-
-// // Assuming you are comparing the "quotationDate" field in the format "YYYY-MM-DD"
-// const quotationDate = "2024-12-18"; // Example date
-
-// // Filter by Day (e.g., "2024-12-18")
-// if (filterBy === "day") {
-// const [year, month, day] = quotationDate.split("-").map(Number);
-
-// dateFilter = {
-//   $expr: {
-//     $and: [
-//       { $eq: [{ $year: "$quotationDate" }, currentYear] },
-//       { $eq: [{ $month: "$quotationDate" }, currentMonth] },
-//       { $eq: [{ $dayOfMonth: "$quotationDate" }, currentDay] },
-//     ],
-//   },
-// };
-// }
-
-// // Filter by Week (ISO Week)
-// else if (filterBy === "week") {
-// const [year, month, day] = quotationDate.split("-").map(Number);
-// const date = new Date(currentYear, currentMonth - 1, currentDay);
-// const weekOfYear = Math.ceil((date.getDate() + (new Date(currentYear, currentMonth - 1, 1).getDay())) / 7);
-
-// dateFilter = {
-//   $expr: {
-//     $and: [
-//       { $eq: [{ $year: "$quotationDate" }, currentYear] },
-//       { $eq: [{ $isoWeek: "$quotationDate" }, weekOfYear] }, // Use $isoWeek for ISO week calculation
-//     ],
-//   },
-// };
-// }
-
-// // Filter by Month (e.g., December 2024)
-// else if (filterBy === "month") {
-// const [year, month] = quotationDate.split("-").map(Number);
-
-// dateFilter = {
-//   $expr: {
-//     $and: [
-//       { $eq: [{ $year: "$quotationDate" }, currentYear] },
-//       { $eq: [{ $month: "$quotationDate" }, currentMonth] },
-//     ],
-//   },
-// };
-// }
-
-         
-          
-
-// let matchOptions ='';
-
-// if(role === "admin"){
-// matchOptions = {selectCompany:company}
-// }else{
-// matchOptions = {selectCompany:company, userId:userId, notify:'false'}
-// }
-
-    
-//           const pdfs = await pdfModel.aggregate([
-//             {
-//               $match: {
-//                 ...matchOptions,
-//                 ...dateFilter,
-//               },
-//             },
-//             {
-//               $facet: {
-//                 pdfs: [],
-//                 limitedPdfs:options,
-//                 totalCount: [
-//                   { $count: "count" }, // Count the total number of documents matching the filter
-//                 ],
-//               },
-//             },
-//           ]);
-
-//           let statusCount={
-//             pending:0,
-//             approved:0,
-//             rejected:0, 
-//           }
-
-//           pdfs[0]?.pdfs.map((pdf)=>{
-//             if(pdf.pdfStatus === "pending"){
-//               statusCount.pending = statusCount.pending + 1
-//             }
-//             else if(pdf.pdfStatus === "approved"){
-//               statusCount.approved = statusCount.approved + 1
-//             }
-//            else {
-//             statusCount.rejected = statusCount.rejected + 1
-
-//             }
-
-//           })
-          
-//           const pdfList = pdfs[0]?.limitedPdfs || [];
-//           const totalDocuments = pdfs[0]?.totalCount[0]?.count || 0;
-//           const pdfCount = Math.ceil(totalDocuments / limit);
-    
-//           if (!pdfs) throw new Error("Pdfs not found");
-    
-//           return res.status(200).json({
-//             hasError: false,
-//             msg: "All Pdfs Successfully Finded",
-//             data: { pdfs: pdfList, pages :pdfCount, cardData:statusCount, total:totalDocuments },
-//           });
-//         } catch (error) {
-//           return res.status(200).json({
-//             hasError: true,
-//             msg: error.message,
-//             data: { pdfs: null },
-//           });
-//         }
-//   },
-    
+    },  
   };
   
