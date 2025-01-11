@@ -10,7 +10,11 @@ const dataBaseConfig = async () => {
     // }
 
     return await new Promise(resolve => {
-        mongoose.connect(mongoUrl)
+        mongoose.connect(mongoUrl, { 
+            useNewUrlParser: true, 
+            useUnifiedTopology: true,
+            connectTimeoutMS: 10000, // Adjust as needed
+          })
             .then(async (data) => {
                 if (process.env.NODE_ENV === 'production') {
                     console.log(`Production Database connected on port: ${data.connection.port}`);
