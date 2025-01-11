@@ -47,11 +47,11 @@ const userSchema = new mongoose.Schema({
     },
     phoneCode:{
         type: String,
-        required: true,
+        required: false,
     },
  mobileCode:{
         type: String,
-        required: true,
+        required: false,
     },
     createdAt: {
         type: Date,
