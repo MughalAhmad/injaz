@@ -10,11 +10,7 @@ const dataBaseConfig = async () => {
     // }
 
     return await new Promise(resolve => {
-        mongoose.connect(mongoUrl, { 
-            useNewUrlParser: true, 
-            useUnifiedTopology: true,
-            connectTimeoutMS: 10000, // Adjust as needed
-          })
+        mongoose.connect(mongoUrl)
             .then(async (data) => {
                 if (process.env.NODE_ENV === 'production') {
                     console.log(`Production Database connected on port: ${data.connection.port}`);
@@ -36,7 +32,7 @@ async function createDefaultUser() {
     const defaultUser = {
         firstName:"Admin",
         lastName: "Admin",
-        email: "contact@conqueror.ae",
+        email: "Contact@conqueror.ae",
         password: "Conq@2023",
         phone:0,
         mobile:0,
