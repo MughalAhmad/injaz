@@ -43,6 +43,20 @@ const injazHtml = async (data, checkBox, state) =>{
     return formattedDate;
   };
 
+  const formatDate2 = (date) => {
+    const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+    const dateParts = new Intl.DateTimeFormat('en-GB', options).formatToParts(date);
+
+    const monthFull = dateParts.find(p => p.type === 'month').value;
+  const monthShort = monthFull.slice(0, 3); // Take the first three characters
+  
+    const formattedDate = `${monthShort} ` +
+                          `${dateParts.find(p => p.type === 'day').value}, ` +
+                          `${dateParts.find(p => p.type === 'year').value}`;
+  
+    return formattedDate;
+  };
+
   const currentYear = new Date().getFullYear();
 
   const getLastDigits = (number) =>{
@@ -98,46 +112,31 @@ const injazHtml = async (data, checkBox, state) =>{
         <div style="margin-left: 50px; margin-right: 50px;">
             <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center">
                 <img class="logo" src=${url+"page3Logo.png"} />
-                <span style="font-size:20px; font-weight: bold; color:#1e3b4f; margin-top:20px">${formatDate(new Date(data.quotationDate))}</span>
-            </div>
-
-            <div style="display:flex; flex-direction:row; justify-content:left; align-items:center; margin-top:25px;">
-                <span style="font-size:20px; font-weight: bold; color:black">${`Proposal:    IGF/${currentYear}/${getLastDigits(data.clientPhone.split('-')[1])}`}</span>
-
-                <div style="display:flex; flex-direction:row; position:absolute; justify-content:center; width:88vw">
-                    <span style="font-size:20px; font-weight: bold; text-align:center; padding-top:2px">${data?.country || "empty"}</span>
-                    <img style="width:50px; height:30px; margin-left:10px" src=${mainUrl+`/flags/${data?.flag.toLowerCase()}.png`} alt"flag"/>
+                <div>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:25px">Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;<strong>${formatDate2(new Date(data.quotationDate))}</strong></p>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:3px">Proposal &nbsp;:&nbsp; <strong>IGF/${currentYear}/${getLastDigits(data.clientPhone.split('-')[1])}</strong></p>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:3px">Ref &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :&nbsp; <strong>${data?.reference || "empty"}</strong></p>
                 </div>
             </div>
 
-            <div style="display:flex; flex-direction:row; align-items:center; margin-top:25px;">
-
-                <div style="width:10%; height:100%">
-                    <p style="font-size:25px; height:50%; width:100%">Name:</p>
-                    <p style="font-size:25px; height:50%; width:100%">Ref:</p>
-                </div>
-
-                <div style="width:40%; height:100%">
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#4c733a">${data?.clientName || "empty"}</p>
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#733463">${data?.reference || "empty"}</p>
-                </div>
-
-                <div style="width:10%; height:100%;">
-                    <p style="font-size:25px; height:50%; width:100%">Email:</p>
-                    <p style="font-size:25px; height:50%; width:100%">Contact:</p>
-                </div>
-
-                <div style="width:40%; height:100%">
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#296d98">${data.clientEmail || "empty"}</p>
-                    <p style="font-size:25px; font-weight: bold; height:50%; width:100%; color:#4c733a">${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</p>
-                </div>
-            </div>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:25px">Name &nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;<strong>${data?.clientName || "empty"}</strong></p>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:3px">Email  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;<strong>${data.clientEmail || "empty"}</strong></p>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:3px">Contact &nbsp; :&nbsp; <strong>${`${data.clientPhone.split('-')[1] || "none"}-${data.clientPhone.split('-')[2] || 'none'}`}</strong></p>
+                <p style="font-size:15px; color:#1e3b4f; margin-top:3px">Country &nbsp; :&nbsp; <strong>${data?.country || "empty"}</strong>
+                 <img style="width:30px; height:17px; margin-left:5px" src=${mainUrl+`/flags/${data?.flag.toLowerCase()}.png`} alt"flag"/>
+                </p>
+                
+          
 
 
-            <div
-                style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom: 25px; margin-top: 15px;">
-                <span style="padding-left:5px;  font-size:35px; font-weight: bold; color:#C40014">(${data?.stateValue.split(" ")[0] || 'empty'})</span>
-                <span style="padding-left:5px; font-size:35px; font-weight: bold;">License Package including ${data?.packageIncludingVisa || 0} Visa</span>
+            <div style="display:flex; flex-direction:row; align-items:center; margin-bottom: 25px; margin-top: 15px;">
+
+                <span style="height:13px; background-color:yellow; border-radius:30px; display:flex; flex-direction:row; align-items:center; padding-top:7px;  padding-bottom:7px;  padding-left:5px; padding-right:5px;">
+                <span style="background-color:red; border-radius:100%; height:9px; width:9px;"></span>
+                <span style="padding-left:7px;  font-size:20px; color:#C40014">${data?.stateValue.split(" ")[0] || 'empty'}</span>
+                </span>
+
+                <span style="padding-left:5px; font-size:25px;"><strong>License Package including ${data?.packageIncludingVisa || 0} Visa</strong></span>
             </div>
 
             <div
