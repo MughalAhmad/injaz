@@ -743,9 +743,11 @@ useEffect(() => {
 
   const getStatusChange = () => {
     if (data.stateValue === "Dubai") return `AED 1650 - If You Are In UAE `;
+    if (data.stateValue === "Dubai (IFZA)") return `AED 1650 - If You Are In UAE `;
     if (data.stateValue === "Sharjah") return `AED 750 - If You Are In UAE `;
 
     if (data.stateValue !== "Dubai") return `If You Are In UAE `;
+    if (data.stateValue !== "Dubai (IFZA)") return `If You Are In UAE `;
     if (data.stateValue !== "Sharjah") return `If You Are In UAE `;
     return data.step3StatusChange;
   };
