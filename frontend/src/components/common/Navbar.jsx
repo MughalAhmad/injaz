@@ -39,12 +39,14 @@ const Navbar = () => {
         }
          
       }
-        const getAllQuotationData = () =>{
+
+
+  const getAllQuotationData = () =>{
           let queryParams = `?currentPage=${1}&&filter=${''}&&sortValue=${''}&&company=${companyName}&&userId=${user?._id}&&role=${user?.role}`;
               dispatch(getAllPdf(queryParams))
             }
 
-             const getAllDashboardData = () =>{
+   const getAllDashboardData = () =>{
                   const data = {
                     companyName: companyName,
                     userId: user?._id,
@@ -58,13 +60,21 @@ const Navbar = () => {
               
 
   useEffect(() => {
-    getPdfData()
+    getPdfData();
+
+    const interval = setInterval(() => {
+      getPdfData();
+    }, 1 * 60 * 1000); // 5 minutes in milliseconds
+
     if(window.location.pathname === "/quotation"){
       getAllQuotationData()
     }
     if(window.location.pathname === "/"){
     getAllDashboardData()
     }
+
+    return () => clearInterval(interval); // Clear the interval on component unmount
+
   }, [visible,localStorage.getItem("companyName")])
 
 

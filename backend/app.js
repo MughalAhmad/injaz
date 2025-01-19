@@ -5,7 +5,6 @@ const app = express();
 const cors = require("cors");
 const dataBaseconfig = require('./config/databaseConfig');
 const path = require ('path');
-const puppeteer = require('puppeteer');
 const authRouter = require ("./routes/authRoute");
 const userRouter = require ("./routes/userRoute");
 const pdfRouter = require ("./routes/pdfRoute");  
@@ -25,6 +24,7 @@ const allowedOrigins = [
     'https://portal.injazgroup.co.uk',
     'https://quotation.injazgroup.co.uk',
     'https://94.136.189.148:4173',
+    
 ];
 
 app.use(cors({
@@ -47,7 +47,6 @@ app.use('/pdfScreen', async(req, res) => {
 
     res.render('index',{company:pdfRecord?.selectCompany, data:pdfRecord, checkData:pdfRecord.checkBoxData, actives:pdfRecord.stateArray});
 });
-
 
 // app.use('/', express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 
