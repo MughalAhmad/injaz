@@ -340,7 +340,7 @@ const { user } = useSelector(state => state.adminStore);
     },
     {
       id:'12',
-        title:"Etisalat Land Phone",
+        title:"Corporate Tax Registration (TRN)",
         value:0 ,
         status:"0" ,
         filed:false,
@@ -348,10 +348,10 @@ const { user } = useSelector(state => state.adminStore);
     },
     {
       id:'13',
-        title:"Corporate Tax Registration (TRN)",
+        title:"Health Insurances",
         value:0 ,
-        status:"0" ,
-        filed:false,
+        status:"0", 
+        filed:true,
 
     },
     {
@@ -426,10 +426,10 @@ const { user } = useSelector(state => state.adminStore);
     },
     {
       id:'23',
-        title:"Health Insurances",
+        title:"Etisalat Land Phone",
         value:0 ,
-        status:"0", 
-        filed:true,
+        status:"0" ,
+        filed:false,
 
     }
     ]);

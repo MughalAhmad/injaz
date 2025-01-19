@@ -131,7 +131,7 @@ const MyDocument = ({
      {/* 3 Page test */}
       <Page size="A4" style={styles.page} >
      
-          <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:7}}>
+          <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
              <Image style={styles.logo} src="/Injaz/page3Logo.png" />
               <View>
                      <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>
@@ -141,224 +141,226 @@ const MyDocument = ({
            </View>
      
        
-      <View style={{marginHorizontal: 16, marginTop:"-9px"}}>
-              <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{color:'#182230',marginTop:"3px",width:'37px'}}>Name</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', marginTop:"1px", color:'#182230'}}>{data?.clientName || "empty"}</Text></View>
-              <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{color:'#182230', paddingTop:'1px',width:'37px'}}>Email</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientEmail || "empty"}</Text></View>
-              <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'37px'}}>Contact</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientPhone.split('-')[1] || "none"}-{data.clientPhone.split('-')[2] || 'none'}</Text></View>
-            <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'37px'}}>Country</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"4px", color:'#182230'}}>{data?.country || "empty"}</Text><Image style={{width:'18.96px', height:"10px", marginTop:'2px', borderRadius:'1px'}} src={`/flags/${data?.flag.toLowerCase()}.png`} /></View>
-      
+   
+     
+    <View style={{marginHorizontal: 16}}>
+           <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230',marginTop:"3px",width:'80px'}}>Customer Name</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', marginTop:"3px", color:'#182230'}}>{data?.clientName || "empty"}</Text></View>
+           <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230', paddingTop:'1px',width:'80px'}}>Email</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientEmail || "empty"}</Text></View>
+           <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'80px'}}>Contact</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientPhone.split('-')[1] || "none"}-{data.clientPhone.split('-')[2] || 'none'}</Text></View>
+         <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'80px'}}>Country</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"4px", color:'#182230'}}>{data?.country || "empty"}</Text><Image style={{width:'18.96px', height:"10px", marginTop:'2px', borderRadius:'1px'}} src={`/flags/${data?.flag.toLowerCase()}.png`} /></View>
+   
+           </View>
+   
+         <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 16, marginTop:6 }}>
+           <View style={{backgroundColor:'#FFFAEB', display:'flex', flexDirection:'row', gap:'3px',borderRadius:'100%', alignItems:'center', paddingHorizontal:"5px"  }}>
+           <Text style={{backgroundColor:'#F79009', height:'6px', width:'6px', borderRadius:'100%',color:'#F79009'}}>.</Text>
+         <Text style={{ paddingLeft:5, fontSize:"12px", fontFamily: 'CustomFont400', color:'#B54708', paddingVertical:1}}>{data?.stateValue.split(" ")[0] || 'empty'}</Text>
+         </View>
+         <Text style={{ paddingLeft:5, paddingVertical:3, fontSize:"15px", fontFamily: 'CustomFont500', color:'#c40014'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
+         </View>
+   
+         <View style={{ marginTop: 6, marginHorizontal: 16, backgroundColor: '#F9FAFB', paddingVertical:'5px',display:"flex",flexDirection:'row', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px",paddingLeft:'7px' }}>
+         <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'20%', color:"#111928"}}>Activity Code</Text>
+         <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'48%', color:"#111928" }}>Description</Text>
+         <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'10%', color:"#111928" }}>Approval</Text>
+         <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'21%', color:"#111928", paddingLeft:5}}>Authority</Text>
+         </View>
+   
+         <View style={{width:"100vw", marginHorizontal: 16, display:'flex', flexDirection:"row", gap:5,}}>  
+          <View style={{width:'94.7%'}}>
+   
+           {state.map((item, index)=>(
+             <View style={{display:'flex', flexDirection:'row',borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px",  borderBottomRightRadius:index === state.length - 1 ? '4px' : '0px', borderBottomLeftRadius:index === state.length - 1 ? '4px' : '0px'}}>
+           <Image style={{ width:'10px', height:'10px',marginRight:2, marginTop:'-2px' }} src="/check.png" />
+           <Text style={{ fontSize: "7px", width:'20%' ,textAlign:'left',color:"#111928"}}>{item.code}</Text>
+           <Text style={{ fontSize: "7px", width:'48%' ,textAlign:'left', color:'#667085', paddingLeft:'-10px'}}>{item.description}</Text>
+           <Text style={{ fontSize: "7px", width:'10%' ,textAlign:'left',paddingLeft:"-8px", color:`${item.approval === 'Pre' ? '#F04438' : item.approval === 'Post' ? '#0743C4' : '#667085'}`}}>{item.approval}</Text>
+           <Text style={{ fontSize: "7px", width:'21%' ,textAlign:'left',paddingLeft:"-1px", color:'#667085'}}>{item.authority}</Text>
+           </View>
+           ))}
+        
+         </View>
+   
+         </View>
+   
+   {/* step No 1 */}
+   
+         
+         <View style={{ marginTop: 10,marginHorizontal:16}}>
+         <Image style={{width:90, height:'auto'}} src="/step1.png" />
+         </View>
+   
+   
+         <View style={{ marginTop: 4, marginHorizontal: 16, backgroundColor: '#EDFCF2', paddingVertical: 7, display:'flex', flexDirection:'row',paddingLeft:'7px', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px"}}>
+         <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500', color:"#111928"}}>Description</Text>
+         <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Conqueror Price</Text>
+         <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
+         <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
+         <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
+         </View>
+   
+         <View style={{ marginHorizontal: 16, display:'flex', flexDirection:'row',borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px",}}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>License Fee</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#F04438'}}>{data?.step1value.toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%', color:'#667085'}}>{data?.step1value.toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:'#F04438'}}>{data?.step1Remarks}</Text>
+         <Text style={{ fontSize: "7px", width: '21%', color:'#667085'}}>{data?.step1Timeline}</Text>
+         </View>
+   
+   
+   {/* step No 2 */}
+   <View style={{ marginTop: 10,marginHorizontal:16}}>
+         <Image style={{width:120, height:'16px'}} src="/step2.png" />
+         </View>      
+         <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
+         <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500',color:"#111928" }}>Description</Text>
+         <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Conqueror Price</Text>
+         <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
+         <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
+         <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
+         </View>
+         
+   
+         <View style={{ marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px" }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>Pre-Approval Fee</Text>    
+         <Text style={{ fontSize: "7px", width: '21.4%', color:'#667085'}}>{Number(data?.step2ApprovalFee).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%', color:'#667085'}}>-</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' , color:'#667085'}}>One-Time</Text>
+         <Text style={{ fontSize: "7px", width: '21%', color:'#667085'}}>5-10 days</Text>
+         </View>
+   
+   
+   
+   
+         <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row',borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
+         <Text style={{ fontSize: "7px", width: '20%' , paddingTop:3}}>Establishment Card</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%', color:'#667085', paddingTop:3}}>{Number(data?.step2Establishment).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',paddingTop:3}}>{Number(data?.step2EstablishmentIN).toLocaleString() || "0.00"}</Text>
+         <View style={{ display:'flex', flexDirection:'cloumn' ,fontSize: "7px", width: '25.6%' ,paddingRight:'3px'}}>
+         <Text style={{ color: '#414651'}}>Federel Immigration Fees</Text>
+         <Text style={{ color: '#F04438'}}>Renewable every two year</Text> 
+         </View>
+         <Text style={{ fontSize: "7px", width: '21%', color:'#667085', paddingTop:3}}>{data?.step2EstablishmentTimeline}</Text>
+         </View>
+   
+   
+         
+         <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px"  }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>E-Channel Card</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value1).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',}}>{Number(data?.step2value1IN).toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:'#F04438'}}>Renewable every two year</Text>
+         <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>After IC Card, 2-3 Days</Text>
+         </View>
+   
+   
+   {/* step No 3 */}
+   <Image style={{width:100, height:'auto', marginTop: 10, marginLeft: 16,}} src="/step3.png" />
+   
+         <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
+         <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500', color:"#111928" }}>Description</Text>
+         <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Conqueror Price</Text>
+         <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
+         <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
+         <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
+         </View>
+   
+         <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>Visa (Per Visa) Investor</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value2a).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.step2value2aIN).toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:"#667085"}}>{data?.step3Renewable}</Text>
+         <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>{data?.step3Timeline}</Text>
+         </View>
+   
+   
+         <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>Visa (Per Visa) Employment</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value2).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.step2value2IN).toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>Renewable Every 2 Years</Text>
+         <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>4-7 Working Days</Text>
+         </View>
+   
+   
+         <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", backgroundColor:'#fdead7'  }}>
+         <Text style={{ fontSize: "7px", width: '20%'  , color:"#F04438"}}>Status Change</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#F04438',}}>Conditional</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',}}>{data?.step2value3IN?.toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>{data?.step3StatusChange}</Text>
+         <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>{data?.step3TimelineStatusChange}</Text>
+         </View>
+         
+          <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>Medical Test (Per visa)</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.medical).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.medicalIN).toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:"#667085"}}>One Time</Text>
+         <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>{data?.medicalTimeline}</Text>
+         </View>
+   
+         <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"   }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>Emirates ID (Per Visa)</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.emiratesId).toLocaleString() || "0.00"} AED</Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.emiratesIdIN).toLocaleString() || "0.00"}</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>One Time</Text>
+         <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>{data?.emiratesIdTimeline}</Text>
+         </View>
+   
+         <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px"   }}>
+         <Text style={{ fontSize: "7px", width: '20%' }}>PRO Fees</Text>
+         <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}></Text>
+         <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>2500 AED</Text>
+         <Text style={{ fontSize: "7px", width: '25.6%',color:'#667085', }}>Negotiable</Text>
+         <Text style={{ fontSize: "7px", width: '21%',color:'#667085',}}>As per contract</Text>
+         </View>
+   
+         <View style={{ marginTop: 8, marginHorizontal: 16, display:'flex', flexDirection:'row',gap:'7px' }}>
+   
+   
+           <View  style={{width:'53%',backgroundColor:'#FFFCF5', borderRadius:'4px' }}>
+   
+           <View style={{display:'flex',flexDirection:'row', gap:'10px', paddingTop:7}}>
+   
+             <View style={{width:'80%',display:"flex", flexDirection:'column', fontSize:'10px', fontFamily:"CustomFont500", gap:3}}>
+              <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end' }}> 
+               <Text style={{color:'#414651'}}>Total Step (</Text>
+               <Text style={{color:'#39A0FF'}}>1</Text>
+               <Text>,</Text>
+   
+               <Text style={{color:'#623AA2'}}>2</Text>
+               <Text>,</Text>
+   
+               <Text style={{color:'#FD6585'}}>3</Text>
+               <Text style={{color:'#414651'}}>):</Text>
+   
               </View>
-     
-           <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 16}}>
-             <View style={{backgroundColor:'#FFFAEB', display:'flex', flexDirection:'row', gap:'3px',borderRadius:'100%', alignItems:'center', paddingHorizontal:"5px"  }}>
-             <Text style={{backgroundColor:'#F79009', height:'6px', width:'6px', borderRadius:'100%',color:'#F79009'}}>.</Text>
-           <Text style={{ paddingLeft:5, fontSize:"12px", fontFamily: 'CustomFont400', color:'#B54708', }}>{data?.stateValue.split(" ")[0] || 'empty'}</Text>
-           </View>
-           <Text style={{ paddingLeft:5, paddingVertical:3, fontSize:"15px", fontFamily: 'CustomFont500', color:'#2C1C5F'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
-           </View>
-     
-           <View style={{ marginTop: 3, marginHorizontal: 16, backgroundColor: '#F9FAFB', paddingVertical:'5px',display:"flex",flexDirection:'row', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px",paddingLeft:'7px' }}>
-           <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'20%', color:"#111928"}}>Activity Code</Text>
-           <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'48%', color:"#111928" }}>Description</Text>
-           <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'10%', color:"#111928" }}>Approval</Text>
-           <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'21%', color:"#111928", paddingLeft:5}}>Authority</Text>
-           </View>
-     
-           <View style={{width:"100vw", marginHorizontal: 16, display:'flex', flexDirection:"row", gap:5,}}>  
-            <View style={{width:'94.7%'}}>
-     
-             {state.map((item, index)=>(
-               <View style={{display:'flex', flexDirection:'row',borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px",  borderBottomRightRadius:index === state.length - 1 ? '4px' : '0px', borderBottomLeftRadius:index === state.length - 1 ? '4px' : '0px'}}>
-             <Image style={{ width:'10px', height:'10px',marginRight:2, marginTop:'-2px' }} src="/check.png" />
-             <Text style={{ fontSize: "7px", width:'20%' ,textAlign:'left',color:"#111928"}}>{item.code}</Text>
-             <Text style={{ fontSize: "7px", width:'48%' ,textAlign:'left', color:'#667085', paddingLeft:'-10px'}}>{item.description}</Text>
-             <Text style={{ fontSize: "7px", width:'10%' ,textAlign:'left',paddingLeft:"-8px", color:`${item.approval === 'Pre' ? '#F04438' : item.approval === 'Post' ? '#0743C4' : '#667085'}`}}>{item.approval}</Text>
-             <Text style={{ fontSize: "7px", width:'21%' ,textAlign:'left',paddingLeft:"-1px", color:'#667085'}}>{item.authority}</Text>
-             </View>
-             ))}
-          
-           </View>
-     
-           </View>
-     
-    {/* step No 1 */}
-    
-          
-          <View style={{ marginTop: 5,marginHorizontal:16}}>
-          <Image style={{width:90, height:'auto'}} src="/step1.png" />
-          </View>
-    
-    
-          <View style={{ marginTop: 4, marginHorizontal: 16, backgroundColor: '#EDFCF2', paddingVertical: 7, display:'flex', flexDirection:'row',paddingLeft:'7px', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px"}}>
-          <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500', color:"#111928"}}>Description</Text>
-          <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Injaz Price</Text>
-          <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
-          <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
-          <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
-          </View>
-    
-          <View style={{ marginHorizontal: 16, display:'flex', flexDirection:'row',borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px",}}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>License Fee</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#F04438'}}>{data?.step1value.toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%', color:'#667085'}}>{data?.step1value.toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:'#F04438'}}>{data?.step1Remarks}</Text>
-          <Text style={{ fontSize: "7px", width: '21%', color:'#667085'}}>{data?.step1Timeline}</Text>
-          </View>
-    
-    
-    {/* step No 2 */}
-    <View style={{ marginTop: 5,marginHorizontal:16}}>
-          <Image style={{width:120, height:'16px'}} src="/step2.png" />
-          </View>      
-          <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
-          <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500',color:"#111928" }}>Description</Text>
-          <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Injaz Price</Text>
-          <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
-          <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
-          <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
-          </View>
-          
-    
-          <View style={{ marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px" }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Pre-Approval Fee</Text>    
-          <Text style={{ fontSize: "7px", width: '21.4%', color:'#667085'}}>{Number(data?.step2ApprovalFee).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%', color:'#667085'}}>-</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' , color:'#667085'}}>One-Time</Text>
-          <Text style={{ fontSize: "7px", width: '21%', color:'#667085'}}>5-10 days</Text>
-          </View>
-    
-    
-    
-    
-          <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Establishment Card</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%', color:'#667085'}}>{Number(data?.step2Establishment).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',}}>{Number(data?.step2EstablishmentIN).toLocaleString() || "0.00"}</Text>
-          <View style={{ display:'flex', flexDirection:'cloumn' ,fontSize: "7px", width: '25.6%' ,paddingRight:'3px'}}>
-          <Text style={{ color: '#414651'}}>Federel Immigration Fees</Text>
-          <Text style={{ color: '#F04438'}}>Renewable every two year</Text> 
-          </View>
-          <Text style={{ fontSize: "7px", width: '21%', color:'#667085'}}>{data?.step2EstablishmentTimeline}</Text>
-          </View>
-    
-    
-          
-          <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px"  }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>E-Channel Card</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value1).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',}}>{Number(data?.step2value1IN).toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:'#F04438'}}>Renewable every two year</Text>
-          <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>After IC Card, 2-3 Days</Text>
-          </View>
-    
-    
-    {/* step No 3 */}
-    <Image style={{width:100, height:'auto', marginTop: 5, marginLeft: 16,}} src="/step3.png" />
-    
-          <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
-          <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500', color:"#111928" }}>Description</Text>
-          <Text style={{ fontSize: "8px", width: '21.4%', fontFamily: 'CustomFont500', color:"#111928"}}>Injaz Price</Text>
-          <Text style={{ fontSize: "8px", width: '12%', fontFamily: 'CustomFont500', color:"#111928"}}>Price AED</Text>
-          <Text style={{ fontSize: "8px", width: '25.6%', fontFamily: 'CustomFont500', color:"#111928" }}>Remarks</Text>
-          <Text style={{ fontSize: "8px", width: '21%', fontFamily: 'CustomFont500', color:"#111928"}}>Timeline</Text>
-          </View>
-    
-          <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Visa (Per Visa) Investor</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value2a).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.step2value2aIN).toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:"#667085"}}>{data?.step3Renewable}</Text>
-          <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>{data?.step3Timeline}</Text>
-          </View>
-    
-    
-          <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Visa (Per Visa) Employment</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.step2value2).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.step2value2IN).toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>Renewable Every 2 Years</Text>
-          <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>4-7 Working Days</Text>
-          </View>
-    
-    
-          <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", backgroundColor:'#fdead7'  }}>
-          <Text style={{ fontSize: "7px", width: '20%'  , color:"#F04438"}}>Status Change</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#F04438',}}>Conditional</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#F04438',}}>{data?.step2value3IN?.toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>{data?.step3StatusChange}</Text>
-          <Text style={{ fontSize: "7px", width: '21%',color:"#667085"}}>{data?.step3TimelineStatusChange}</Text>
-          </View>
-          
-           <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"  }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Medical Test (Per visa)</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.medical).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.medicalIN).toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px', color:"#667085"}}>One Time</Text>
-          <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>{data?.medicalTimeline}</Text>
-          </View>
-    
-          <View style={{  marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px"   }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>Emirates ID (Per Visa)</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}>{Number(data?.emiratesId).toLocaleString() || "0.00"} AED</Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>{Number(data?.emiratesIdIN).toLocaleString() || "0.00"}</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%' ,paddingRight:'3px',color:"#667085"}}>One Time</Text>
-          <Text style={{ fontSize: "7px", width: '21%', color:"#667085"}}>{data?.emiratesIdTimeline}</Text>
-          </View>
-    
-          <View style={{   marginHorizontal: 16, display:'flex', flexDirection:'row' ,borderLeft:'1px solid #F9FAFB',borderRight:'1px solid #F9FAFB',borderBottom:'1px solid #F9FAFB', padding:"7px 0px 5px 7px", borderBottomRightRadius:"4px", borderBottomLeftRadius:"4px"   }}>
-          <Text style={{ fontSize: "7px", width: '20%' }}>PRO Fees</Text>
-          <Text style={{ fontSize: "7px", width: '21.4%',color:'#667085',}}></Text>
-          <Text style={{ fontSize: "7px", width: '12%',color:'#667085',}}>2500 AED</Text>
-          <Text style={{ fontSize: "7px", width: '25.6%',color:'#667085', }}>Negotiable</Text>
-          <Text style={{ fontSize: "7px", width: '21%',color:'#667085',}}>As per contract</Text>
-          </View>
-     
-           <View style={{ marginTop: 4, marginHorizontal: 16, display:'flex', flexDirection:'row',gap:'7px' }}>
-     
-     
-             <View  style={{width:'53%',backgroundColor:'#FFFCF5', borderRadius:'4px' }}>
-     
-             <View style={{display:'flex',flexDirection:'row', gap:'10px', paddingTop:7}}>
-     
-               <View style={{width:'80%',display:"flex", flexDirection:'column', fontSize:'10px', fontFamily:"CustomFont500"}}>
-                <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end' }}> 
-                 <Text style={{color:'#414651'}}>Total Step (</Text>
-                 <Text style={{color:'#39A0FF'}}>1</Text>
-                 <Text>,</Text>
-     
-                 <Text style={{color:'#623AA2'}}>2</Text>
-                 <Text>,</Text>
-     
-                 <Text style={{color:'#FD6585'}}>3</Text>
-                 <Text style={{color:'#414651'}}>):</Text>
-     
-                </View>
-                <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end' }}>
-                 <Text style={{ color:'#F79009'}}>Discount</Text>
-                 </View>
-                 <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end',fontFamily:"CustomFont600" }}>
-                 <Text style={{color:"#111928"}}>Grand Total</Text>
-                 </View>
+              <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end' }}>
+               <Text style={{ color:'#F79009'}}>Discount</Text>
                </View>
-     
-               <View style={{width:'20%',textAlign:'left', fontSize:'8px'}}>
-               <Text style={{height:'15px',paddingTop:3 , color:'#667085'}}>{(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } AED</Text>
-               <Text style={{height:'15px',paddingTop:3,color:'#F79009'}}>{2500 - Number(data?.discount)} AED</Text>
-               <Text style={{height:'16px',paddingTop:1, fontFamily:"CustomFont600", color:"#111928"}}>{data?.gtAmount.toLocaleString() || "0.00"} AED</Text>
+               <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-end',fontFamily:"CustomFont600" }}>
+               <Text style={{color:"#111928"}}>Grand Total</Text>
                </View>
              </View>
-     
-             <View style={{display:'flex', flexDirection:'row', alignItems:'center', padding:"1px 9px 4px 9px", fontSize:8,}}>
-             <Text style={{fontFamily:"CustomFont600", color:"#111928"}}>In Words: </Text>
-             <Text style={{color:'#667085'}}>{data?.word || "empty"} Dirhams</Text>
-             </View>
-             </View>
-     
-             <View  style={{width:'47%',backgroundColor:'#F9FAFB', borderRadius:'4px',fontSize:8, paddingHorizontal:'9px',  }}>
-     <Text style={{paddingVertical:'7px', color:'#F79009', fontFamily:"CustomFont400"}}>Limited-Time Offer: Save {((2500 - Number(data?.discount)) / 2500) * 100}% on PRO Fees!</Text>
-     <Text style={{lineHeight:'1.5px',color:'#667085', paddingRight:4}}>Enjoy an {((2500 - Number(data?.discount)) / 2500) * 100}% discount on PRO fees if you proceed by {formatDate2(new Date(data?.date))}! Don’t miss this limited-time opportunity to save big on your application.</Text>
+   
+             <View style={{width:'20%',textAlign:'left', fontSize:'8px'}}>
+             <Text style={{height:'15px',paddingTop:2.5 , color:'#667085'}}>{(Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() } AED</Text>
+             <Text style={{height:'15px',paddingTop:2.5,color:'#F79009'}}>{2500 - Number(data?.discount)} AED</Text>
+             <Text style={{height:'16px',paddingTop:2.5, fontFamily:"CustomFont600", color:"#111928"}}>{data?.gtAmount.toLocaleString() || "0.00"} AED</Text>
              </View>
            </View>
+   
+           <View style={{display:'flex', flexDirection:'row', alignItems:'center', padding:"1px 9px 4px 9px", fontSize:8,}}>
+           <Text style={{fontFamily:"CustomFont600", color:"#111928"}}>In Words: </Text>
+           <Text style={{color:'#667085'}}>{data?.word || "empty"} Dirhams</Text>
+           </View>
+           </View>
+   
+           <View  style={{width:'47%',backgroundColor:'#F9FAFB', borderRadius:'4px',fontSize:8, paddingHorizontal:'9px',  }}>
+   <Text style={{paddingVertical:'7px', color:'#F79009', fontFamily:"CustomFont400"}}>Limited-Time Offer: Save {((2500 - Number(data?.discount)) / 2500) * 100}% on PRO Fees!</Text>
+   <Text style={{lineHeight:'1.5px',color:'#667085', paddingRight:4}}>Enjoy an {((2500 - Number(data?.discount)) / 2500) * 100}% discount on PRO fees if you proceed by {formatDate2(new Date(data?.date))}! Don’t miss this limited-time opportunity to save big on your application.</Text>
+           </View>
+         </View>
      
            <View style={styles.footer}>
      
@@ -391,7 +393,7 @@ const MyDocument = ({
     {/* 4 Page test */}
     <Page size="A4" >
       
-        <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:7}}>
+        <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
             <Image style={styles.logo} src="/Injaz/page3Logo.png" />
             <View>
                      <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>
@@ -464,7 +466,7 @@ const MyDocument = ({
 {/* 5 Page test */}
       <Page size="A4" style={styles.page}>
       
-            <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:7}}>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
               <Image style={styles.logo} src="/Injaz/page3Logo.png" />
               <View>
                      <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>
