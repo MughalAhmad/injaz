@@ -868,7 +868,7 @@ useEffect(() => {
 
 
          const auth = () =>{
-          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1IN && data.step2value1 && data.step2Establishment && data.step2EstablishmentIN && data.step2value2a && data.step2value2aIN && data.step2value2 && data.step2value2IN && data.step2value3 && data.step2value3IN && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && data.isEmail && data.packageIncludingVisa && data.medical && data.medicalIN && data.emiratesId && data.emiratesIdIN){
+          if(data.reference && data.clientName && data.clientEmail && data.clientPhone && data.stateValue && data.freeVisa && data.step1value && data.step2ApprovalFee && data.step2value1 && data.step2Establishment && data.step2value2a && data.step2value2 && data.step2value3 && data.flag && data.country && stateArray[0]?.code && stateArray[0]?.description && stateArray[0]?.approval && data.isEmail && data.packageIncludingVisa && data.medical && data.emiratesId){
             return true
           }
           else return false;
