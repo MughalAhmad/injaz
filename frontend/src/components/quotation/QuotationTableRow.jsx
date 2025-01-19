@@ -25,9 +25,9 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
   const handleMail = (editerText) =>{
     setVisible(!visible);
     const modifyData={
-      data:row,
-    checkBoxData:row.checkBoxData,
-    stateArray:row.stateArray,
+      id:row._id,
+    // checkBoxData:row.checkBoxData,
+    // stateArray:row.stateArray,
     editerText:editerText
     }
     dispatch(updateShowBackDropLoader(true));

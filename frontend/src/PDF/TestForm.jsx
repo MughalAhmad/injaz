@@ -20,6 +20,8 @@ import {sweetNotification} from "../components/common/SweetAlert"
 import {useNavigate} from "react-router-dom"
 import DateDropDown from '../components/pdf/DateDropDown';
 import {updateShowBackDropLoader } from "../redux/features/adminSlice";
+import { asyncThunkCreator } from '@reduxjs/toolkit';
+import axios from 'axios';
 const TestForm = () => {
   const toWords = new ToWords();
   const dispatch = useDispatch();
@@ -575,9 +577,10 @@ const saveDataIntoDB = () =>{
   }
   dispatch(updateShowBackDropLoader(true));
   dispatch(createPdf(fullData))
-    .then(response => {
+    .then(async(response) => {
       dispatch(updateShowBackDropLoader(false));
       if (response && !response.payload.hasError) {
+
        navigate("/quotation")
        sweetNotification(false, response.payload.msg)
       }
@@ -591,7 +594,7 @@ const saveDataIntoDB = () =>{
       console.error('Dispatch failed:', error);
     });
 }
-  
+
   const handleGeneratePDF = () => {
     setTimeout(() => {
       setGeneratePDFBtn(false)

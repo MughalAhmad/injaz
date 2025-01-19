@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .blue{
+        background-color: #222C5B;
+    }
+
+    .red{
+        background-color: #C40014;
+    }
+    .packageBlue{
+        background-color: #F5F8FF;
+    }
+    .packageRed{
+        background-color: #FDF2FA;
+    }
+    .radiusBottomLeft{
+        border-bottom-left-radius: 6px; 
+    }
+    .radiusBottomRight{
+        border-bottom-right-radius: 6px;
+    }
+    .fCheckColorBlue {
+        color: #222C5B;
+    }
+    .fCheckColorRed {
+        color: #B42318;
+    }
+    .blackColor{
+        color: black;
+    }
+    .licenceColorBlue {
+        color: #2C1C5F;
+    }
+    .licenceColorRed {
+        color: #C40014;
+    }
+
+
+  </style>
+
+</head>
+<body style="font-family:Inter; margin: 0; padding: 0;">
+    <div style="height: 100vh;">
+        <% if (company === "Injaz") { %>
+            <img style="width:100%; height:100%;" src="http://localhost:5000/conqueror/first_I.png" />
+          <% } else { %>
+            <img style="width:100%; height:100%;" src="http://localhost:5000/conqueror/first_C.png" />
+          <% } %>
+    </div>
+
+
+
+
+
+
+    <div style="height: 98.5vh; padding-left: 20px; padding-right: 20px; padding-top: 20px; position: relative;">
+  <!-- Header Section -->
+  <div style="display: flex; justify-content: space-between;">
+    <% if (company === "Injaz") { %>
+        <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
+        <% } else { %>
+            <img style="width:195px; height: 60px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+            <% } %>
+
+
+  <div style="display: flex; flex-direction: column; font-size: 15.5px; gap: 8px; color:#182230;">
+    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Date</span>: &nbsp;<span style="font-weight:500;"><%= formatDate(data?.quotationDate) %></span></div>
+      <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Proposal</span>: &nbsp;<span style="font-weight:500;"><%= company === "Injaz" ? 'IGF' : 'CAL' %>/<%= currentYear %>/<%= getLastDigits(data.clientPhone.split('-')[1]) %></span></div>
+      <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Ref</span>: &nbsp;<span style="font-weight:500;"><%= data.reference || 'empty' %></span></div>
+  </div>
+</div>
+
+  <!-- Client Details -->
+  <div style="display:flex; flex-direction:column; font-size: 15.5px; gap: 8px; color:#182230; margin-top: 20px;">
+    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:62px;">Name</span>: &nbsp;<span style="font-weight:500;"><%= data?.clientName || 'empty' %></span></div>
+    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:62px;">Email</span>: &nbsp;<span style="font-weight:500;"><%= data.clientEmail || 'empty' %></span></div>
+    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:62px;">Contact</span>: &nbsp;<span style="font-weight:500;"><%= data.clientPhone.split('-')[1] || 'none' %> - <%= data.clientPhone.split('-')[2] || 'none' %></span></div>
+    <div style="display:flex; flex-direction:row">
+      <span style="font-weight: 400; width:62px;">Country</span>: &nbsp;<span style="font-weight:500;"><%= data?.country || 'empty' %></span>
+     <img style="width:26px; height:15px; border-radius: 3px; margin-left:5px; margin-top:2.5px" src='http://localhost:5000/conqueror/flags/<%= data?.flag.toLowerCase() %>.png' alt="flag"/>
+    </div>
+    </div>
+
+
+  <!-- Package Header -->
+  <div style="display:flex; flex-direction:row; align-items:center; margin-bottom: 25px; margin-top: 20px;">
+
+    <span style="height:14px; background-color:#FFFAEB; border-radius:30px; display:flex; flex-direction:row; align-items:center; padding-top:7px;  padding-bottom:7px;  padding-left:8px; padding-right:8px;">
+    <span style="background-color:#F79009; border-radius:100%; height:10px; width:10px;"></span>
+    <span style="padding-left:7px;  font-size:19px; color:#B54708"><%= data?.stateValue.split(" ")[0] || 'empty' %></span>
+    </span>
+
+    <span class="<%= company === 'Injaz' ? 'licenceColorBlue' : 'licenceColorRed' %>" style="padding-left:8px; font-size:25px;"><span style="font-weight:600;">License Package including <%= data?.packageIncludingVisa || 0 %> Visa</span></span>
+</div>
+
+  <div
+  style="margin-top:5px; background-color: #F9FAFB; padding-top:10px; padding-bottom: 10px; display:flex; flex-direction:row; font-size: 15.5px; font-weight: 500; padding-left: 10px; border: 1px solid #F9FAFB; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+  <span style=" width:20%;">
+      Activity Code
+  </span>
+  <span style=" width:48.5%;">
+      Description
+  </span>
+  <span style=" width:10%">
+      Approval
+  </span>
+  <span style="width:21%">
+      Authority
+  </span>
+
+</div>
+
+
+<% actives.forEach((item, index) => { %>
+<div style="display:flex; flex-direction:row; gap:35px; justify-content: center;">
+        <div
+        class="<%= (index === actives.length - 1) ? 'radiusBottomLeft radiusBottomRight' : '' %>"
+        style="display:flex; flex-direction:row; width:100%; align-items: center; padding-top:7px; padding-bottom: 7px; font-size: 13px; padding-left: 10px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+        <img style="height:15px; margin-top:-1px; margin-right:10px" src="http://localhost:5000/conqueror/check.png" />
+        <span style="width:18.6%;"><%= item.code %></span>
+        <span style="width:48.5%; color:#667085; margin-left: -12px;"><%= item.description %></span>
+        <% if (item.approval === "Pre") { %>
+            <span style="width:10%; color: #F04438;"><%= item.approval.toLowerCase() || "empty" %></span>
+            <% } else if (item.approval === "Post") { %>
+                <span style="width:10%; color: #0743C4;"><%= item.approval.toLowerCase() || "empty" %></span>
+                <% } else{ %>
+                    <span  style="width:10%; color:#667085; "><%= item.approval.toLowerCase() || "empty" %></span>
+                <% } %>
+        <span style="width:21%; color:#667085; "><%= item.authority %></span>
+      </div>
+    </div>
+    <% }); %> 
+
+
+
+
+   <!-- {/* step No 1 */} -->   
+    <img style="height:25; width:140px; margin-top: 15px;" src="http://localhost:5000/conqueror/step1.png" alt="none" />
+       <div
+            style=" margin-top: 4px; background-color: #EDFCF2; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+            <span style="width: 20%;">Description</span>
+            <span style="width: 21.3%;"><%= company === 'Injaz' ? 'Injaz' : 'Conqueror' %> Price</span>
+            <span style="width: 12%;">Price AED</span>
+            <span style="width: 25.7%;">Remarks</span>
+            <span style="width: 21%;">Timeline</span>
+        </div>
+
+        <div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px;  border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB; border-bottom: 1px solid #F9FAFB; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;">
+            <span style="width: 20%; padding-left:5px;">License Fee</span>
+            <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= data?.step1value.toLocaleString() || '0.00' %> AED</span>
+            <span style="width: 12%; color:#667085;"><%= data?.step1value.toLocaleString() || '0.00' %></span>
+            <span style="width: 25.7%; padding-right:3px; color:#F04438; margin-left: -4px;"><%= data?.step1Remarks %></span>
+            <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.step1Timeline %></span>
+        </div>
+
+      <!-- {/* step No 2 */} -->
+      
+    <img style="height:25px; width:180px;  margin-top: 15px;" src="http://localhost:5000/conqueror/step2.png" alt="none" />
+    <div
+    style=" margin-top: 4px; background-color: #F9F5FF; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius:6px; border-top-right-radius: 6px;">
+    <span style="width: 20%;">Description</span>
+    <span style="width: 21.3%;"><%= company === 'Injaz' ? 'Injaz' : 'Conqueror' %> Price</span>
+    <span style="width: 12%;">Price AED</span>
+    <span style="width: 25.7%;">Remarks</span>
+    <span style="width: 21%;">Timeline</span>
+</div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+    <span style="width: 20%; padding-left:5px;">Pre-Approval Fee</span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.step2ApprovalFee).toLocaleString() || "0.00" %> AED</span>
+    <span style="width: 12%; color:#667085;">-</span>
+    <span style="width: 25.7%; padding-right:3px; color:#F04438; margin-left: -4px;">One-Time</span>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;">5-10 days</span>
+</div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+    <span style="width: 20%; padding-left:5px;">Establishment Card</span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.step2Establishment).toLocaleString() || "0.00" %> AED</span>
+    <span style="width: 12%; color:#667085;"><%= Number(data?.step2EstablishmentIN).toLocaleString() || "0.00" %></span>
+    <div style="display: flex; flex-direction: column; width: 25.7%; padding-right:3px; margin-left: -4px; padding-right: 7px;">
+      <span style="color:#414651;">Federel Immigration Fees</span>
+      <span style="color:#F04438;">Renewable every two year</span>
+    </div>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.step2EstablishmentTimeline %></span>
+</div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;">
+    <span style="width: 20%; padding-left:5px;">EChannel Card </span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.step2value1).toLocaleString() || "0.00" %> AED</span>
+    <span style="width: 12%; color:#667085;"><%= Number(data?.step2value1IN).toLocaleString() || "0.00" %></span>
+    <span style="width: 25.7%; padding-right:3px; color:#F04438; margin-left: -4px;">Renewable every two year</span>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;">After IC Card, 2-3 Days </span>
+</div>
+
+
+   <!-- {/* step No 3 */} -->
+      
+   <img style="height:25px; width:140px;  margin-top: 15px;" src="http://localhost:5000/conqueror/step3.png" alt="none" />
+   <div
+   style=" margin-top: 4px; background-color: #FDF2FA; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius:15px; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+   <span style="width: 20%;">Description</span>
+   <span style="width: 21.3%;"><%= company === 'Injaz' ? 'Injaz' : 'Conqueror' %> Price</span>
+   <span style="width: 12%;">Price AED</span>
+   <span style="width: 25.7%;">Remarks</span>
+   <span style="width: 21%;">Timeline</span>
+</div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+   <span style="width: 20%; padding-left:5px;">Visa (Per Visa) Investor</span>
+   <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.step2value2a).toLocaleString() || "0.00" %> AED</span>
+   <span style="width: 12%; color:#667085;"><%= Number(data?.step2value2aIN).toLocaleString() || "0.00" %></span>
+   <span style="width: 25.7%; padding-right:3px; color:#F04438; margin-left: -4px;"><%= data?.step3Renewable %></span>
+   <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.step3Timeline %></span>
+</div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+   <span style="width: 20%; padding-left:5px;">Visa (Per Visa) Employment</span>
+   <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.step2value2).toLocaleString() || "0.00" %> AED</span>
+   <span style="width: 12%; color:#667085;"><%= Number(data?.step2value2IN).toLocaleString() || "0.00" %></span>
+   <span style="width: 25.7%; padding-right:3px; color:#667085; margin-left: -4px;">Renewable Every 2 Years</span>
+   <span style="width: 21% ; color:#667085; margin-left: -6px;">4-7 Working Days</span>
+</div>
+
+<div style=" display:flex; flex-direction:row; background-color: #fdead7; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+    <span style="width: 20%; padding-left:5px; color:#F04438;">Status Change</span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;">Conditional</span>
+    <span style="width: 12%;  color:#F04438;"><%= data?.step2value3IN?.toLocaleString() || "0.00" %></span>
+    <span style="width: 25.7%; padding-right:3px; color:#667085; margin-left: -4px;"><%= data?.step3StatusChange %></span>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.step3TimelineStatusChange %></span>
+ </div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+    <span style="width: 20%; padding-left:5px;">Medical Test (Per visa)</span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.medical).toLocaleString() || "0.00" %> AED</span>
+    <span style="width: 12%; color:#667085;"><%= Number(data?.medicalIN).toLocaleString() || "0.00" %></span>
+    <span style="width: 25.7%; padding-right:3px; color:#667085; margin-left: -4px;">One Time</span>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.medicalTimeline %></span>
+ </div>
+
+ <div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+    <span style="width: 20%; padding-left:5px;">Emirates ID (Per Visa)</span>
+    <span style="width: 21.3%; color:#F04438; margin-left: -2px;"><%= Number(data?.emiratesId).toLocaleString() || "0.00" %> AED</span>
+    <span style="width: 12%; color:#667085;"><%= Number(data?.emiratesIdIN).toLocaleString() || "0.00" %></span>
+    <span style="width: 25.7%; padding-right:3px; color:#667085; margin-left: -4px;">One Time</span>
+    <span style="width: 21% ; color:#667085; margin-left: -6px;"><%= data?.emiratesIdTimeline %></span>
+ </div>
+
+<div style="margin-top: 2px; display:flex; flex-direction:row; font-size: 13px; padding: 7px 5px 7px 5px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;">
+   <span style="width: 20%; padding-left:5px;">PRO Fees</span>
+   <span style="width: 21.3%; color:#F04438; margin-left: -2px;"></span>
+   <span style="width: 12%; color:#667085;">2500 AED</span>
+   <span style="width: 25.7%; padding-right:3px; color:#667085; margin-left: -4px;">Negotiable</span>
+   <span style="width: 21% ; color:#667085; margin-left: -6px;">As per contract</span>
+</div>
+
+<!-- Total -->
+
+
+<div style="margin-top: 7px; display:flex; flex-direction:row; gap:7px">
+
+
+    <div  style="width:53%; background-color:#FFFCF5; border-radius:6px">
+
+     <div style="display:flex; flex-direction:row; gap:12px; padding-top:7px">
+
+      <div style="width:80%; display:flex; flex-direction:column; font-size:15px; gap: 6px; font-weight: 500;";>
+       <div style="display:flex;flex-direction:row;justify-content:flex-end; font-weight: 600;"> 
+        <span style="color:#414651">Total Step (</span>
+        <span style="color:#39A0FF">1</span>
+        <span>,</span>
+
+        <span style="color:#623AA2">2</span>
+        <span>,</span>
+
+        <span style="color:#FD6585">3</span>
+        <span style="color:#414651">):</span>
+
+       </div>
+       <div style="display:flex; flex-direction:row; justify-content:flex-end;">
+        <span style="color:#F79009">Discount</span>
+        </div>
+        <div style="display:flex; flex-direction:row; justify-content: flex-end; font-weight: 600;">
+        <span style="color:#111928">Grand Total</span>
+        </div>
+      </div>
+
+      <div  style="width:20%; display: flex; flex-direction: column; text-align:left; font-size:12px">
+      <span style="height:15px; padding-top:3px ; color:#667085"><%= (Number(data?.step1value) + Number(data?.step2EstablishmentIN) + Number(data?.step2value1IN) + Number(data?.step2value2aIN) + Number(data?.step2value2IN) + 2500 + Number(data?.medicalIN) + Number(data?.emiratesIdIN) ).toLocaleString() %> AED</span>
+      <span style="height:15px; padding-top:10px; color:#F79009"><%= 2500 - Number(data?.discount) %> AED</span>
+      <span style="height:16px; padding-top:9.5px; font-weight: 600; color:#111928"><%= data?.gtAmount.toLocaleString() || "0.00" %> AED</span>
+      </div>
+    </div> 
+
+    <div style="display:flex; flex-direction:row; align-items:start; justify-content: start; padding-left:8.5px;  padding-right:9px;  padding-bottom:9px;  padding-top:4px; font-size:13px">
+    <span style="font-weight: 600; color:#111928; width: 60px;">In Words: </span>
+    <span style="color:#667085"><%= data?.word || "empty" %> Dirhams</span>
+    </div>
+    </div>
+
+    <div  style="width:47%; background-color:#F9FAFB; border-radius:6px; font-size:13px; padding-left: 9px; padding-right: 9px;">
+<p style=" color:#F79009; font-weight: 400;">Limited-Time Offer: Save <%= ((2500 - Number(data?.discount)) / 2500) * 100%>% on PRO Fees!</p>
+<p style=" color:#667085; padding-right:12px">Enjoy an <%= ((2500 - Number(data?.discount)) / 2500) * 100 %>% discount on PRO fees if you proceed by <%= formatDate(data.quotationDate) %> Don’t miss this limited-time opportunity to save big on your application.</p>
+    </div>
+  </div>
+    
+
+  <!-- Footer -->
+
+  <div class="<%= company === 'Injaz' ? 'blue' : 'red' %>" style="display: flex; flex-direction: row; justify-content: space-between; padding-left: 20px; padding-right: 20px; padding-top: 7px; padding-bottom: 7px; position: absolute; bottom: 0; left: 0; right: 0;">
+  
+    <div style="display:flex; flex-direction:row; align-items:center">
+    <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+
+      <% if (company === "Injaz") { %>
+          <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailI.png" />
+        <% } else { %>
+          <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailC.png" />
+        <% } %>
+    </div>
+    <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">info@conqueror.ae</span>
+    </div>
+    
+    
+    <div style="display:flex; flex-direction:row; align-items:center">
+    <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+      <% if (company === "Injaz") { %>
+          <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/Injaz/web.png" />
+        <% } else { %>
+          <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/web.png" />
+        <% } %>
+    </div>
+    <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">www.conqueror.ae</span>
+    </div>
+    
+    <div style="display:flex; flex-direction:row; align-items:center">
+    <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+      <% if (company === "Injaz") { %>
+          <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/Injaz/location.png" />
+      <% } else { %>
+          <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/location.png" />
+        <% } %>
+    </div>
+    <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white; font-weight: 500;">City Pharmacy Building, M02, Port Saeed, Dubai</span>
+    </div>
+    
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="height: 98.5vh; padding-left: 20px; padding-right: 20px; padding-top: 20px; position: relative;">
+    <!-- Header Section -->
+    <div style="display: flex; justify-content: space-between;">
+        <% if (company === "Injaz") { %>
+            <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
+            <% } else { %>
+                <img style="width:189px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+                <% } %>
+
+  
+                <div style="display: flex; flex-direction: column; font-size: 15.5px; gap: 8px; color:#182230;">
+                  <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Date</span>: &nbsp;<span style="font-weight:500;"><%= formatDate(data?.quotationDate) %></span></div>
+                    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Proposal</span>: &nbsp;<span style="font-weight:500;"><%= company === "Injaz" ? 'IGF' : 'CAL' %>/<%= currentYear %>/<%= getLastDigits(data.clientPhone.split('-')[1]) %></span></div>
+                    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Ref</span>: &nbsp;<span style="font-weight:500;"><%= data.reference || 'empty' %></span></div>
+                </div>
+    </div>
+  
+    <!-- Full Package  -->
+
+    <% if (company === "Injaz") { %>
+        <img style="width:170px; height:25px; margin-top: 20px;" src="http://localhost:5000/conqueror/Injaz/package.png" />
+        <% } else { %>
+            <img style="width:170px; height:25px; margin-top: 20px;" src="http://localhost:5000/conqueror/package.png" />
+            <% } %>
+  
+  
+        <div class="<%= company === 'Injaz' ? 'packageBlue' : 'packageRed' %>" style="margin-top: 4px; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+              <span style="width:60%; color:#111928;">Description</span>
+              <span style="width:20%; padding-left:22px;  color:#111928;">Quantity</span>
+              <span style="padding-left:23px;  color:#111928;">Remarks</span>
+  
+        </div>
+
+
+      <% if (company === "Injaz") { %>
+        <% checkData.forEach((item, index) => { %>
+            <div class="<%= (index === checkData.length - 1) ? 'radiusBottomLeft radiusBottomRight' : '' %>" style="display: flex; flex-direction: row; font-size: 13px; padding: 10px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+                <span class="<%= company === 'Injaz' && item.status === '1' ? 'fCheckColorBlue' : 'blackColor' %> "  style="width: 60%; display: flex; flex-direction: row; align-items: center; gap: 3px;">
+                    <% if (company === 'Injaz' && item.status === '1') { %>
+                        <img style="width:10px; height:10px;" src="http://localhost:5000/conqueror/Injaz/f_check.png" />
+                        <% } else { %>
+                            <img style="width:10px; height:10px;" src="http://localhost:5000/conqueror/f_black.png" />
+                            <% } %>
+                    <%= item.title %></span>
+                <span class="<%= company === 'Injaz' && item.status === '1' ? 'fCheckColorBlue' : 'blackColor' %> " style="width: 20%; padding-left: 22px;"><%= item.value %></span>
+                <span class="<%= company === 'Injaz' && item.status === '1' ? 'fCheckColorBlue' : 'blackColor' %> " style="padding-left: 23px;"><%= item.status === '0' ? 'Not Include' : 'Include' %></span>
+            </div>
+          <% }); %>
+        <% } else { %>
+            <% checkData.forEach((item, index) => { %>
+                <div class="<%= (index === checkData.length - 1) ? 'radiusBottomLeft radiusBottomRight' : '' %>" style="display: flex; flex-direction: row; font-size: 13px; padding: 10px; border-bottom: 1px solid #F9FAFB; border-left: 1px solid #F9FAFB; border-right: 1px solid #F9FAFB;">
+                    <span class="<%= company === 'Conqueror' && item.status === '1'  ? 'fCheckColorRed' : 'blackColor' %>"  style="width: 60%; display: flex; flex-direction: row; align-items: center; gap: 3px;">
+                        <% if (company === 'Conqueror' && item.status === '1') { %>
+                            <img style="width:10px; height:10px;" src="http://localhost:5000/conqueror/f_check.png" />                        
+                            <% } else { %>
+                                <img style="width:10px; height:10px;" src="http://localhost:5000/conqueror/f_black.png" />                        
+                                <% } %>
+                        <%= item.title %></span>
+                    <span class="<%= company === 'Conqueror' && item.status === '1'  ? 'fCheckColorRed' : 'blackColor' %>" style="width: 20%; padding-left: 22px;"><%= item.value %></span>
+                    <span class="<%= company === 'Conqueror' && item.status === '1'  ? 'fCheckColorRed' : 'blackColor' %>" style="padding-left: 23px;"><%= item.status === '0' ? 'Not Include' : 'Include' %></span>
+                </div>
+              <% }); %>
+            <% } %>
+
+
+            <% if (company === "Injaz") { %>
+                <img style="margin-top:25px;  width: 99.5%;" src="http://localhost:5000/conqueror/Injaz/page2Bottom.png" />
+                <% } else { %>
+                    <img style="margin-top:25px;  width: 99.5%;" src="http://localhost:5000/conqueror/page2Bottom.png" />
+                    <% } %>
+  
+    <!-- Footer -->
+
+
+  
+    <div class="<%= company === 'Injaz' ? 'blue' : 'red' %>" style="display: flex; flex-direction: row; justify-content: space-between; padding-left: 20px; padding-right: 20px; padding-top: 7px; padding-bottom: 7px; position: absolute; bottom: 0; left: 0; right: 0;">
+  
+        <div style="display:flex; flex-direction:row; align-items:center">
+        <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+
+          <% if (company === "Injaz") { %>
+              <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailI.png" />
+            <% } else { %>
+              <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailC.png" />
+            <% } %>
+        </div>
+        <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">info@conqueror.ae</span>
+        </div>
+        
+        
+        <div style="display:flex; flex-direction:row; align-items:center">
+        <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+          <% if (company === "Injaz") { %>
+              <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/Injaz/web.png" />
+            <% } else { %>
+              <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/web.png" />
+            <% } %>
+        </div>
+        <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">www.conqueror.ae</span>
+        </div>
+        
+        <div style="display:flex; flex-direction:row; align-items:center">
+        <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+          <% if (company === "Injaz") { %>
+              <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/Injaz/location.png" />
+          <% } else { %>
+              <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/location.png" />
+            <% } %>
+        </div>
+        <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white; font-weight: 500;">City Pharmacy Building, M02, Port Saeed, Dubai</span>
+        </div>
+        
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div style="height: 98.5vh; padding-left: 20px; padding-right: 20px; padding-top: 20px; position: relative;">
+    <!-- Header Section -->
+    <div style="display: flex; justify-content: space-between;">
+        <% if (company === "Injaz") { %>
+            <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
+            <% } else { %>
+                <img style="width:189px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+                <% } %>
+
+  
+                <div style="display: flex; flex-direction: column; font-size: 15.5px; gap: 8px; color:#182230;">
+                  <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Date</span>: &nbsp;<span style="font-weight:500;"><%= formatDate(data?.quotationDate) %></span></div>
+                    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Proposal</span>: &nbsp;<span style="font-weight:500;"><%= company === "Injaz" ? 'IGF' : 'CAL' %>/<%= currentYear %>/<%= getLastDigits(data.clientPhone.split('-')[1]) %></span></div>
+                    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:67px;">Ref</span>: &nbsp;<span style="font-weight:500;"><%= data.reference || 'empty' %></span></div>
+                </div>
+    </div>
+  
+    <% if (company === "Injaz") { %>
+        <img style="margin-top:25px; width: 99.5%; height:auto;" src="http://localhost:5000/conqueror/Injaz/page3top.png" />
+        <% } else { %>
+        <img style="margin-top:25px; width: 99.5%; height:auto;" src="http://localhost:5000/conqueror/page3top.png" />
+        <% } %>
+
+     
+
+<div style="display:flex; flex-direction:row; justify-content:space-evenly; width: 96%; position: absolute; bottom: 80px; font-size: 21px;">
+<span>CLIENT: _________________________</span>
+<span> SIGNATURE: _________________________</span>
+
+</div>
+  
+    <!-- Footer -->
+  
+    <div class="<%= company === 'Injaz' ? 'blue' : 'red' %>" style="display: flex; flex-direction: row; justify-content: space-between; padding-left: 20px; padding-right: 20px; padding-top: 7px; padding-bottom: 7px; position: absolute; bottom: 0; left: 0; right: 0;">
+  
+          <div style="display:flex; flex-direction:row; align-items:center">
+          <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+
+            <% if (company === "Injaz") { %>
+                <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailI.png" />
+              <% } else { %>
+                <img style="width:23px; height:20px" src="http://localhost:5000/conqueror/MailC.png" />
+              <% } %>
+          </div>
+          <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">info@conqueror.ae</span>
+          </div>
+          
+          
+          <div style="display:flex; flex-direction:row; align-items:center">
+          <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+            <% if (company === "Injaz") { %>
+                <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/Injaz/web.png" />
+              <% } else { %>
+                <img style="width:17px; height:17px;" src="http://localhost:5000/conqueror/web.png" />
+              <% } %>
+          </div>
+          <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white;  font-weight: 500;">www.conqueror.ae</span>
+          </div>
+          
+          <div style="display:flex; flex-direction:row; align-items:center">
+          <div style="width:32px; height:32px; background-color:white; border-radius:100px; display:flex; justify-content:center; align-items:center">
+            <% if (company === "Injaz") { %>
+                <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/Injaz/location.png" />
+            <% } else { %>
+                <img style="width:15px;height:20px;" src="http://localhost:5000/conqueror/location.png" />
+              <% } %>
+          </div>
+          <span style="padding-left:5px; padding-top: 5px; padding-bottom: 5px; font-size:17px; color: white; font-weight: 500;">City Pharmacy Building, M02, Port Saeed, Dubai</span>
+          </div>
+          
+    </div>
+
+  </div>
+
+</body>
+</html>
