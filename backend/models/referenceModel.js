@@ -45,6 +45,10 @@ const referenceSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    designation:{
+        type: String,
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now

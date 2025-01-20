@@ -53,6 +53,14 @@ const styles = StyleSheet.create({
     color:'white',
     paddingVertical:5
   },
+  flooting: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 20,
+    color:'white',
+    fontSize:10,
+  },
   // image: {
   //   width: '100%',
     
@@ -150,14 +158,21 @@ const MyDocument = ({
    
 
  {/* 2 Page test */}
-    <Page size="A4" >
-    <Image style={{width:"100%",height:'100%'}} src="/pdf_C.png" />
-    </Page>
+    <Page size="A4">
+  <Image
+    style={{width: '100%', height: '100%',}}src="/pdf_C.png" />
+  {/* Text Overlay */}
+  <View style={styles.flooting}>
+  <Text>
+    Hello
+  </Text>
+  </View>
+</Page>
 
      {/* 3 Page test */}
      <Page size="A4" style={styles.page} >
 
-     <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
+     <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:22}}>
         <Image style={styles.logo} src="/page3Logo.png" />
       <View>
         <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>
@@ -175,7 +190,7 @@ const MyDocument = ({
 
         </View>
 
-      <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 16, marginTop:6 }}>
+      <View style={{display:'flex', flexDirection:'row', alignItems:'center', marginHorizontal: 16, marginTop:14 }}>
         <View style={{backgroundColor:'#FFFAEB', display:'flex', flexDirection:'row', gap:'3px',borderRadius:'100%', alignItems:'center', paddingHorizontal:"5px"  }}>
         <Text style={{backgroundColor:'#F79009', height:'6px', width:'6px', borderRadius:'100%',color:'#F79009'}}>.</Text>
       <Text style={{ paddingLeft:5, fontSize:"12px", fontFamily: 'CustomFont400', color:'#B54708', paddingVertical:1}}>{data?.stateValue.split(" ")[0] || 'empty'}</Text>
@@ -183,7 +198,7 @@ const MyDocument = ({
       <Text style={{ paddingLeft:5, paddingVertical:3, fontSize:"15px", fontFamily: 'CustomFont500', color:'#c40014'}}>License Package including {data?.packageIncludingVisa || 0} Visa</Text>
       </View>
 
-      <View style={{ marginTop: 6, marginHorizontal: 16, backgroundColor: '#F9FAFB', paddingVertical:'5px',display:"flex",flexDirection:'row', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px",paddingLeft:'7px' }}>
+      <View style={{ marginTop: 14, marginHorizontal: 16, backgroundColor: '#F9FAFB', paddingVertical:'5px',display:"flex",flexDirection:'row', border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px",paddingLeft:'7px' }}>
       <Text style={{ fontSize: "8px",   fontFamily:'CustomFont500', width:'20%', color:"#111928"}}>Activity Code</Text>
       <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'48%', color:"#111928" }}>Description</Text>
       <Text style={{ fontSize: "8px", fontFamily:'CustomFont500', width:'10%', color:"#111928" }}>Approval</Text>
@@ -210,7 +225,7 @@ const MyDocument = ({
 {/* step No 1 */}
 
       
-      <View style={{ marginTop: 10,marginHorizontal:16}}>
+      <View style={{ marginTop: 15,marginHorizontal:16}}>
       <Image style={{width:90, height:'auto'}} src="/step1.png" />
       </View>
 
@@ -233,7 +248,7 @@ const MyDocument = ({
 
 
 {/* step No 2 */}
-<View style={{ marginTop: 10,marginHorizontal:16}}>
+<View style={{ marginTop: 15,marginHorizontal:16}}>
       <Image style={{width:120, height:'16px'}} src="/step2.png" />
       </View>      
       <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
@@ -279,7 +294,7 @@ const MyDocument = ({
 
 
 {/* step No 3 */}
-<Image style={{width:100, height:'auto', marginTop: 10, marginLeft: 16,}} src="/step3.png" />
+<Image style={{width:100, height:'auto', marginTop: 15, marginLeft: 16,}} src="/step3.png" />
 
       <View style={{ marginTop:4, marginHorizontal: 16, backgroundColor: '#F9F5FF', paddingVertical: 7, display:'flex', flexDirection:'row', paddingLeft:"7px", border:'1px solid #F9FAFB', borderTopRightRadius:"4px", borderTopLeftRadius:"4px" }}>
       <Text style={{ fontSize: "8px", width: '20%', fontFamily: 'CustomFont500', color:"#111928" }}>Description</Text>
@@ -416,7 +431,7 @@ const MyDocument = ({
     {/* 4 Page test */}
     <Page size="A4" >
   
-    <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
+    <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:22}}>
         <Image style={styles.logo} src="/page3Logo.png" />
         <View>
         <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>
@@ -489,7 +504,7 @@ const MyDocument = ({
 {/* 5 Page test */}
       <Page size="A4" style={styles.page}>
 
-      <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:12}}>
+      <View style={{display:'flex', flexDirection:'row', justifyContent:"space-between", alignItems:'center',marginBottom:22}}>
         <Image style={styles.logo} src="/page3Logo.png" />
         <View>
         <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'3px' }}><Text style={{marginTop:"11.5px", color:'#182230',width:'40px'}}>Date</Text><Text style={{color:'#182230',marginTop:"11px",}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"16px", marginTop:"10px", color:'#182230'}}>{formatDate2(new Date(data.quotationDate))}</Text></View>

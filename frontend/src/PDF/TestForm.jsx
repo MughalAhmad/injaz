@@ -658,7 +658,7 @@ const saveDataIntoDB = () =>{
       tAmount: totalAmount,
       gtAmount: roundedNumber,
       word:words,
-      date:addDaysToDate(new Date(data.quotationDate),10)
+      date:addDaysToDate(new Date(data.quotationDate),7)
     }));
   };
 

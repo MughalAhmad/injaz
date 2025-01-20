@@ -148,7 +148,7 @@ const TestDynamicList = ({heads=[],fields=[], title='text', onhandleChange}) => 
 
     </div>
     {/* <div className='flex justify-start md:justify-end'><Button title='Add More' click={addRow} btnColor='bg-[#4AD991]'/></div> */}
-    {rows.length < 7 &&<div className='flex flex-col md:justify-end md:flex-row'><Button title='Add More' click={addRow} btnColor='bg-[#4AD991]'/></div>}
+    {rows.length < 5 &&<div className='flex flex-col md:justify-end md:flex-row'><Button title='Add More' click={addRow} btnColor='bg-[#4AD991]'/></div>}
 
     </div>
   )

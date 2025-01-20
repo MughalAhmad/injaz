@@ -24,6 +24,8 @@ const refCreateSchema = Yup.object({
   mobile: Yup.number().required("Mobile Number Required"),
   company: Yup.string().required("Company Required"),
   refCode: Yup.string().required("Ref Code Required"),
+  designation: Yup.string().required("Designation Required"),
+
 });
 
 const RefForm = () => {
@@ -50,6 +52,7 @@ const RefForm = () => {
         mobileCode: refData?.mobileCode || "",
         company: refData?.company || "",
         refCode: refData?.refCode || "",
+        designation : refData?.designation || "",
       },
       validationSchema: refCreateSchema,
       enableReinitialize: true,
@@ -74,6 +77,7 @@ const RefForm = () => {
           mobileCode: trimmedValues.mobileCode,
           company: trimmedValues.company,
           refCode: trimmedValues.refCode,
+          designation: trimmedValues.designation,
         };
         if (formState === "update") {
           body._id = refData._id;
@@ -255,7 +259,7 @@ const RefForm = () => {
         {/* Group Name */}
 
         <div className="flex flex-col lg:flex-row px-3 md:px-5 xl:px-10">
-          <p className="font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[32.5%]">
+          <p className="font-semibold text-xl text-textPrimary w-[30%] hidden lg:block xl:w-[33%]">
             Group Name
           </p>
           <div className={`flex flex-col w-full lg:w-[33%] md:mr-5 xl:mr-10`}>
@@ -269,6 +273,19 @@ const RefForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               feedback={[errors.company, touched.company]}
+            />
+          </div>
+          <div className={`flex flex-col w-full lg:w-[33%] `}>
+            <Input
+              type="text"
+              title="Designation"
+              name="designation"
+              placeholder="Enter Designation"
+              size="lg"
+              value={values.designation}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              feedback={[errors.designation, touched.designation]}
             />
           </div>
         </div>
