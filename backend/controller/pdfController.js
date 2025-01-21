@@ -332,10 +332,14 @@ return res.status(200).json({
 
         allRefs.map((item)=>{
           modifyRefs.push({
-            id:item.fullName,
+            id:item.refCode,
             name:item.fullName,
+            email:item.email || "empty",
+            designation:item.designation || "empty",
           })
-        })
+        });
+
+        console.log(modifyRefs)
 
 return res.status(200).json({
   hasError: false,

@@ -55,11 +55,9 @@ const styles = StyleSheet.create({
   },
   flooting: {
     position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 20,
+    bottom: "17.2px",
+    right: '60.5px',
     color:'white',
-    fontSize:10,
   },
   // image: {
   //   width: '100%',
@@ -70,7 +68,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-  },
+  }
 });
 
 const imageSources = [
@@ -158,16 +156,22 @@ const MyDocument = ({
    
 
  {/* 2 Page test */}
-    <Page size="A4">
-  <Image
-    style={{width: '100%', height: '100%',}}src="/pdf_C.png" />
-  {/* Text Overlay */}
+    <Page size="A4" style={{position:'relative', backgroundColor:'#222c5b'}}>
+    <Image
+    style={{width: '100%', height: '99.9%',position:'absolute'}}src="/pdf_C.png" />
+
   <View style={styles.flooting}>
-  <Text>
-    Hello
-  </Text>
+
+    <View>
+      <Text style={{fontSize:'10px'}}>{data.reference || "empty"}</Text>
+      <Text style={{fontSize:'8px'}}>{data.refDesignation || "empty"}</Text>
+    </View>
+
+      <Text style={{fontSize:'10px', marginTop:'15px'}}>{data.refMail || "empty"}</Text>
+
   </View>
 </Page>
+
 
      {/* 3 Page test */}
      <Page size="A4" style={styles.page} >
@@ -183,10 +187,10 @@ const MyDocument = ({
 
   
  <View style={{marginHorizontal: 16}}>
-        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230',marginTop:"3px",width:'80px'}}>Customer Name</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', marginTop:"3px", color:'#182230'}}>{data?.clientName || "empty"}</Text></View>
-        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230', paddingTop:'1px',width:'80px'}}>Email</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientEmail || "empty"}</Text></View>
-        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'80px'}}>Contact</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230'}}>{data.clientPhone.split('-')[1] || "none"}-{data.clientPhone.split('-')[2] || 'none'}</Text></View>
-      <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'1px',width:'80px'}}>Country</Text><Text style={{color:'#182230',marginTop:"1px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"4px", color:'#182230'}}>{data?.country || "empty"}</Text><Image style={{width:'18.96px', height:"10px", marginTop:'2px', borderRadius:'1px'}} src={`/flags/${data?.flag.toLowerCase()}.png`} /></View>
+        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230',marginTop:"3px",width:'80px'}}>Customer Name</Text><Text style={{color:'#182230',marginTop:"3px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', marginTop:"2.6px", color:'#182230'}}>{data?.clientName || "empty"}</Text></View>
+        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{color:'#182230', paddingTop:'5px',width:'80px'}}>Email</Text><Text style={{color:'#182230',marginTop:"5px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230',marginTop:"4.5px"}}>{data.clientEmail || "empty"}</Text></View>
+        <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'5px',width:'80px'}}>Contact</Text><Text style={{color:'#182230',marginTop:"5px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500', color:'#182230', marginTop:"4.5px"}}>{data.clientPhone.split('-')[1] || "none"}-{data.clientPhone.split('-')[2] || 'none'}</Text></View>
+      <View style={{display:'flex', flexDirection:'row', fontSize:'10px', gap:'4.5px' }}><Text style={{ color:'#182230',  paddingTop:'5px',width:'80px'}}>Country</Text><Text style={{color:'#182230',marginTop:"5px"}}>:</Text><Text style={{fontSize:'10px' ,fontFamily: 'CustomFont500',marginRight:"4px", color:'#182230', marginTop:"4.5px"}}>{data?.country || "empty"}</Text><Image style={{width:'18.96px', height:"10px", marginTop:'5.5px', borderRadius:'1px'}} src={`/flags/${data?.flag.toLowerCase()}.png`} /></View>
 
         </View>
 
@@ -397,7 +401,7 @@ const MyDocument = ({
 
         <View  style={{width:'47%',backgroundColor:'#F9FAFB', borderRadius:'4px',fontSize:8, paddingHorizontal:'9px',  }}>
 <Text style={{paddingVertical:'7px', color:'#F79009', fontFamily:"CustomFont400"}}>Limited-Time Offer: Save {((2500 - Number(data?.discount)) / 2500) * 100}% on PRO Fees!</Text>
-<Text style={{lineHeight:'1.5px',color:'#667085', paddingRight:4}}>Enjoy an {((2500 - Number(data?.discount)) / 2500) * 100}% discount on PRO fees if you proceed by {formatDate2(new Date(data?.date))}! Don’t miss this limited-time opportunity to save big on your application.</Text>
+<Text style={{lineHeight:'1.5px',color:'#667085', paddingRight:4}}>Enjoy an {((2500 - Number(data?.discount)) / 2500) * 100}% discount on PRO fees if you proceed by <Text style={{fontFamily:'CustomFont600'}}>{formatDate2(new Date(data?.date))}</Text>! Don’t miss this limited-time opportunity to save big on your application.</Text>
         </View>
       </View>
 

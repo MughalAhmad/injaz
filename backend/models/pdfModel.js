@@ -113,6 +113,18 @@ const pdfSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    refMail:{
+        type: String,
+        required: true
+    },
+     refId:{
+    type: String,
+    required: true
+     },
+     refDesignation:{
+    type: String,
+    required: true
+},
     selectCompany: {
         type: String,
         required: true

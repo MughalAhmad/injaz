@@ -48,6 +48,9 @@ const { user } = useSelector(state => state.adminStore);
    date: "",
 
    reference:'',
+   refMail:'',
+   refId:'',
+   refDesignation:'',
 
    clientName:'',
    clientEmail:'',
@@ -543,11 +546,28 @@ const { user } = useSelector(state => state.adminStore);
    }
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-    if(e.target.name==="clientEmail"){
-      CheckEmailValidation(e.target.value)
+    if(e.target.name === 'reference'){
+      selectReference.map((ref)=>{
+        if(e.target.value === ref.id){
+          setData(prevData => ({
+            ...prevData,
+            reference:ref.name,
+            refMail:ref.email,
+            refId:ref.id,
+            refDesignation:ref.designation,
+          }));
+        }
+      })
+    }
+    else{
+      setData({ ...data, [e.target.name]: e.target.value });
+      if(e.target.name==="clientEmail"){
+        CheckEmailValidation(e.target.value)
+      }
     }
   };
+
+  console.log("data ==== > ",data);
 
   const handle2500Value = (e) => {
     if(e.target.value > 2500){
@@ -908,9 +928,9 @@ useEffect(() => {
 
  // Initialize state for dropdown options
   const [selectReference, setSelectReference] = useState([
-    { id: 'Facebook', name: 'Facebook' },
-    { id: 'Instagram', name: 'Instagram' },
-    { id: 'Whatsapp', name: 'Whatsapp' },
+    { id: 'Facebook123', name: 'Facebook', email:`${data.selectCompany === "Injaz" ? 'info@injazgroup.com' : 'contact@conqueror.ae'}`, designation:'Social Media Platform' },
+    { id: 'Instagram123', name: 'Instagram',email:`${data.selectCompany === "Injaz" ? 'info@injazgroup.com' : 'contact@conqueror.ae'}`, designation:'Social Media Platform' },
+    { id: 'Whatsapp123', name: 'Whatsapp', email:`${data.selectCompany === "Injaz" ? 'info@injazgroup.com' : 'contact@conqueror.ae'}`, designation:'Social Media Platform' },
   ]);
 
   // const getAllRefs = async () => {
@@ -948,6 +968,8 @@ useEffect(() => {
       console.error("Failed to fetch references:", error);
     }
   };
+
+  console.log('selectReference========>',selectReference)
 
   // const hanldeSave =()=>{
   //   const fullData={
@@ -1054,7 +1076,7 @@ useEffect(() => {
     <PhoneNumberInput label='Phone Number' placeholder='Enter Your Number'
     onPhoneChange={handleClientPhoneChange} 
     />
-     <SelectAndInput value={data.reference} list={selectReference} name='reference' placeholder='Select' type='text' basicHandle={handleChange} handleChange={handleCustomSelect} label='Reference'/>
+     <SimpleDropdown value={data.reference} list={selectReference} name='reference' placeHolder='Select' onChange={handleChange} label='Reference'/>
 
 </div>
 

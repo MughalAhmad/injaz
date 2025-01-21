@@ -46,12 +46,30 @@
 
 </head>
 <body style="font-family:Inter; margin: 0; padding: 0;">
-    <div style="height: 100vh;">
+    <div style="height: 100vh; position: relative;">
         <% if (company === "Injaz") { %>
             <img style="width:100%; height:100%;" src="http://localhost:5000/conqueror/first_I.png" />
           <% } else { %>
             <img style="width:100%; height:100%;" src="http://localhost:5000/conqueror/first_C.png" />
           <% } %>
+
+          <% if (company === "Injaz") { %>
+          <div style="position: absolute; bottom: 25px; right: 104px; color: white; font-weight: 500;">
+            <div style="display: flex; flex-direction: column; margin-bottom: 27px;">
+              <span style="font-size: 16px;"><%= data.reference %></span>
+              <span style="font-size: 12px;"><%= data.refDesignation %></span>
+            </div>
+            <span style="font-size: 16px;"><%= data.refMail %></span>
+          </div>
+          <% } else { %>
+            <div style="position: absolute; bottom: 25px; right: 93px; color: white; font-weight: 500;">
+              <div style="display: flex; flex-direction: column; margin-bottom: 27px;">
+                <span style="font-size: 16px;"><%= data.reference %></span>
+                <span style="font-size: 12px;"><%= data.refDesignation %></span>
+              </div>
+              <span style="font-size: 16px;"><%= data.refMail %></span>
+            </div>
+            <% } %>
     </div>
 
 
@@ -65,7 +83,7 @@
     <% if (company === "Injaz") { %>
         <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
         <% } else { %>
-            <img style="width:195px; height: 60px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+            <img style="width:200px; height: 60px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
             <% } %>
 
 
@@ -77,8 +95,8 @@
 </div>
 
   <!-- Client Details -->
-  <div style="display:flex; flex-direction:column; font-size: 15.5px; gap: 8px; color:#182230; margin-top: 22px;">
-    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:125px;">Name Customer</span>: &nbsp;<span style="font-weight:500;"><%= data?.clientName || 'empty' %></span></div>
+  <div style="display:flex; flex-direction:column; font-size: 15.5px; gap: 8px; color:#182230; margin-top: 30px;">
+    <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:125px;">Customer Name</span>: &nbsp;<span style="font-weight:500;"><%= data?.clientName || 'empty' %></span></div>
     <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:125px;">Email</span>: &nbsp;<span style="font-weight:500;"><%= data.clientEmail || 'empty' %></span></div>
     <div style="display:flex; flex-direction:row"><span style="font-weight: 400; width:125px;">Contact</span>: &nbsp;<span style="font-weight:500;"><%= data.clientPhone.split('-')[1] || 'none' %> - <%= data.clientPhone.split('-')[2] || 'none' %></span></div>
     <div style="display:flex; flex-direction:row">
@@ -141,7 +159,7 @@
 
 
    <!-- {/* step No 1 */} -->   
-    <img style="height:25; width:140px; margin-top: 20px;" src="http://localhost:5000/conqueror/step1.png" alt="none" />
+    <img style="height:25; width:140px; margin-top: 26px;" src="http://localhost:5000/conqueror/step1.png" alt="none" />
        <div
             style=" margin-top: 4px; background-color: #EDFCF2; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius: 6px; border-top-right-radius: 6px;">
             <span style="width: 20%;">Description</span>
@@ -161,7 +179,7 @@
 
       <!-- {/* step No 2 */} -->
       
-    <img style="height:25px; width:180px;  margin-top: 20px;" src="http://localhost:5000/conqueror/step2.png" alt="none" />
+    <img style="height:25px; width:180px;  margin-top: 26px;" src="http://localhost:5000/conqueror/step2.png" alt="none" />
     <div
     style=" margin-top: 4px; background-color: #F9F5FF; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius:6px; border-top-right-radius: 6px;">
     <span style="width: 20%;">Description</span>
@@ -201,7 +219,7 @@
 
    <!-- {/* step No 3 */} -->
       
-   <img style="height:25px; width:140px;  margin-top: 20px;" src="http://localhost:5000/conqueror/step3.png" alt="none" />
+   <img style="height:25px; width:140px;  margin-top: 26px;" src="http://localhost:5000/conqueror/step3.png" alt="none" />
    <div
    style=" margin-top: 4px; background-color: #FDF2FA; padding-top: 6px; padding-bottom: 6px; display:flex; flex-direction:row; font-size: 16.5px; font-weight: 500; padding: 10px; border: 1px solid #F9FAFB; border-top-left-radius:15px; border-top-left-radius: 6px; border-top-right-radius: 6px;">
    <span style="width: 20%;">Description</span>
@@ -305,7 +323,7 @@
 
     <div  style="width:47%; background-color:#F9FAFB; border-radius:6px; font-size:13px; padding-left: 9px; padding-right: 9px;">
 <p style=" color:#F79009; font-weight: 400;">Limited-Time Offer: Save <%= ((2500 - Number(data?.discount)) / 2500) * 100%>% on PRO Fees!</p>
-<p style=" color:#667085; padding-right:12px">Enjoy an <%= ((2500 - Number(data?.discount)) / 2500) * 100 %>% discount on PRO fees if you proceed by <%= formatDate(data.quotationDate) %> Don’t miss this limited-time opportunity to save big on your application.</p>
+<p style=" color:#667085; padding-right:12px">Enjoy an <%= ((2500 - Number(data?.discount)) / 2500) * 100 %>% discount on PRO fees if you proceed by <span style="font-weight: 600;"><%= formatDate(data.quotationDate) %></span> Don’t miss this limited-time opportunity to save big on your application.</p>
     </div>
   </div>
     
@@ -374,7 +392,7 @@
         <% if (company === "Injaz") { %>
             <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
             <% } else { %>
-                <img style="width:189px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+                <img style="width:200px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
                 <% } %>
 
   
@@ -502,7 +520,7 @@
         <% if (company === "Injaz") { %>
             <img style="width:189px; height: 70px;" src="http://localhost:5000/conqueror/Injaz/page3Logo.png" alt="none" />
             <% } else { %>
-                <img style="width:189px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
+                <img style="width:200px; height: 53px;" src="http://localhost:5000/conqueror/page3Logo.png" alt="none" />
                 <% } %>
 
   
