@@ -54,22 +54,18 @@
           <% } %>
 
           <% if (company === "Injaz") { %>
-          <div style="position: absolute; bottom: 25px; right: 104px; color: white; font-weight: 500;">
-            <div style="display: flex; flex-direction: column; margin-bottom: 27px;">
+            <div style="display: flex; flex-direction: column; margin-bottom: 27px; position: absolute; bottom: 43.5px; right: 15px; color: white; font-weight: 500; width:335px;">
               <span style="font-size: 16px;"><%= data.reference %></span>
               <span style="font-size: 12px;"><%= data.refDesignation %></span>
             </div>
-            <span style="font-size: 16px;"><%= data.refMail %></span>
-          </div>
+            <span style="font-size: 16px; position: absolute; bottom:24px; right:15px; color:white; width:335px;"><%= data.refMail %></span>
           <% } else { %>
-            <div style="position: absolute; bottom: 25px; right: 93px; color: white; font-weight: 500;">
-              <div style="display: flex; flex-direction: column; margin-bottom: 27px;">
-                <span style="font-size: 16px;"><%= data.reference %></span>
-                <span style="font-size: 12px;"><%= data.refDesignation %></span>
-              </div>
-              <span style="font-size: 16px;"><%= data.refMail %></span>
+ <div style="display: flex; flex-direction: column; margin-bottom: 27px; position: absolute; bottom: 43.5px; right: 15px; color: white; font-weight: 500; width:335px;">
+              <span style="font-size: 16px;"><%= data.reference %></span>
+              <span style="font-size: 12px;"><%= data.refDesignation %></span>
             </div>
-            <% } %>
+            <span style="font-size: 16px; position: absolute; bottom:24px; right:15px; color:white; width:335px;"><%= data.refMail %></span>
+            <% } %> 
     </div>
 
 

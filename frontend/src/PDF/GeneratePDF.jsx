@@ -160,16 +160,16 @@ const MyDocument = ({
     <Image
     style={{width: '100%', height: '99.9%',position:'absolute'}}src="/pdf_C.png" />
 
-  <View style={styles.flooting}>
+  {/* <View style={styles.flooting}> */}
 
-    <View>
+    <View style={{position: 'absolute', bottom: "43.5px", right:'5px', color:'white', width:'204px'}}>
       <Text style={{fontSize:'10px'}}>{data.reference || "empty"}</Text>
       <Text style={{fontSize:'8px'}}>{data.refDesignation || "empty"}</Text>
     </View>
 
-      <Text style={{fontSize:'10px', marginTop:'15px'}}>{data.refMail || "empty"}</Text>
+      <Text style={{fontSize:'10px', position: 'absolute', bottom: "16.5px", right:'5px', color:'white', width:'204px'}}>{data.refMail || "empty"}</Text>
 
-  </View>
+  {/* </View> */}
 </Page>
 
 

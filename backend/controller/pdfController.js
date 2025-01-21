@@ -323,7 +323,9 @@ return res.status(200).json({
           {$project:{
                 _id:1,
                 fullName:1,
-                refCode:1
+                refCode:1,
+                email:1,
+                designation:1,
           }}
         ]);
         if (!allRefs) throw new Error("References not found");

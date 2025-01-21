@@ -3,16 +3,24 @@ import Input from "../pdf/Input";
 import Title from "../pdf/Title";
 import moment from "moment";
 import { updateShowBackDropLoader } from "../../redux/features/adminSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sweetNotification } from "../common/SweetAlert";
 import { useParams } from "react-router-dom";
 import { getQuotation } from "../../redux/features/pdfSlice";
+import Button from '../pdf/Button';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import MyDocument from '../../PDF/GeneratePDF';
+import MyDocumentInjaz from '../../PDF/GeneratePDFCompany2';
 
 const ViewQuotation = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const [data, setData] = useState({});
   let className = "mr-0";
+  const { companyName } = useSelector(state => state.brandingStore);
+const [generatePDFBtn, setGeneratePDFBtn] = useState(false)
+const [btnStatusText, setBtnStatusText] = useState("generating");
+const [btnStatus, setBtnStatus] = useState(true);
 
   const getQuotationData = () => {
     dispatch(updateShowBackDropLoader(true));
@@ -33,6 +41,48 @@ const ViewQuotation = () => {
       });
   };
 
+  const handleFullPFBtn = ()=>{
+    setData((prevData) => ({
+      ...prevData,
+      pdfLenght: "full",
+    }));
+    setGeneratePDFBtn(generatePDFBtn ? false: true)
+  }
+  const handleProfilePFBtn = ()=>{
+    setData((prevData) => ({
+      ...prevData,
+      pdfLenght: "profile",
+    }));
+    setGeneratePDFBtn(generatePDFBtn ? false: true)
+  }
+
+  const handleGeneratePDF = () => {
+    setTimeout(() => {
+      setGeneratePDFBtn(false)
+      setBtnStatus(true)
+    }, 2000);
+  };
+
+  const handleValue = (loading,error, )=> {
+    if (error) {
+      setBtnStatusText("error")
+      console.error('PDF Generation Error:', error);
+      return 'try Again';
+    }
+     else if(loading){
+        setBtnStatus(true)
+        setBtnStatusText("generating")
+      }
+      else{
+        setBtnStatus(false)
+        setBtnStatusText("save")
+
+      }
+      
+     
+    return btnStatus ?  'Generating PDF...': 'Save PDF' ;
+   }
+console.log("VIEW +++++>",data)
   useEffect(() => {
     getQuotationData();
   }, []);
@@ -549,6 +599,78 @@ const ViewQuotation = () => {
           ))}
         </div>
       </div>
+
+      {data.selectCompany === "Conqueror"   &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
+  {!generatePDFBtn && <Button title='Generate Company Profile' click={handleFullPFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
+  {!generatePDFBtn && <Button title='Generate Invoice' click={handleProfilePFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
+
+
+    {generatePDFBtn &&
+ <button
+        className={`w-24 h-11 ${btnStatusText === 'error' ? `bg-[#df3c3c]` : btnStatusText === 'save' ? 'bg-[#4AD991]' : 'bg-[#8f9693]' }  text-white rounded-lg flex justify-center items-center text-sm cursor-pointer ${btnStatusText === 'error' ? `hover:bg-[#eb9797]` : btnStatusText === 'save' ? 'hover:bg-[#99eec3]' : 'hover:cursor-wait' }`}
+      >
+<PDFDownloadLink 
+        document={<MyDocument
+            data={data}
+            checkBox={data.checkBoxData}
+            state={data.stateArray}
+            />} 
+        fileName={`${data.clientName}-Quotation-Conqueror-PDF`}>
+  
+       {({ loading, error }) => (
+    <button
+    onClick={handleGeneratePDF}
+      disabled={btnStatus}
+    >
+{
+   handleValue(loading, error )
+      
+       }
+          </button>
+  )}
+       
+</PDFDownloadLink>
+</button>
+   
+       }
+   </div>
+}
+
+{data.selectCompany === "Injaz"  &&<div className='flex flex-col md:flex-row md:justify-end gap-5 mt-5'>
+  {!generatePDFBtn && <Button title='Generate Company Profile' click={handleFullPFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
+  {!generatePDFBtn && <Button title='Generate Invoice' click={handleProfilePFBtn} btnColor='bg-[#3354e8]' hoverBtn='hover:bg-[#8c9de9]' />}
+
+
+    {generatePDFBtn &&
+
+ <button
+        className={`w-24 h-11 ${btnStatusText === 'error' ? `bg-[#df3c3c]` : btnStatusText === 'save' ? 'bg-[#4AD991]' : 'bg-[#8f9693]' }  text-white rounded-lg flex justify-center items-center text-sm cursor-pointer ${btnStatusText === 'error' ? `hover:bg-[#eb9797]` : btnStatusText === 'save' ? 'hover:bg-[#99eec3]' : 'hover:cursor-wait' }`}
+      >
+<PDFDownloadLink document={<MyDocumentInjaz
+        data={data}
+        checkBox={data.checkBoxData}
+        state={data.stateArray}
+         />} fileName={`${data.clientName}-Quotation-Injaz-PDF`}>
+  
+       {({ loading, error }) => (
+    <button
+    onClick={handleGeneratePDF}
+      disabled={btnStatus}
+    >
+
+{
+   handleValue(loading, error )
+      
+       }
+          </button>
+  )}
+       
+</PDFDownloadLink>
+</button>
+   
+       }
+   </div>
+}
     </div>
   );
 };

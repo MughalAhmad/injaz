@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   flooting: {
     position: 'absolute',
     bottom: "17.2px",
-    right:"65px",
+    right:"60.5px",
     color:'white',
   },
 });
@@ -135,16 +135,16 @@ const MyDocument = ({
             <Image
             style={{width: '100%', height: '99.9%',position:'absolute'}}src="/Injaz/pdf_I.png" />
         
-          <View style={styles.flooting}>
+          {/* <View style={styles.flooting}> */}
         
-            <View>
-              <Text style={{fontSize:'10px'}}>{data.reference || "empty"}</Text>
-              <Text style={{fontSize:'8px'}}>{data.refDesignation || "empty"}</Text>
-            </View>
-        
-              <Text style={{fontSize:'10px', marginTop:'15px'}}>{data.refMail || "empty"}</Text>
-        
-          </View>
+           <View style={{position: 'absolute', bottom: "43.5px", right:'5px', color:'white', width:'204px'}}>
+                 <Text style={{fontSize:'10px'}}>{data.reference || "empty"}</Text>
+                 <Text style={{fontSize:'8px'}}>{data.refDesignation || "empty"}</Text>
+               </View>
+           
+                 <Text style={{fontSize:'10px', position: 'absolute', bottom: "16.5px", right:'5px', color:'white', width:'204px'}}>{data.refMail || "empty"}</Text>
+           
+          {/* </View> */}
         </Page>
 
      {/* 3 Page test */}
