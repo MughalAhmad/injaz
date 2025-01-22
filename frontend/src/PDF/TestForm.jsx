@@ -567,8 +567,6 @@ const { user } = useSelector(state => state.adminStore);
     }
   };
 
-  console.log("data ==== > ",data);
-
   const handle2500Value = (e) => {
     if(e.target.value > 2500){
       setData(prevData => ({
@@ -611,7 +609,6 @@ const saveDataIntoDB = () =>{
     .catch(error => {
       dispatch(updateShowBackDropLoader(false));
       sweetNotification(true, 'Something went wrong');
-      console.error('Dispatch failed:', error);
     });
 }
 
@@ -869,7 +866,7 @@ useEffect(() => {
  const handleValue = (loading,error, )=> {
           if (error) {
             setBtnStatusText("error")
-            console.error('PDF Generation Error:', error);
+            // console.error('PDF Generation Error:', error);
             return 'try Again';
           }
            else if(loading){
@@ -968,8 +965,6 @@ useEffect(() => {
       console.error("Failed to fetch references:", error);
     }
   };
-
-  console.log('selectReference========>',selectReference)
 
   // const hanldeSave =()=>{
   //   const fullData={

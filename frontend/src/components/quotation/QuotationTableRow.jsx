@@ -44,7 +44,6 @@ const QuotationTableRow = ({ row, index, handleRowData }) => {
           .catch(error => {
             dispatch(updateShowBackDropLoader(false));
             sweetNotification(true, 'Something went wrong');
-            console.error('Dispatch failed:', error);
           });
   }
 

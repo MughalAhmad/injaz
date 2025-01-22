@@ -341,7 +341,6 @@ return res.status(200).json({
           })
         });
 
-        console.log(modifyRefs)
 
 return res.status(200).json({
   hasError: false,
@@ -587,9 +586,6 @@ let Curl ="http://localhost:5000/conqueror/" ;
             id=check.rejectDataSet.id;
             action=check.rejectDataSet.action
         }
-
-        console.log("check_id", id);
-          console.log("check_action", action);
       
       
           const quotation = await pdfModel.findOne({ _id:id });

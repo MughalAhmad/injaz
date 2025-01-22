@@ -82,7 +82,6 @@ const [btnStatus, setBtnStatus] = useState(true);
      
     return btnStatus ?  'Generating PDF...': 'Save PDF' ;
    }
-console.log("VIEW +++++>",data)
   useEffect(() => {
     getQuotationData();
   }, []);

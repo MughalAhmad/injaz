@@ -28,7 +28,6 @@ const MailResponse = () => {
         dispatch(updateShowBackDropLoader(false));
 
         sweetNotification(true, "Something went wrong");
-        console.log(error);
       });
   };
 

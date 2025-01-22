@@ -387,7 +387,7 @@ const MyDocument = ({
      <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
      <Image style={{width:10, height:9 }} src="/MailI.png" />
      </View>
-     <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@conqueror.ae</Text>
+     <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@injazgroup.com</Text>
      </View>
      
      
@@ -395,7 +395,7 @@ const MyDocument = ({
      <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
      <Image style={{width:9, height:9 }} src="/Injaz/web.png" />
      </View>
-     <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.conqueror.ae</Text>
+     <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.injazgroup.com</Text>
      </View>
      
      <View style={{display:'flex',flexDirection:"row", alignItems:'center'}}>
@@ -459,7 +459,7 @@ const MyDocument = ({
     <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
     <Image style={{width:10, height:9 }} src="/MailI.png" />
     </View>
-    <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@conqueror.ae</Text>
+    <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@injazgroup.com</Text>
     </View>
     
     
@@ -467,7 +467,7 @@ const MyDocument = ({
     <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
     <Image style={{width:9, height:9 }} src="/Injaz/web.png" />
     </View>
-    <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.conqueror.ae</Text>
+    <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.injazgroup.com</Text>
     </View>
     
     <View style={{display:'flex',flexDirection:"row", alignItems:'center'}}>
@@ -517,7 +517,7 @@ const MyDocument = ({
       <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
       <Image style={{width:10, height:9 }} src="/MailI.png" />
       </View>
-      <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@conqueror.ae</Text>
+      <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>info@injazgroup.com</Text>
       </View>
       
       
@@ -525,7 +525,7 @@ const MyDocument = ({
       <View style={{width:17, height:17, backgroundColor:'white', borderRadius:'100px', display:'flex', justifyContent:'center', alignItems:'center' }}>
       <Image style={{width:9, height:9 }} src="/Injaz/web.png" />
       </View>
-      <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.conqueror.ae</Text>
+      <Text style={{ paddingLeft:5, paddingVertical:5, fontSize:12}}>www.injazgroup.com</Text>
       </View>
       
       <View style={{display:'flex',flexDirection:"row", alignItems:'center'}}>

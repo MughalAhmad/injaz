@@ -68,7 +68,6 @@ const Dashboard = () => {
               sweetNotification(true, resp.payload.msg);
             }
           }).catch((error) => {
-            console.log("hello",error);
             dispatch(updateShowBackDropLoader(false));
             sweetNotification(true, "Something went wrong");
         });

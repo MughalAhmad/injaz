@@ -39,7 +39,6 @@ const ProfileForm = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         dispatch(updateShowBackDropLoader(false));
         sweetNotification(true, "Something went wrong");
       });
@@ -120,7 +119,6 @@ const ProfileForm = () => {
         .catch((error) => {
           dispatch(updateShowBackDropLoader(false));
           sweetNotification(true, "Something went wrong");
-          console.log(error);
         });
     },
   });

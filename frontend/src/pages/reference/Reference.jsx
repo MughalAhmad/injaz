@@ -29,7 +29,6 @@ const Refrence = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         dispatch(updateShowBackDropLoader(false));
         sweetNotification(true, "Something went wrong");
       });

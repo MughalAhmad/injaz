@@ -98,7 +98,6 @@ const TeamForm = () => {
           .catch((error) => {
             dispatch(updateShowBackDropLoader(false));
             sweetNotification(true, "Something went wrong");
-            console.log(error);
           });
       },
     });
@@ -120,8 +119,6 @@ const TeamForm = () => {
       getUserData();
     }
   }, []);
-
-  console.log("values", values);
 
   return (
     <div className="px-3 md:px-5 xl:px-10 mb-10">

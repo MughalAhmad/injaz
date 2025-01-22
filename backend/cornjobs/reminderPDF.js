@@ -75,9 +75,9 @@ const startCronJob = async () => {
             twoDaysBackDateEnd.setDate(currentDate.getDate() - 2);
             twoDaysBackDateEnd.setHours(23, 59, 59, 999); // End of the day (23:59:59.999)
 
-            console.log("Current Date:", currentDate);
-            console.log("Two Days Back Start:", twoDaysBackDateStart);
-            console.log("Two Days Back End:", twoDaysBackDateEnd);
+            // console.log("Current Date:", currentDate);
+            // console.log("Two Days Back Start:", twoDaysBackDateStart);
+            // console.log("Two Days Back End:", twoDaysBackDateEnd);
 
             // Aggregation query
             const pdfs = await pdfModel.aggregate([
@@ -105,7 +105,7 @@ const startCronJob = async () => {
                     : 'http://localhost:5000/api/v1/pdf/sendPDF';
 
             for (let i = 0; i < pdfs.length; i++) {
-                console.log(pdfs[i]); // Log the document
+                // console.log(pdfs[i]); // Log the document
                 // Uncomment this line to send requests to the API
                 // await axios.post(url, { data: pdfs[i], checkBoxData: pdfs[i].checkBoxData, stateArray: pdfs[i].stateArray, editerText: "" });
             }

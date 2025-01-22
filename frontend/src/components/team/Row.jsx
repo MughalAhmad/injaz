@@ -36,7 +36,6 @@ const handleMouseLeave = () => setIsHovered(false);
     }).catch(error => {
          dispatch(updateShowBackDropLoader(false));
          sweetNotification(true, 'Something went wrong');
-         console.log(error);
          })
   };
 
@@ -54,7 +53,6 @@ const handleMouseLeave = () => setIsHovered(false);
     }).catch(error => {
          dispatch(updateShowBackDropLoader(false));
          sweetNotification(true, 'Something went wrong');
-         console.log(error);
          })
   };
   return (

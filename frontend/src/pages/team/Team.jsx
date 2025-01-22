@@ -31,7 +31,6 @@ const Team = () => {
             sweetNotification(true, resp.payload.msg);
           }
         }).catch((error) => {
-          console.log(error);
           dispatch(updateShowBackDropLoader(false));
           sweetNotification(true, "Something went wrong");
       });
